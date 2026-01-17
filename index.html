@@ -1,0 +1,2602 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#667eea">
+    <title>Chấm điểm 5S - Bệnh viện Nhi đồng TP Cần Thơ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            padding: 30px 20px;
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+
+        .nav {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .nav-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .nav-btn:hover,
+        .nav-btn.active {
+            background: white;
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 0.85rem;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: var(--gray-700);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--gray-200);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        select.form-control {
+            cursor: pointer;
+        }
+
+        .login-box {
+            max-width: 400px;
+            margin: 50px auto;
+        }
+
+        .login-box h2 {
+            text-align: center;
+            margin-bottom: 24px;
+            color: var(--gray-800);
+        }
+
+        /* Login box responsive cho mobile */
+        @media (max-width: 480px) {
+            .login-box {
+                margin: 20px auto;
+                max-width: 100%;
+            }
+
+            .login-box h2 {
+                font-size: 1.4rem;
+            }
+
+            .login-box .form-control {
+                padding: 16px 14px;
+                font-size: 16px;
+            }
+
+            .login-box .btn {
+                padding: 16px;
+                font-size: 16px;
+                min-height: 50px;
+            }
+        }
+
+        .grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .grid-2 {
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        th {
+            background: var(--gray-50);
+            font-weight: 600;
+            color: var(--gray-700);
+        }
+
+        tr:hover {
+            background: var(--gray-50);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .badge-admin {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-user {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .score-table {
+            font-size: 0.9rem;
+        }
+
+        .score-table th {
+            position: sticky;
+            top: 0;
+            background: var(--primary);
+            color: white;
+        }
+
+        .score-table .s-group {
+            background: #eff6ff;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .score-radio {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .score-radio label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border: 2px solid var(--gray-300);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .score-radio input {
+            display: none;
+        }
+
+        .score-radio input:checked+span {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .score-radio span {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+
+        .reason-input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid var(--gray-300);
+            border-radius: 6px;
+            font-size: 0.85rem;
+        }
+
+        .stats-card {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary) 0%, #7c3aed 100%);
+            color: white;
+            border-radius: 12px;
+        }
+
+        .stats-card h3 {
+            font-size: 2rem;
+            margin-bottom: 4px;
+        }
+
+        .stats-card p {
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray-600);
+        }
+
+        .alert {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+
+        .alert-success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .alert-error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-20 {
+            margin-top: 20px;
+        }
+
+        .mb-20 {
+            margin-bottom: 20px;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .flex-between {
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .gap-10 {
+            gap: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.4rem;
+            }
+
+            .nav-btn {
+                padding: 10px 16px;
+                font-size: 0.9rem;
+            }
+
+            .score-radio label {
+                width: 30px;
+                height: 30px;
+            }
+        }
+
+        /* ===== MOBILE RESPONSIVE CHO TAB CHẤM ĐIỂM ===== */
+        @media (max-width: 768px) {
+            /* Container padding cho mobile */
+            .container {
+                padding: 10px;
+            }
+
+            .card {
+                padding: 16px;
+                border-radius: 12px;
+            }
+
+            /* Grid form 1 cột trên mobile */
+            .grid-2 {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            /* Form controls lớn hơn cho touch */
+            .form-control {
+                padding: 14px 12px;
+                font-size: 16px; /* Ngăn iOS zoom khi focus */
+                border-radius: 10px;
+                -webkit-appearance: none;
+                appearance: none;
+            }
+
+            select.form-control {
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23374151' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+                background-repeat: no-repeat;
+                background-position: right 12px center;
+                padding-right: 36px;
+            }
+
+            /* Input file cho mobile */
+            #scoreImageFile {
+                font-size: 14px;
+            }
+        }
+
+        /* ===== BẢNG CHẤM ĐIỂM DẠNG CARD TRÊN MOBILE ===== */
+        @media (max-width: 600px) {
+            /* Ẩn header của bảng */
+            .score-table thead {
+                display: none;
+            }
+
+            .score-table,
+            .score-table tbody,
+            .score-table tr {
+                display: block;
+                width: 100%;
+            }
+
+            /* Mỗi hàng thành 1 card */
+            .score-table tr {
+                background: white;
+                border: 1px solid var(--gray-200);
+                border-radius: 12px;
+                padding: 16px;
+                margin-bottom: 12px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            }
+
+            .score-table tr:hover {
+                background: white;
+            }
+
+            /* Group header */
+            .score-table tr.s-group {
+                background: linear-gradient(135deg, var(--primary) 0%, #7c3aed 100%);
+                color: white;
+                font-size: 1rem;
+                padding: 12px 16px;
+                margin-top: 16px;
+                margin-bottom: 8px;
+            }
+
+            .score-table tr.s-group td {
+                padding: 0;
+                border: none;
+            }
+
+            /* Các cell thành block */
+            .score-table td {
+                display: block;
+                width: 100%;
+                text-align: left;
+                padding: 8px 0;
+                border: none;
+                border-bottom: 1px solid var(--gray-100);
+            }
+
+            .score-table td:last-child {
+                border-bottom: none;
+            }
+
+            /* STT và tiêu chí */
+            .score-table td:first-child {
+                font-weight: 700;
+                color: var(--primary);
+                font-size: 0.85rem;
+            }
+
+            .score-table td:nth-child(2) {
+                font-size: 0.95rem;
+                line-height: 1.5;
+                padding-bottom: 12px;
+            }
+
+            /* Radio buttons lớn hơn, dễ bấm */
+            .score-radio {
+                justify-content: flex-start;
+                gap: 10px;
+                padding: 8px 0;
+            }
+
+            .score-radio label {
+                width: 44px;
+                height: 44px;
+                font-size: 16px;
+                border-width: 2px;
+                -webkit-tap-highlight-color: transparent;
+                touch-action: manipulation;
+            }
+
+            .score-radio span {
+                font-weight: 600;
+            }
+
+            /* Input lý do */
+            .reason-input {
+                padding: 12px;
+                font-size: 16px;
+                border-radius: 8px;
+                margin-top: 4px;
+            }
+
+            /* Nút hướng dẫn */
+            .btn-guide {
+                padding: 6px 12px;
+                font-size: 13px;
+            }
+
+            /* Score result responsive */
+            .score-result {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 16px;
+            }
+
+            .score-result-item {
+                width: 100%;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                padding: 8px 0;
+                border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+            }
+
+            .score-result-item:last-of-type {
+                border-bottom: none;
+            }
+
+            .score-value {
+                font-size: 20px;
+            }
+
+            /* Nút lưu kết quả */
+            .btn-success {
+                width: 100%;
+                padding: 16px;
+                font-size: 16px;
+                border-radius: 12px;
+            }
+
+            /* Image preview */
+            #imagePreview {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            #imagePreview img {
+                max-width: 100%;
+                margin-bottom: 10px;
+            }
+
+            #imagePreview .btn-danger {
+                margin-left: 0;
+                width: 100%;
+            }
+        }
+
+        /* ===== TOUCH OPTIMIZATIONS CHO iOS & ANDROID ===== */
+        @media (hover: none) and (pointer: coarse) {
+            /* Tắt hiệu ứng hover trên touch devices */
+            .nav-btn:hover,
+            .btn:hover,
+            tr:hover {
+                transform: none;
+            }
+
+            /* Tăng vùng chạm */
+            .nav-btn {
+                min-height: 44px;
+                padding: 12px 20px;
+            }
+
+            .btn {
+                min-height: 44px;
+            }
+
+            /* Radio button touch area */
+            .score-radio label {
+                position: relative;
+            }
+
+            .score-radio label::before {
+                content: '';
+                position: absolute;
+                top: -8px;
+                left: -8px;
+                right: -8px;
+                bottom: -8px;
+            }
+
+            /* Smooth scrolling */
+            .score-table {
+                -webkit-overflow-scrolling: touch;
+            }
+        }
+
+        /* ===== LANDSCAPE MODE TRÊN MOBILE ===== */
+        @media (max-width: 900px) and (orientation: landscape) {
+            .header {
+                padding: 15px 20px;
+            }
+
+            .header h1 {
+                font-size: 1.2rem;
+            }
+
+            .grid-2 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .score-table tr {
+                display: flex;
+                flex-wrap: wrap;
+                padding: 12px;
+            }
+
+            .score-table td:first-child {
+                width: 50px;
+            }
+
+            .score-table td:nth-child(2) {
+                flex: 1;
+                min-width: 200px;
+            }
+
+            .score-table td:nth-child(3),
+            .score-table td:nth-child(4) {
+                width: 50%;
+                padding-top: 12px;
+            }
+        }
+
+        /* ===== SAFE AREA CHO iPHONE X TRỞ LÊN ===== */
+        @supports (padding: max(0px)) {
+            body {
+                padding-left: max(0px, env(safe-area-inset-left));
+                padding-right: max(0px, env(safe-area-inset-right));
+                padding-bottom: max(0px, env(safe-area-inset-bottom));
+            }
+        }
+
+        /* Guide button */
+        .btn-guide {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-left: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-guide:hover {
+            transform: scale(1.1);
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
+        }
+
+        /* Guide modal */
+        .guide-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .guide-modal {
+            background: white;
+            border-radius: 16px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .guide-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--gray-200);
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            border-radius: 16px 16px 0 0;
+        }
+
+        .guide-modal-header h3 {
+            color: white;
+            margin: 0;
+            font-size: 1.2rem;
+        }
+
+        .guide-modal-header button {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .guide-modal-header button:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .guide-modal-body {
+            padding: 24px;
+        }
+
+        /* ===== GUIDE MODAL RESPONSIVE ===== */
+        @media (max-width: 600px) {
+            .guide-modal-overlay {
+                padding: 10px;
+                align-items: flex-end;
+            }
+
+            .guide-modal {
+                max-height: 85vh;
+                border-radius: 16px 16px 0 0;
+            }
+
+            .guide-modal-header {
+                padding: 16px;
+            }
+
+            .guide-modal-header h3 {
+                font-size: 1rem;
+            }
+
+            .guide-modal-body {
+                padding: 16px;
+            }
+
+            .guide-level {
+                padding: 10px;
+                font-size: 13px;
+            }
+
+            .level-score {
+                min-width: 28px;
+                height: 28px;
+                font-size: 14px;
+            }
+        }
+
+        .guide-criteria-text {
+            background: var(--gray-100);
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .guide-section {
+            margin-bottom: 20px;
+        }
+
+        .guide-section h4 {
+            color: var(--gray-700);
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+
+        .guide-section p {
+            color: var(--gray-600);
+            line-height: 1.6;
+        }
+
+        .guide-levels {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .guide-level {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 8px 12px;
+            background: var(--gray-50);
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .level-score {
+            background: var(--primary);
+            color: white;
+            min-width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        /* Score result summary */
+        .score-result {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border: 2px solid #3b82f6;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .score-result-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .score-label {
+            font-size: 12px;
+            color: var(--gray-600);
+            text-transform: uppercase;
+        }
+
+        .score-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--gray-800);
+        }
+
+        .score-classification {
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .score-result-desc {
+            width: 100%;
+            margin-top: 8px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(59, 130, 246, 0.3);
+            color: var(--gray-600);
+            font-style: italic;
+        }
+
+        .success-message {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            background-color: #d1fae5;
+            color: #065f46;
+            border: 1px solid #34d399;
+            text-align: center;
+            font-weight: 500;
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>🏥 Bệnh viện Nhi đồng Thành phố Cần Thơ</h1>
+        <p>Phòng: Quản lý Chất lượng | Tác giả: BS. Kiều Việt Tiến Hưng</p>
+        <p id="userInfo" class="hidden" style="margin-top:10px;"></p>
+    </div>
+
+    <div class="container">
+        <!-- Login -->
+        <div id="loginSection">
+            <div class="card login-box">
+                <h2>🔐 Đăng nhập</h2>
+                <div id="loginAlert"></div>
+                <form id="loginForm" onsubmit="handleLoginSubmit(event)">
+                    <div class="form-group">
+                        <label for="loginUser">Tên đăng nhập</label>
+                        <input type="text" id="loginUser" class="form-control" placeholder="Nhập tên đăng nhập"
+                            autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false"
+                            inputmode="text" enterkeyhint="next">
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPass">Mật khẩu</label>
+                        <input type="password" id="loginPass" class="form-control" placeholder="Nhập mật khẩu"
+                            autocomplete="current-password" enterkeyhint="go">
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width:100%">Đăng nhập</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Main App -->
+        <div id="mainApp" class="hidden">
+            <nav class="nav">
+                <button class="nav-btn active" onclick="showTab('home')">🏠 Trang chủ</button>
+                <button class="nav-btn" onclick="showTab('score')">📝 Chấm điểm</button>
+                <button class="nav-btn" onclick="showTab('report')">📊 Báo cáo</button>
+                <button class="nav-btn admin-only hidden" onclick="showTab('zones')">📍 Quản lý khu vực</button>
+                <button class="nav-btn admin-only hidden" onclick="showTab('users')">👥 Quản lý tài khoản</button>
+                <button class="nav-btn" onclick="logout()" style="background:#ef4444;">🚪 Đăng xuất</button>
+            </nav>
+
+            <!-- Home Tab -->
+            <div id="homeTab" class="tab-content active">
+                <div class="card">
+                    <h2 style="margin-bottom:20px;">📊 Thống kê tổng quan</h2>
+                    <div class="grid grid-3">
+                        <div class="stats-card">
+                            <h3 id="statDepts">0</h3>
+                            <p>Khoa/Phòng</p>
+                        </div>
+                        <div class="stats-card" style="background:linear-gradient(135deg,#10b981 0%,#059669 100%);">
+                            <h3 id="statZones">0</h3>
+                            <p>Khu vực</p>
+                        </div>
+                        <div class="stats-card" style="background:linear-gradient(135deg,#f59e0b 0%,#d97706 100%);">
+                            <h3 id="statScores">0</h3>
+                            <p>Lượt chấm điểm</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bộ lọc khoa phòng cho biểu đồ -->
+                <div class="card">
+                    <h2 style="margin-bottom:20px;">🔍 Lọc theo Khoa/Phòng</h2>
+                    <div class="form-group">
+                        <select id="chartDeptFilter" class="form-control" onchange="filterDashboard()">
+                            <option value="">-- Tất cả khoa/phòng --</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Biểu đồ điểm theo tháng -->
+                <div class="card">
+                    <h2 style="margin-bottom:20px;">📈 Biểu đồ điểm trung bình theo tháng</h2>
+                    <div style="position:relative;height:300px;">
+                        <canvas id="monthlyChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Thống kê theo khoa phòng -->
+                <div class="card">
+                    <h2 style="margin-bottom:20px;">🏥 Thống kê theo Khoa/Phòng</h2>
+                    <div id="deptStatsContainer">
+                        <p class="text-center">Đang tải...</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2 style="margin-bottom:20px;">📋 Chấm điểm gần đây</h2>
+                    <div id="recentScores">
+                        <p class="text-center">Chưa có dữ liệu</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Score Tab -->
+            <div id="scoreTab" class="tab-content">
+                <div class="card">
+                    <h2 style="margin-bottom:20px;">📝 Chấm điểm 5S</h2>
+                    <div id="scoreAlert"></div>
+                    <div class="grid grid-2">
+                        <div class="form-group">
+                            <label>Khoa/Phòng</label>
+                            <select id="scoreDept" class="form-control" onchange="loadZones()">
+                                <option value="">-- Chọn khoa/phòng --</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Khu vực định danh</label>
+                            <select id="scoreZone" class="form-control" onchange="loadItems()">
+                                <option value="">-- Chọn khu vực --</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Đại diện định lượng</label>
+                            <select id="scoreItem" class="form-control">
+                                <option value="">-- Chọn đại diện --</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Tháng/Năm</label>
+                            <input type="month" id="scoreMonth" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Người đánh giá</label>
+                            <input type="text" id="scoreEvaluator" class="form-control"
+                                placeholder="Họ tên người đánh giá">
+                        </div>
+                        <div class="form-group">
+                            <label>Đại diện nơi đánh giá</label>
+                            <input type="text" id="scoreRepresentative" class="form-control"
+                                placeholder="Họ tên đại diện">
+                        </div>
+                        <div class="form-group" style="grid-column: 1/-1;">
+                            <label>📷 Hình ảnh minh chứng</label>
+                            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+                                <input type="file" id="scoreImageFile" accept="image/*" class="form-control"
+                                    style="flex:1;min-width:200px;" onchange="previewImage(this)">
+                                <button type="button" class="btn btn-primary btn-sm"
+                                    onclick="document.getElementById('scoreImageFile').click()">📷 Chọn ảnh</button>
+                            </div>
+                            <div id="imagePreview" style="margin-top:10px;display:none;">
+                                <img id="previewImg"
+                                    style="max-width:200px;max-height:150px;border-radius:8px;border:2px solid var(--gray-200);">
+                                <button type="button" class="btn btn-danger btn-sm" style="margin-left:10px;"
+                                    onclick="clearImage()">🗑️ Xóa</button>
+                            </div>
+                            <input type="hidden" id="scoreImageUrl">
+                        </div>
+                    </div>
+                    <div style="overflow-x:auto;margin-top:20px;">
+                        <table class="score-table" id="criteriaTable"></table>
+                    </div>
+                    <div class="text-center mt-20">
+                        <button class="btn btn-success" onclick="submitScore()">💾 Lưu kết quả chấm điểm</button>
+                        <div id="submitSuccessMsg" class="success-message">✅ Đã lưu kết quả chấm điểm thành công!</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Report Tab -->
+            <div id="reportTab" class="tab-content">
+                <div class="card">
+                    <h2 style="margin-bottom:20px;">📊 Báo cáo & Xuất dữ liệu</h2>
+                    <div class="grid grid-2">
+                        <div class="form-group">
+                            <label>Khoa/Phòng</label>
+                            <select id="reportDept" class="form-control">
+                                <option value="">-- Tất cả --</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Từ tháng</label>
+                            <input type="month" id="reportFrom" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Đến tháng</label>
+                            <input type="month" id="reportTo" class="form-control">
+                        </div>
+                        <div class="form-group" style="display:flex;align-items:flex-end;">
+                            <button class="btn btn-primary" onclick="loadReport()">🔍 Xem báo cáo</button>
+                            <button class="btn btn-success" style="margin-left:10px;" onclick="exportExcel()">📥 Xuất
+                                Excel</button>
+                        </div>
+                    </div>
+                    <div id="reportResult" class="mt-20"></div>
+                </div>
+            </div>
+
+            <!-- Zones Tab -->
+            <div id="zonesTab" class="tab-content">
+                <div class="card">
+                    <div class="flex flex-between mb-20">
+                        <h2>📍 Quản lý Khu vực</h2>
+                        <button class="btn btn-primary" onclick="showAddDeptModal()">➕ Thêm Khoa/Phòng</button>
+                    </div>
+                    <div id="zonesList"></div>
+                </div>
+            </div>
+
+            <!-- Users Tab -->
+            <div id="usersTab" class="tab-content">
+                <div class="card">
+                    <div class="flex flex-between mb-20">
+                        <h2>👥 Quản lý Tài khoản</h2>
+                        <button class="btn btn-primary" onclick="showAddUserModal()">➕ Thêm tài khoản</button>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Tên đăng nhập</th>
+                                <th>Họ tên</th>
+                                <th>Khoa/Phòng</th>
+                                <th>Quyền</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersList"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="addUserModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Thêm tài khoản mới</h3><button class="modal-close"
+                    onclick="closeModal('addUserModal')">&times;</button>
+            </div>
+            <div class="form-group"><label>Tên đăng nhập</label><input type="text" id="newUsername"
+                    class="form-control"></div>
+            <div class="form-group"><label>Mật khẩu</label><input type="password" id="newPassword" class="form-control">
+            </div>
+            <div class="form-group"><label>Họ tên</label><input type="text" id="newFullname" class="form-control"></div>
+            <div class="form-group"><label>Khoa/Phòng</label><select id="newDept" class="form-control"></select></div>
+            <div class="form-group"><label>Quyền</label><select id="newRole" class="form-control">
+                    <option value="user">Người dùng</option>
+                    <option value="admin">Quản trị viên</option>
+                </select></div>
+            <button class="btn btn-success" style="width:100%" onclick="addUser()">Tạo tài khoản</button>
+        </div>
+    </div>
+
+    <div id="addDeptModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Thêm Khoa/Phòng</h3><button class="modal-close"
+                    onclick="closeModal('addDeptModal')">&times;</button>
+            </div>
+            <div class="form-group"><label>Tên Khoa/Phòng</label><input type="text" id="newDeptName"
+                    class="form-control"></div>
+            <button class="btn btn-success" style="width:100%" onclick="addDepartment()">Thêm</button>
+        </div>
+    </div>
+
+    <div id="addZoneModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Thêm Khu vực</h3><button class="modal-close" onclick="closeModal('addZoneModal')">&times;</button>
+            </div>
+            <input type="hidden" id="zoneDeptId">
+            <div class="form-group"><label>Tên khu vực định danh</label><input type="text" id="newZoneName"
+                    class="form-control"></div>
+            <div class="form-group"><label>Đại diện định lượng (mỗi dòng 1 đại diện)</label><textarea id="newZoneItems"
+                    class="form-control" rows="4"></textarea></div>
+            <button class="btn btn-success" style="width:100%" onclick="addZone()">Thêm khu vực</button>
+        </div>
+    </div>
+
+    <script>
+        // Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyDummyKeyForApp5S",
+            authDomain: "app-5s-b09ab.firebaseapp.com",
+            databaseURL: "https://app-5s-b09ab-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "app-5s-b09ab",
+            storageBucket: "app-5s-b09ab.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "1:123456789:web:app5s"
+        };
+
+        let db, currentUser = null;
+        firebase.initializeApp(firebaseConfig);
+        db = firebase.database();
+
+        // Cloudinary Config - Free tier (25GB)
+        const CLOUDINARY_CONFIG = {
+            cloudName: 'dvuo6snng',
+            uploadPreset: '5S_upload'
+        };
+
+        // Image upload functions
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('previewImg').src = e.target.result;
+                    document.getElementById('imagePreview').style.display = 'block';
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function clearImage() {
+            document.getElementById('scoreImageFile').value = '';
+            document.getElementById('scoreImageUrl').value = '';
+            document.getElementById('imagePreview').style.display = 'none';
+        }
+
+        async function uploadToCloudinary(file) {
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('upload_preset', CLOUDINARY_CONFIG.uploadPreset);
+            formData.append('folder', '5S_BenhVienNhiDong');
+
+            try {
+                const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CONFIG.cloudName}/image/upload`, {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+                if (data.secure_url) {
+                    return data.secure_url;
+                }
+                throw new Error(data.error?.message || 'Upload failed');
+            } catch (error) {
+                console.error('Cloudinary upload error:', error);
+                alert('Lỗi upload ảnh: ' + error.message);
+                return null;
+            }
+        }
+
+        // 5S Criteria Data
+        const CRITERIA_5S = [
+            {
+                group: "SÀNG LỌC", items: [
+                    { id: 1, text: "Không có vật dụng không liên quan tại nơi đánh giá" },
+                    { id: 2, text: "Những tài liệu, vật dụng không liên quan có thể nhận biết ngay" },
+                    { id: 3, text: "Không có số lượng thừa của tất cả các vật dụng cần sử dụng" },
+                    { id: 4, text: "Có QUY TẮC/HƯỚNG DẪN SÀNG LỌC vật dụng định kỳ" }
+                ]
+            },
+            {
+                group: "SẮP XẾP", items: [
+                    { id: 5, text: "Văn phòng phẩm, công cụ lao động,... được sắp xếp ngăn nắp, khoa học" },
+                    { id: 6, text: "Mọi thứ được cất, giữ tại một nơi CỐ ĐỊNH" },
+                    { id: 7, text: "Nơi cất giữ được thiết kế dễ dàng và thuận tiện khi sử dụng" },
+                    { id: 8, text: "Tủ nhiều ngăn và các thiết bị có GHI NHÃN RÕ RÀNG" },
+                    { id: 9, text: "Các vị trí chỉ định đã được ĐÁNH DẤU/KẺ LÊN để dễ nhìn thấy" }
+                ]
+            },
+            {
+                group: "SẠCH SẼ", items: [
+                    { id: 10, text: "Vùng làm việc, các vật dụng đều sạch sẽ, không bụi bẩn" },
+                    { id: 11, text: "Cửa sổ, bậu cửa sổ, nền nhà,... đều sạch sẽ" },
+                    { id: 12, text: "Có nơi lưu trữ các vật dụng ít/không sử dụng, sạch sẽ, có dán nhãn" },
+                    { id: 13, text: "Vệ sinh kèm kiểm tra hiện trạng các vật dụng" }
+                ]
+            },
+            {
+                group: "SĂN SÓC", items: [
+                    { id: 14, text: "Không để các vật dụng bừa bãi" },
+                    { id: 15, text: "Luôn cải tiến và sắp xếp ngăn nắp (CÓ HÌNH ẢNH TRƯỚC SAU)" },
+                    { id: 16, text: "Có LỊCH TRỰC 5S tại khu vực chấm điểm" }
+                ]
+            },
+            {
+                group: "SẴN SÀNG", items: [
+                    { id: 17, text: "Có phổ biến/chia sẻ phương pháp 5S cho tất cả nhân viên" },
+                    { id: 18, text: "Có đánh giá định kỳ (BẢNG KIỂM 5S MỖI THÁNG)" },
+                    { id: 19, text: "Tất cả vật dụng đều trong tình trạng sẵn sàng" },
+                    { id: 20, text: "Có đánh giá, phân tích nguyên nhân mỗi tháng" }
+                ]
+            }
+        ];
+
+        // Hướng dẫn chấm điểm chi tiết cho từng tiêu chí
+        const CRITERIA_GUIDES = {
+            1: {
+                guide: "Không có vật dụng không liên quan đến công việc tại nơi đánh giá (vd: cốc riêng, túi xách cá nhân, nón,nước giải khát, bánh trái, thức ăn, đồ trang điểm... trên bàn làm việc)",
+                suggestion: "✅ Kiểm tra nhanh xung quanh khu vực: có đồ cá nhân nào không thuộc công việc?\n✅ Các vật dụng phải rõ ràng liên quan đến chuyên môn của khoa/phòng",
+                levels: {
+                    1: "≥10 vật dụng không liên quan công việc",
+                    2: "5–9 vật dụng không liên quan",
+                    3: "3–4 vật dụng không liên quan",
+                    4: "1–2 vật dụng không liên quan",
+                    5: "Không có bất kỳ vật dụng nào không liên quan"
+                }
+            },
+            2: {
+                guide: "Vật dụng, tài liệu không liên quan không được giấu trong ngăn kéo, tủ,... có thể nhận biết ngay",
+                suggestion: "✅ Mở kiểm tra ngẫu nhiên 2–3 ngăn kéo, tủ, hộc bàn\n✅ Có đồ cá nhân giấu bên trong không?",
+                levels: {
+                    1: "Có nhiều vật không liên quan giấu trong các ngăn kéo, tủ",
+                    2: "Một số vật không liên quan giấu kín",
+                    3: "2–3 vật cá nhân còn để lẫn",
+                    4: "1 vật cá nhân còn sót",
+                    5: "Không có vật dụng cá nhân giấu trong ngăn, tủ"
+                }
+            },
+            3: {
+                guide: "Không có số lượng thừa của tất cả các vật dụng được sử dụng",
+                suggestion: "✅ Số lượng vật dụng phải phù hợp nhu cầu thực tế (không quá nhiều, không thiếu)\n✅ Có quy định số lượng tồn trữ hợp lý",
+                levels: {
+                    1: "Rất nhiều vật dụng thừa, không cần thiết",
+                    2: "Nhiều vật dụng thừa hoặc trùng lặp",
+                    3: "Một số vật dụng thừa",
+                    4: "Ít vật dụng thừa, đã kiểm soát tốt",
+                    5: "Số lượng vật dụng hợp lý, không có thừa"
+                }
+            },
+            4: {
+                guide: "Có quy tắc/hướng dẫn sàng lọc vật dụng định kỳ (bỏ những thứ không dùng, không cần)",
+                suggestion: "📌 Phải có văn bản/hướng dẫn sàng lọc và thực hiện định kỳ\n✅ Ví dụ: Mỗi quý kiểm tra và loại bỏ vật dụng không còn sử dụng",
+                levels: {
+                    1: "Không có quy định sàng lọc",
+                    2: "Có quy định nhưng không thực hiện",
+                    3: "Có thực hiện nhưng không định kỳ",
+                    4: "Có quy định và thực hiện gần định kỳ",
+                    5: "Có quy định rõ ràng và thực hiện đúng định kỳ"
+                }
+            },
+            5: {
+                guide: "Văn phòng phẩm, công cụ lao động, thuốc, vật tư y tế,… được sắp xếp một cách ngăn nắp, khoa học, thẩm mỹ",
+                suggestion: "✅ Kiểm tra các kệ, tủ, bàn làm việc\n✅ Vật dụng phải được phân loại và sắp xếp hợp lý",
+                levels: {
+                    1: "Bừa bộn, không theo trật tự",
+                    2: "Có sắp xếp nhưng còn lộn xộn nhiều",
+                    3: "Sắp xếp tương đối nhưng chưa khoa học",
+                    4: "Sắp xếp tốt, chỉ còn vài điểm chưa hoàn chỉnh",
+                    5: "Ngăn nắp, khoa học, thẩm mỹ, dễ tìm kiếm"
+                }
+            },
+            6: {
+                guide: "Mọi thứ được cất, giữ tại một nơi CỐ ĐỊNH và trả về đúng vị trí sau khi sử dụng",
+                suggestion: "📌 Mỗi vật dụng có vị trí riêng, được đánh dấu/nhãn\n✅ Hỏi nhân viên: Sau khi dùng xong, có trả về đúng chỗ không?",
+                levels: {
+                    1: "Không có vị trí cố định, để tùy tiện",
+                    2: "Có nhưng thường xuyên không trả về đúng chỗ",
+                    3: "Đa số có vị trí nhưng thỉnh thoảng sai",
+                    4: "Hầu hết đúng vị trí, còn 1-2 điểm sai",
+                    5: "Tất cả đều có vị trí cố định và trả về đúng chỗ"
+                }
+            },
+            7: {
+                guide: "Nơi cất giữ được thiết kế dễ dàng và thuận tiện khi sử dụng",
+                suggestion: "✅ Kiểm tra: Vật dụng thường dùng có dễ lấy không?\n✅ Có cần leo trèo, di chuyển nhiều để lấy đồ không?",
+                levels: {
+                    1: "Rất khó tiếp cận, thiết kế không hợp lý",
+                    2: "Khó lấy, mất nhiều thời gian",
+                    3: "Tương đối thuận tiện nhưng có thể cải thiện",
+                    4: "Thuận tiện, chỉ còn 1-2 điểm cần cải tiến",
+                    5: "Thiết kế tối ưu, rất thuận tiện khi sử dụng"
+                }
+            },
+            8: {
+                guide: "Tủ nhiều ngăn, giá kệ lưu trữ và các thiết bị có GHI NHÃN RÕ RÀNG, dễ đọc",
+                suggestion: "📌 Kiểm tra: Tủ, kệ, ngăn có dán nhãn không?\n✅ Nhãn phải rõ ràng, dễ đọc, đúng nội dung bên trong",
+                levels: {
+                    1: "Không có nhãn",
+                    2: "Rất ít nhãn, không rõ ràng",
+                    3: "Có nhãn nhưng không đầy đủ hoặc khó đọc",
+                    4: "Đa số có nhãn rõ ràng, còn vài chỗ thiếu",
+                    5: "Tất cả đều có nhãn rõ ràng, đúng nội dung"
+                }
+            },
+            9: {
+                guide: "Các vị trí chỉ định đã được ĐÁNH DẤU/KẺ LÊN để dễ nhìn thấy (xe lăn, bình chữa cháy,...)",
+                suggestion: "📌 Vị trí để xe, thiết bị lớn phải có đánh dấu trên sàn hoặc tường\n✅ Ví dụ: Kẻ ô cho xe lăn, đánh dấu vị trí bình chữa cháy",
+                levels: {
+                    1: "Không có đánh dấu vị trí nào",
+                    2: "Rất ít vị trí được đánh dấu",
+                    3: "Có đánh dấu nhưng không đầy đủ",
+                    4: "Đa số vị trí quan trọng được đánh dấu",
+                    5: "Tất cả vị trí quan trọng đều được đánh dấu rõ ràng, định vị trực quan"
+                }
+            },
+            10: {
+                guide: "Vùng làm việc, các vật dụng đều sạch sẽ, không bụi bẩn",
+                suggestion: "✅ Kiểm tra bề mặt bàn, tủ, thiết bị: có bụi không?\n✅ Sàn nhà, góc tường có sạch không?",
+                levels: {
+                    1: "Rất bẩn, nhiều bụi và vết bẩn",
+                    2: "Bẩn nhiều nơi",
+                    3: "Tương đối sạch nhưng còn bụi/vết bẩn",
+                    4: "Sạch sẽ, chỉ còn 1-2 điểm nhỏ",
+                    5: "Hoàn toàn sạch sẽ, không bụi bẩn"
+                }
+            },
+            11: {
+                guide: "Cửa sổ, bậu cửa sổ, nền nhà, tường, bóng đèn, quạt,… đều sạch sẽ",
+                suggestion: "✅ Kiểm tra các vị trí thường bị bỏ quên: bậu cửa, quạt trần, đèn\n✅ Phải có lịch vệ sinh định kỳ cho các vị trí này",
+                levels: {
+                    1: "Rất bẩn, không được vệ sinh",
+                    2: "Bẩn nhiều nơi khó thấy",
+                    3: "Tương đối sạch nhưng còn một số vị trí bẩn",
+                    4: "Sạch sẽ, chỉ còn 1-2 vị trí chưa hoàn hảo",
+                    5: "Tất cả đều sạch sẽ, kể cả vị trí khó thấy"
+                }
+            },
+            12: {
+                guide: "Có nơi lưu trữ các vật dụng ít/không sử dụng, sạch sẽ, có dán nhãn",
+                suggestion: "📌 Vật dụng ít dùng phải có kho riêng, không để lẫn với đồ thường dùng\n✅ Kho phải sạch sẽ, có nhãn, dễ tìm khi cần",
+                levels: {
+                    1: "Không có nơi lưu trữ riêng",
+                    2: "Có nhưng lộn xộn, không nhãn",
+                    3: "Có nơi lưu trữ nhưng chưa gọn gàng",
+                    4: "Có nơi lưu trữ tốt, còn thiếu một số nhãn",
+                    5: "Có nơi lưu trữ riêng, sạch sẽ, có nhãn đầy đủ"
+                }
+            },
+            13: {
+                guide: "Vệ sinh kèm kiểm tra hiện trạng các vật dụng (có bằng chứng như checklist kiểm tra, sổ bàn giao...)",
+                suggestion: "📌 Khi vệ sinh phải kiểm tra luôn tình trạng thiết bị\n✅ Có sổ/checklist ghi nhận kết quả kiểm tra",
+                levels: {
+                    1: "Không kiểm tra khi vệ sinh",
+                    2: "Có kiểm tra nhưng không ghi chép",
+                    3: "Có ghi chép nhưng không đầy đủ/định kỳ",
+                    4: "Có checklist, thực hiện tương đối đều",
+                    5: "Có checklist đầy đủ, thực hiện và ghi chép định kỳ"
+                }
+            },
+            14: {
+                guide: "Không để các vật dụng bừa bãi (dây điện, dây mạng, dây oxy thở được bố trí gọn gàng)",
+                suggestion: "✅ Kiểm tra dây điện, dây mạng: có được bó gọn không?\n✅ Không có dây rối, chằng chịt gây mất an toàn",
+                levels: {
+                    1: "Rất bừa bãi, dây rối nhiều nơi",
+                    2: "Nhiều dây chưa được gom gọn",
+                    3: "Tương đối gọn nhưng còn vài chỗ rối",
+                    4: "Gọn gàng, chỉ còn 1-2 điểm cần cải thiện",
+                    5: "Tất cả dây điện, dây mạng đều được bố trí gọn gàng, an toàn"
+                }
+            },
+            15: {
+                guide: "Luôn cải tiến và sắp xếp ngăn nắp (CÓ HÌNH ẢNH TRƯỚC SAU để chứng minh cải tiến)",
+                suggestion: "📌 Phải có ảnh TRƯỚC-SAU để minh chứng cải tiến\n✅ Ví dụ: Thay đổi vị trí xe tiêm gần giường bệnh hơn → giảm thao tác khi cấp cứu",
+                levels: {
+                    1: "Không có cải tiến nào trong năm",
+                    2: "Có 1 cải tiến nhỏ, không có ảnh trước–sau",
+                    3: "Có ít nhất 1 cải tiến rõ ràng (ảnh hoặc mô tả)",
+                    4: "Có ít nhất 1 cải tiến rõ ràng (ảnh trước–sau)",
+                    5: "Có ≥2 cải tiến cụ thể, có văn bản/họp/báo cáo, hiệu quả rõ"
+                }
+            },
+            16: {
+                guide: "Có lịch phân công trực nhật 5S tại khu vực chấm điểm",
+                suggestion: "📌 Phải có lịch phân công trực 5S: họ tên, thời gian, nhiệm vụ\n✅ Người trực phải biết nhiệm vụ và có ký tên xác nhận",
+                levels: {
+                    1: "Không có lịch trực hoặc lịch cũ, sai ngày",
+                    2: "Có lịch nhưng không rõ ràng (thiếu họ tên, phân công)",
+                    3: "Có lịch đầy đủ nhưng người trực không biết/không thực hiện",
+                    4: "Có lịch, người trực biết việc nhưng không có bằng chứng thực hiện",
+                    5: "Có lịch rõ, người trực biết, khu vực sạch, có bằng chứng (ký tên, ảnh...)"
+                }
+            },
+            17: {
+                guide: "Có phổ biến – chia sẻ phương pháp 5S cho tất cả nhân viên tại khoa (sổ họp/bảng hoạt động 5S)",
+                suggestion: "📌 Nhân viên phải biết – hiểu – thực hành 5S cơ bản\n✅ Hỏi ngẫu nhiên 5 nhân viên về 5S: họ có biết không?",
+                levels: {
+                    1: "Không có họp/bản tin 5S, không ai biết 5S là gì",
+                    2: "Có bảng thông tin 5S nhưng không phổ biến cho nhân viên",
+                    3: "Có họp/triển khai nhưng ≤2 nhân viên nắm đúng",
+                    4: "Có minh chứng họp/triển khai, 1–2 hoạt động 5S giúp giảm rủi ro",
+                    5: "Có sổ họp/bảng tin, ≥5 nhân viên được hỏi đều trả lời đúng"
+                }
+            },
+            18: {
+                guide: "Có đánh giá định kỳ (Bảng kiểm 5S mỗi tháng/khu vực) đúng thời hạn",
+                suggestion: "📌 Gửi điểm 5S đúng hạn (ngày 25 mỗi tháng) kèm ảnh khu vực chấm\n✅ Có lưu minh chứng tại khoa/phòng",
+                levels: {
+                    1: "3 tháng/quý không gửi điểm hay ảnh chấm",
+                    2: "Chỉ gửi điểm khi được nhắc, không có ảnh minh chứng",
+                    3: "Trễ hạn và thiếu ảnh minh chứng",
+                    4: "Đúng hạn nhưng ảnh minh chứng trễ/thiếu",
+                    5: "Gửi đúng hạn, đủ ảnh minh chứng rõ ràng từng tháng"
+                }
+            },
+            19: {
+                guide: "Vật dụng ở tình trạng sẵn sàng sử dụng (không hư, hết hạn, hết pin, không tìm thấy...)",
+                suggestion: "📌 Tất cả dụng cụ phải sẵn sàng: đúng vật dụng, đúng tình trạng, đúng thời điểm\n✅ Kiểm tra ngẫu nhiên: pin còn không? Hạn sử dụng? Có tìm thấy không?",
+                levels: {
+                    1: "≥5 vật dụng không sẵn sàng (hư, hết hạn, hết pin,...)",
+                    2: "3–4 vật dụng không sẵn sàng",
+                    3: "2 vật dụng không sẵn sàng",
+                    4: "1 vật dụng không sẵn sàng",
+                    5: "Tất cả vật dụng sẵn sàng, ≥3 nhân viên biết rõ vị trí"
+                }
+            },
+            20: {
+                guide: "Có phân tích nguyên nhân – cải tiến sau đánh giá mỗi tháng",
+                suggestion: "📌 Sau chấm điểm phải xem lại điểm chưa tốt, tìm nguyên nhân, đề ra cách khắc phục\n✅ Có chia sẻ điểm tốt để nhân rộng",
+                levels: {
+                    1: "Không có hoạt động đánh giá – phân tích – cải tiến nào",
+                    2: "Có đánh giá nhưng không liên tục, không nêu nguyên nhân",
+                    3: "Có ghi nhận nguyên nhân + hướng khắc phục, không có minh chứng",
+                    4: "Có phân tích nguyên nhân + giải pháp, đã cải tiến ít nhất 1 điểm yếu",
+                    5: "Có đánh giá định kỳ, cải tiến liên tục, chia sẻ công khai mỗi tháng"
+                }
+            }
+        };
+
+        // Bảng phân loại điểm
+        const SCORE_CLASSIFICATION = [
+            { min: 95, max: 100, label: "Xuất sắc", color: "#10b981", desc: "Thực hiện toàn diện, không có lỗi" },
+            { min: 80, max: 94, label: "Tốt", color: "#3b82f6", desc: "Duy trì tốt, có thể còn lỗi nhỏ" },
+            { min: 70, max: 79, label: "Khá", color: "#f59e0b", desc: "Có thực hiện, còn vài điểm chưa đầy đủ" },
+            { min: 60, max: 69, label: "Trung bình", color: "#f97316", desc: "Chưa ổn định, còn sai sót rõ ràng" },
+            { min: 0, max: 59, label: "Chưa đạt", color: "#ef4444", desc: "Thiếu kiểm soát, cần cải tiến" }
+        ];
+
+        // Initial Data - Full data from Excel
+        const INITIAL_DEPTS = {
+            "KHOA_BA_CHUYEN_KHOA": {
+                "name": "KHOA BA CHUYÊN KHOA",
+                "zones": {
+                    "PHONG_IEU_TRI_RANG": { "name": "Phòng điều trị răng", "items": ["phòng điều trị răng", "Xe tiêm phòng điều trị răng", "Tủ dụng cụ"] },
+                    "PHONG_HANH_CHANH_2": { "name": "Phong hành chánh 2", "items": ["phong hanh chanh 2"] },
+                    "BAN_KHAM_RANG_HAM_MAT": { "name": "Bàn khám răng hàm mặt", "items": ["Khu khám theo yêu cầu"] },
+                    "TU_DUNG_CU": { "name": "Tủ dụng cụ", "items": ["Phòng tiểu phẫu", "PHÒNG TIỂU PHẪU"] },
+                    "KE_HO_SO": { "name": "Kệ hồ sơ", "items": ["Phòng hành chánh"] },
+                    "XE_TIEM_THUOC": { "name": "Xe tiêm thuốc", "items": ["Phòng bệnh nặng"] },
+                    "PHONG_NOI_SOI": { "name": "phòng nội soi", "items": ["phòng nọi soi"] }
+                }
+            },
+            "KHOA_CAP_CUU": {
+                "name": "KHOA CẤP CỨU",
+                "zones": {
+                    "KHO": { "name": "KHO", "items": ["VẬT TƯ Y TẾ", "PHÒNG TRANG THIẾT BỊ"] },
+                    "KV_BENH_NHAN": { "name": "KV bỆNH NHÂN", "items": ["SẢNH NHẬN BỆNH"] },
+                    "TU_THUOC_TRUC": { "name": "TỦ THUỐC TRỰC", "items": ["PHÒNG LƯU BỆNH"] },
+                    "KHU_VUC_HANH_CHANH": { "name": "KHU VỰC HÀNH CHÁNH", "items": ["QUẦY HÀNH CHÁNH", "Kho hồ sơ", "KHO"] },
+                    "KHU_VUC_NHAN_VIEN": { "name": "KHU VỰC NHÂN VIÊN", "items": ["KV GIAO BAN", "PHÒNG ĐIỀU DƯỠNG NỮ"] },
+                    "KHU_VUC_LOC_BENH": { "name": "khu vực lọc bệnh", "items": ["quầy nhận bệnh"] }
+                }
+            },
+            "KHOA_CHAN_OAN_HINH_ANH": {
+                "name": "KHOA CHẨN ĐOÁN HÌNH ẢNH",
+                "zones": {
+                    "QUAY_SIEU_AM": { "name": "Quầy siêu âm", "items": ["Quầy siêu âm"] },
+                    "QUAY_X_QUANG": { "name": "Quầy x quang", "items": ["Quầy x quang", "Quầy X-quang"] },
+                    "PHONG_3_SIEU_AM": { "name": "Phòng 3 siêu âm", "items": ["Phòng 3 siêu âm"] },
+                    "PHONG_HANH_CHANH": { "name": "Phòng hành chánh", "items": ["Phòng hành chánh"] }
+                }
+            },
+            "KHOA_CHAN_THUONG_CHINH_HINH": {
+                "name": "KHOA CHẤN THƯƠNG CHỈNH HÌNH",
+                "zones": {
+                    "PHONG_BENH_NANG_816": { "name": "Phòng bệnh nặng 816", "items": ["Phòng bệnh"] },
+                    "P_TIEP_NHAN_BENH": { "name": "P tiếp nhận bệnh", "items": ["Khu vực phòng bệnh"] },
+                    "P_BO_BOT": { "name": "P bó bột", "items": ["Khu nhân viên"] },
+                    "P_THAY_BANG": { "name": "P thay băng", "items": ["Khu phòng bệnh"] },
+                    "KV_NHAN_VIEN": { "name": "Kv nhân viên", "items": ["Kv nhân viên", "Phòng bó bột", "Phòng tiêm thuốc"] }
+                }
+            },
+            "KHOA_DINH_DUONG": {
+                "name": "KHOA DINH DƯỠNG",
+                "zones": {
+                    "QUAY_TIEP_NHAN": { "name": "QUẦY TIẾP NHẬN", "items": ["TỦ HỒ SƠ", "kv ghi thông tin", "Khu vực nhận bệnh"] },
+                    "PHONG_CAN_O_THDD": { "name": "PHÒNG CÂN ĐO & THDD", "items": ["BÀN THỰC HÀNH DINH DƯỠNG"] },
+                    "PHONG_KHAM_1": { "name": "PHÒNG KHÁM 1", "items": ["BÀN KHÁM BỆNH", "Bàn khám bệnh"] },
+                    "PHONG_KHAM_2": { "name": "PHÒNG KHÁM 2", "items": ["BÀN KHÁM BỆNH", "Bàn khám bệnh"] },
+                    "KV_HANH_CHANH": { "name": "KV HÀNH CHÁNH", "items": ["Bàn làm việc"] }
+                }
+            },
+            "KHOA_DUOC_NHA_THUOC": {
+                "name": "KHOA DƯỢC, NHÀ THUỐC",
+                "zones": {
+                    "KHO_LE_NGOAI_TRU": { "name": "KHO LẺ NGOẠI TRÚ", "items": ["KHO LẺ NGOẠI TRÚ"] },
+                    "KHO_LE_NOI_TRU": { "name": "KHO LẺ NỘI TRÚ", "items": ["Kho lẻ nội trú (thuốc)", "KHO VTYT"] },
+                    "KHO_CHAN": { "name": "KHO CHẴN", "items": ["KHO THUỐC", "Kho hóa chất", "KHO VACCIN"] },
+                    "BHYT": { "name": "BHYT", "items": ["TỦ ĐỰNG THUỐC LẺ", "KỆ ĐỰNG THUỐC CHẴN", "PALLET ĐỂ THUỐC"] },
+                    "THONG_KE": { "name": "THỐNG KÊ", "items": ["TỦ HỒ SƠ", "Bàn làm việc"] }
+                }
+            },
+            "KHOA_GAY_ME_HOI_SUC": {
+                "name": "KHOA GÂY MÊ HỒI SỨC",
+                "zones": {
+                    "KHU_VUC_PHONG_MO": { "name": "Khu vực phòng mổ", "items": ["Phòng mổ 4", "Phòng mổ số 1", "Phòng mổ số 7", "Phòng soi tiêu hóa"] },
+                    "KHO": { "name": "Kho", "items": ["Nơi lưu vật tư y tế tiêu hao"] },
+                    "KHU_VUC_NHAN_VIEN": { "name": "Khu vực nhân viên", "items": ["Phòng nhân viên nữ", "Phòng thủ tục hành chính", "Phòng giao ban"] },
+                    "KHU_VUC_BUONG_BENH": { "name": "Khu vực buồng bệnh", "items": ["Phòng đựng tủ thuốc, tủ dụng cụ, VTTH"] }
+                }
+            },
+            "KHOA_HO_HAP": {
+                "name": "KHOA HÔ HẤP",
+                "zones": {
+                    "PHONG_O_CHUC_HO_HAP": { "name": "PHÒNG ĐO CHỨC HÔ HẤP", "items": ["PHÒNG ĐO CHỨC HÔ HẤP NĂNG"] },
+                    "PHONG_GIAO_BAN": { "name": "PHÒNG GIAO BAN", "items": ["PHÒNG GIAO BAN"] },
+                    "PHONG_HANH_CHANH": { "name": "PHÒNG HÀNH CHÁNH", "items": ["BÀN MÁY VI TÍNH"] },
+                    "TIEM_TRUYEN_THUOC": { "name": "TIÊM TRUYỀN THUỐC", "items": ["XE CẤP CỨU"] },
+                    "KHU_VUC_TIEP_NHAN": { "name": "KHU VỰC TIẾP NHẬN", "items": ["TỦ THUỐC TRỰC", "XE TIÊM THUỐC"] }
+                }
+            },
+            "KHOA_HOI_SUC_TICH_CUC": {
+                "name": "KHOA HỒI SỨC TÍCH CỰC CHỐNG ĐỘC",
+                "zones": {
+                    "KV1": { "name": "Kv1", "items": ["Quầy"] },
+                    "KHU_VUC_2": { "name": "Khu Vực 2", "items": ["Phòng Trang Thiết Bị 1"] },
+                    "PHONG_BENH_1": { "name": "Phòng Bệnh 1", "items": ["Kv3", "Khu Vực 3"] },
+                    "QUAY": { "name": "Quầy", "items": ["Khu Vực 1"] },
+                    "PHONG_TU_THUOC": { "name": "Phòng Tủ Thuốc", "items": ["Khu Vực 5"] },
+                    "KHO_1": { "name": "Kho 1", "items": ["Khu Vực 7"] }
+                }
+            },
+            "KHOA_KHAM_BENH": {
+                "name": "KHOA KHÁM BỆNH",
+                "zones": {
+                    "KHU_VUC_KHAM": { "name": "Khu vực khám", "items": ["Phòng cấp cứu", "Bàn nhập viện", "Phòng khám 04", "Phòng hành chánh", "Phòng khám 07", "Phòng khám 12"] }
+                }
+            },
+            "KHOA_KHAM_CHUA_BENH_THEO_YEU_CAU": {
+                "name": "KHOA KHÁM CHỮA BỆNH THEO YÊU CẦU",
+                "zones": {
+                    "P_TIEM_NGUA": { "name": "p. TIÊM NGỪA", "items": ["P.sơ cứu - nhập viện", "PHÒNG KHÁM VÀ TƯ VẤN"] },
+                    "P_SO_CUU_NHAP_VIEN": { "name": "P. sơ cứu- nhập viện", "items": ["P. sơ cứu- nhập viện", "Tủ dụng cụ"] },
+                    "SANH_TIEP_NHAN": { "name": "SẢNH TIẾP NHẬN", "items": ["phòng phát thuốc chuyên gia", "Phòng khám (p.chuyên gia)"] },
+                    "P_HANH_CHANH_KHOA": { "name": "P.hành chánh khoa", "items": ["tủ nhiều ngăn"] }
+                }
+            },
+            "KHOA_KIEM_SOAT_NHIEM_KHUAN": {
+                "name": "KHOA KIỂM SOÁT NHIỄM KHUẨN",
+                "zones": {
+                    "KHU_VUC_DUNG_CU": { "name": "KHU VỰC DỤNG CỤ", "items": ["Phòng lưu trữ dụng cụ", "Phòng rửa dụng cụ", "Quầy trả dụng cụ", "Phòng hấp dụng cụ"] }
+                }
+            },
+            "KHOA_NGOAI_TONG_HOP": {
+                "name": "KHOA NGOẠI TỔNG HỢP",
+                "zones": {
+                    "PHONG_THAY_BANG": { "name": "Phòng thay băng", "items": ["kV bệnh nhân"] },
+                    "PHONG_IEU_DUONG_TRUC": { "name": "Phòng điều dưỡng trực", "items": ["kV nhân viên"] },
+                    "KV_KHO": { "name": "kV kho", "items": ["Kho lưu trữ văn phòng phẩm"] },
+                    "KV_NHAN_VIEN": { "name": "kV nhân viên", "items": ["Phòng giao ban"] },
+                    "KHU_VUC_BENH_NHAN": { "name": "Khu vực bệnh nhân", "items": ["Phòng tiêm thuốc"] },
+                    "PHONG_BENH_NANG_807": { "name": "Phòng bệnh nặng (807)", "items": ["Kv bệnh nhân"] }
+                }
+            },
+            "KHOA_NOI_TIEU_HOA": {
+                "name": "KHOA NỘI TIÊU HÓA",
+                "zones": {
+                    "PHONG_TIEM_THUOC": { "name": "Phòng tiêm thuốc", "items": ["Tủ thuốc trực", "Phòng tiêm thuốc"] },
+                    "KHU_VUC_PHONG_HANH_CHINH": { "name": "Khu vực phòng hành chính", "items": ["Khu vực phòng hành chính"] },
+                    "PHONG_KHAM_NOI_SOI": { "name": "Phòng khám nội soi", "items": ["Phòng khám ngoại trú nội tiêu hoá"] },
+                    "QUAY_NHAN_BENH": { "name": "Quầy nhận bệnh", "items": ["Khu vực bệnh nhân"] },
+                    "KHU_VUC_RUA_DUNG_CU": { "name": "Khu vực rửa dụng cụ", "items": ["Khu vực rửa dụng cụ và bàn giao KSNK"] }
+                }
+            },
+            "KHOA_NOI_TIM_MACH": {
+                "name": "KHOA NỘI TIM MẠCH",
+                "zones": {
+                    "P_TIEM_THUOC": { "name": "P. Tiêm thuốc", "items": ["P..tiêm thuốc"] },
+                    "QUAY_NHAN_BENH": { "name": "Quầy nhận bệnh", "items": ["Quầy nhận bệnh"] },
+                    "KHO": { "name": "Kho", "items": ["Kv kho", "kho", "Kho"] },
+                    "TU_THUOC_PHONG_TIEM": { "name": "Tủ thuốc phòng tiêm", "items": ["Tủ thuốc phòng tiêm"] },
+                    "HANH_CHANH": { "name": "Hành chánh", "items": ["Hành chánh"] }
+                }
+            },
+            "KHOA_NOI_TONG_HOP": {
+                "name": "KHOA NỘI TỔNG HỢP",
+                "zones": {
+                    "KV_BENH": { "name": "KV BỆNH", "items": ["PHÒNG SƠ CỨU", "PHÒNG TIÊM CHÍCH", "quầy nhận bệnh"] },
+                    "KV_HANH_CHINH": { "name": "KV HÀNH CHÍNH", "items": ["KỆ MÁY MÓC THIẾT BỊ", "TỦ THUỐC", "PHÒNG GIAO BAN"] },
+                    "KV_NOI_SOI": { "name": "kv nội soi", "items": ["phòng nội soi"] }
+                }
+            },
+            "KHOA_SO_SINH": {
+                "name": "KHOA SƠ SINH",
+                "zones": {
+                    "KHU_SO_SINH_NHE": { "name": "Khu sơ sinh nhẹ", "items": ["Phòng tiêm thuốc khu nhẹ", "Phòng bệnh"] },
+                    "KHU_SO_SINH_NANG": { "name": "Khu sơ sinh nặng", "items": ["Hành chính sơ sinh nặng", "Phòng bệnh", "Phòng bệnh NICU1"] },
+                    "PHONG_HANH_CHANH": { "name": "Phòng hành chánh", "items": ["Kệ phiếu thông tin"] }
+                }
+            },
+            "KHOA_SOT_XUAT_HUYET": {
+                "name": "KHOA SỐT XUẤT HUYẾT",
+                "zones": {
+                    "KHU_VUC_NHAN_VIEN": { "name": "Khu vực nhân viên", "items": ["Phòng bác sĩ nam", "Phòng trưởng khoa", "Phòng hành chánh", "Phòng bác sĩ nữ"] },
+                    "KHU_VUC_BUONG_BENH": { "name": "Khu vực buồng bệnh", "items": ["Khu vực rửa dụng cụ", "Phòng tiêm thuốc", "Quầy nhận bệnh"] },
+                    "KHU_VUC_BENH_NHAN": { "name": "Khu vực bệnh nhân", "items": ["Phòng bệnh thường", "Phòng hồi sức cấp cứu (931)"] }
+                }
+            },
+            "KHOA_TRUYEN_NHIEM": {
+                "name": "KHOA TRUYỀN NHIỄM",
+                "zones": {
+                    "PHONG_GIAO_BAN": { "name": "PHÒNG GIAO BAN", "items": ["PHÒNG GIAO BAN"] },
+                    "BAN_LAY_MAU": { "name": "BÀN LẤY MÁU", "items": ["BÀN LẤY MÁU"] },
+                    "PHONG_THUOC": { "name": "PHÒNG THUỐC", "items": ["TỦ THUỐC"] },
+                    "XE_TIEM_THUOC": { "name": "XE TIÊM THUỐC", "items": ["XE TIÊM THUỐC"] },
+                    "KHU_NHAN_BENH": { "name": "KHU NHẬN BỆNH", "items": ["KHU NHÂN VIÊN LÀM VIỆC", "BÀN NHẬN BỆNH MỚI"] },
+                    "PHONG_TIEM_THUOC": { "name": "PHÒNG TIÊM THUỐC", "items": ["TỦ THUỐC TRỰC"] }
+                }
+            },
+            "KHOA_VAT_LY_TRI_LIEU": {
+                "name": "KHOA VẬT LÝ TRỊ LIỆU",
+                "zones": {
+                    "QUAY_TIEP_NHAN": { "name": "quầy tiếp nhận", "items": ["khu vực hành chính"] },
+                    "PHONG_VAN_DONG": { "name": "Phòng Vận Động", "items": ["Khu vực khám"] },
+                    "PHONG_KHAM": { "name": "phòng khám", "items": ["khu vực khám"] },
+                    "KHU_VUC_KHAM": { "name": "Khu vực khám", "items": ["phòng tâm lý hành vi", "Phòng khám", "Phòng hô hấp", "Phòng vận động", "Phòng chỉnh hình"] },
+                    "KHU_VUC_SINH_HOAT_CHUNG": { "name": "Khu vực sinh hoạt chung", "items": ["Phòng sinh hoạt chung"] }
+                }
+            },
+            "KHOA_XET_NGHIEM": {
+                "name": "KHOA XÉT NGHIỆM",
+                "zones": {
+                    "PHONG_HUYET_HOC": { "name": "Phòng huyết học", "items": ["Tủ đông trữ máu", "Phát máu"] },
+                    "PHONG_GIAO_BAN": { "name": "Phòng giao ban", "items": ["Vị trí treo giấy khen", "Bảng phân công công việc"] },
+                    "PHONG_LAY_MAU": { "name": "Phòng lấy máu", "items": ["Bàn lấy máu"] },
+                    "QUAY_TIEP_NHAN": { "name": "Quầy tiếp nhận", "items": ["Bàn lấy máu", "Khu vực lấy máu"] },
+                    "PHONG_SINH_HOA": { "name": "Phòng sinh hoá", "items": ["Tách huyết thanh"] },
+                    "PHONG_QUAN_LY_CHAT_LUONG": { "name": "Phòng quản lý chất lượng", "items": ["Tủ lưu hồ sơ"] }
+                }
+            },
+            "PHONG_CHI_DAO_TUYEN": {
+                "name": "PHÒNG CHỈ ĐẠO TUYẾN",
+                "zones": {
+                    "KV_LAM_VIEC_CA_NHAN": { "name": "KV Làm việc cá nhân", "items": ["KV Thay đồ, nghỉ của nhân viên"] },
+                    "KV_CAC_KE": { "name": "KV Các kệ", "items": ["KV Kệ hồ sơ", "KV Kệ dụng cụ Hội thảo", "Kệ Hồ Sơ phòng CĐT"] },
+                    "KV_PHONG_HUAN_LUYEN": { "name": "KV Phòng Huấn luyện", "items": ["KV kho Phòng Huấn luyện"] },
+                    "KV_CAC_TU": { "name": "KV Các Tủ", "items": ["KV tủ văn phòng phẩm thường dùng", "KV tủ dụng cụ ít dùng"] },
+                    "KV_CAC_BAN": { "name": "KV các bàn", "items": ["KV bàn làm việc cá nhân", "KV bàn làm việc chung"] }
+                }
+            },
+            "PHONG_CONG_TAC_XA_HOI": {
+                "name": "PHÒNG CÔNG TÁC XÃ HỘI",
+                "zones": {
+                    "QUAY_THONG_TIN_TANG_2": { "name": "Quầy thông tin tầng 2", "items": ["Quầy thông tin", "Quầy thông tin tầng 2"] },
+                    "PHONG_CONG_TAC_XA_HOI": { "name": "PHÒNG CÔNG TÁC XÃ HỘI", "items": ["PHÒNG CÔNG TÁC XÃ HỘI", "Bàn làm việc cá nhân"] },
+                    "QUAY_THONG_TIN_TANG_1": { "name": "Quầy thông tin tầng 1", "items": ["Quầy thông tin", "Quầy thông tin tầng 1"] },
+                    "PHONG_CONG_TAC_DOAN_THE": { "name": "Phòng Công tác Đoàn thể", "items": ["02 bàn làm việc cá nhân"] }
+                }
+            },
+            "PHONG_DIEU_DUONG": {
+                "name": "PHÒNG ĐIỀU DƯỠNG",
+                "zones": {
+                    "PHONG_TRUONG_PHONG": { "name": "Phòng trưởng phòng", "items": ["Bàn tiếp khách phòng trưởng phòng", "Tủ hồ sơ"] },
+                    "PHONG_NHAN_VIEN": { "name": "Phòng nhân viên", "items": ["Kệ hồ sơ", "Bàn làm việc nhân viên 2"] },
+                    "PHONG_DIEU_DUONG": { "name": "Phòng điều dưỡng", "items": ["kệ văn phòng phẩm", "Bàn làm việc nhân viên 2", "KỆ HỒ SƠ PHÒNG ĐIỀU DƯỠNG", "Bàn tiếp khách"] },
+                    "PHONG_GIAO_BAN": { "name": "Phòng Giao Ban", "items": ["Khu vực nhân viên"] }
+                }
+            },
+            "PHONG_HANH_CHANH_QUAN_TRI": {
+                "name": "PHÒNG HÀNH CHÁNH QUẢN TRỊ",
+                "zones": {
+                    "VAN_THU": { "name": "VĂN THƯ", "items": ["BÀN LÀM VIỆC", "văn thư"] },
+                    "CONG_XA": { "name": "CÔNG XA", "items": ["CÔNG XA", "PHÒNG TRỰC"] },
+                    "TO_VAN_THU": { "name": "Tổ Văn thư", "items": ["bàn làm việc"] },
+                    "KHO_SUA_CHUA": { "name": "kho sửa chữa", "items": ["Bàn để đồ và tb sửa chữa"] },
+                    "TO_CUNG_TIEU": { "name": "TỔ CUNG TIÊU", "items": ["KHO CHỨA VPP"] },
+                    "TO_KY_THUAT": { "name": "TỔ KỸ THUẬT", "items": ["KỆ ĐỰNG VẬT TƯ"] }
+                }
+            },
+            "PHONG_KE_HOACH_TONG_HOP": {
+                "name": "PHÒNG KẾ HOẠCH TỔNG HỢP",
+                "zones": {
+                    "PHONG_KHTH": { "name": "PHÒNG KHTH", "items": ["BÀN LÀM VIỆC CỦA LAN", "BÀN LÀM VIỆC CỦA BS TRUNG", "BÀN LÀM VIỆC CỦA LINH"] },
+                    "KHO_HUY_HSBA": { "name": "KHO HỦY HSBA", "items": ["KHU VỰC HSBA CHỜ HỦY"] },
+                    "TO_IT": { "name": "TỔ IT", "items": ["BÀN LÀM VIỆC CỦA HIẾU"] },
+                    "KHO_LUU_TRU_HSBA": { "name": "KHO LƯU TRỮ HSBA", "items": ["BÀN LÀM VIỆC CỦA HUY"] },
+                    "TO_TIN_HOC_IT": { "name": "TỔ TIN HỌC (IT)", "items": ["BÀN LÀM VIỆC CỦA TÂN", "BÀN LÀM VIỆC CỦA QUANG", "BÀN LÀM VIỆC CỦA HUỲNH"] }
+                }
+            },
+            "PHONG_QUAN_LY_CHAT_LUONG": {
+                "name": "PHÒNG QUẢN LÝ CHẤT LƯỢNG",
+                "zones": {
+                    "PHONG_QLCL": { "name": "Phòng QLCL", "items": ["Nhóm Bàn làm việc cá nhân", "BÀN LÀM VIỆC CÁ NHÂN", "Nhóm Hồ sơ", "Nhóm VPP"] },
+                    "NHOM_BAN_LAM_VIEC_CA_NHAN": { "name": "NHÓM BÀN LÀM VIỆC CÁ NHÂN", "items": ["7 BÀN LÀM VIỆC CÁ NHÂN TRONG PHÒNG", "TỪ BÀN SỐ 1 ĐẾN BÀN SỐ 7"] },
+                    "NHOM_HO_SO": { "name": "NHÓM HỒ SƠ", "items": ["TỦ HS SỐ 1, 2 VÀ KỆ HS NĂM CŨ"] },
+                    "NHOM_VPP": { "name": "NHÓM VPP", "items": ["KỆ VPP VÀ KHO VPP"] }
+                }
+            },
+            "PHONG_TAI_CHINH_KE_TOAN": {
+                "name": "PHÒNG TÀI CHÍNH KẾ TOÁN",
+                "zones": {
+                    "TO_VAN_PHONG": { "name": "TỔ VĂN PHÒNG", "items": ["PHÒNG KẾ TOÁN 2", "PHÒNG BHYT", "PHÒNG KẾ TOÁN 1"] },
+                    "KHO_HO_SO": { "name": "KHO HỒ SƠ", "items": ["KHO HỒ SƠ"] },
+                    "TO_VIEN_PHI": { "name": "TỔ VIỆN PHÍ", "items": ["TỔ VIỆN PHÍ"] }
+                }
+            },
+            "PHONG_TO_CHUC_CAN_BO": {
+                "name": "PHÒNG TỔ CHỨC CÁN BỘ",
+                "zones": {
+                    "KHO": { "name": "kho", "items": ["hồ sơ theo nhóm, kệ", "KỆ HỒ SƠ THEO NHÓM", "TỦ HỒ SƠ", "Lưu trữ HS"] },
+                    "KHO_HO_SO": { "name": "KHO HỒ SƠ", "items": ["KỆ HỒ SƠ VIÊN CHỨC, KỆ VĂN PHÒNG PHẨM"] },
+                    "PHONG_TCCB": { "name": "PHÒNG TCCB", "items": ["TỦ HỒ SƠ", "BÀN LÀM VIỆC PHÒNG TCCB", "bàn tiếp khách"] },
+                    "PHONG_LIEN_HE_CONG_TAC": { "name": "PHÒNG LIÊN HỆ CÔNG TÁC", "items": ["BÀN LÀM VIỆC"] },
+                    "PHONG_LHCT": { "name": "PHÒNG LHCT", "items": ["BÀN LÀM VIỆC", "Tủ/ kệ hồ sơ"] }
+                }
+            },
+            "PHONG_VAT_TU_THIET_BI_Y_TE": {
+                "name": "PHÒNG VẬT TƯ THIẾT BỊ Y TẾ",
+                "zones": {
+                    "PHONG_LAM_VIEC": { "name": "Phòng làm việc", "items": ["Bàn làm việc chung", "BÀN LÀM VIỆC CHUNG", "Bàn làm việc cá nhân"] },
+                    "KHO_CHUA_TB": { "name": "Kho chứa TB", "items": ["Kệ chứa thiết bị số 1"] },
+                    "KHO_SUA_CHUA": { "name": "Kho sửa chữa", "items": ["Bàn để dụng cụ sửa chữa"] },
+                    "KHO_OXY": { "name": "Kho oxy", "items": ["Khu vực oxy chai đầy"] },
+                    "KHO_CHUA_OXY_CHAI": { "name": "Kho chứa oxy chai", "items": ["Kho chứa oxy chai"] },
+                    "KHO_CHUA_THIET_BI_MOI": { "name": "Kho chứa thiết bị mới", "items": ["Kệ 1"] }
+                }
+            }
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            const now = new Date();
+            const monthStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+            document.getElementById('scoreMonth').value = monthStr;
+            document.getElementById('reportFrom').value = monthStr;
+            document.getElementById('reportTo').value = monthStr;
+
+            checkSession();
+            initializeData();
+            renderCriteriaTable();
+        });
+
+        async function initializeData() {
+            const usersSnap = await db.ref('users_5s').once('value');
+            if (!usersSnap.exists()) {
+                await db.ref('users_5s/admin').set({ username: 'admin', password: 'admin123', fullname: 'Quản trị viên', role: 'admin', department: '' });
+            }
+            const deptsSnap = await db.ref('departments_5s').once('value');
+            if (!deptsSnap.exists()) {
+                await db.ref('departments_5s').set(INITIAL_DEPTS);
+            }
+        }
+
+        function checkSession() {
+            const session = localStorage.getItem('session_5s');
+            if (session) {
+                currentUser = JSON.parse(session);
+                showMainApp();
+            }
+        }
+
+        // Handle form submit for login (works better on iOS)
+        function handleLoginSubmit(e) {
+            e.preventDefault();
+            // Blur inputs to close keyboard on iOS
+            document.activeElement.blur();
+            login();
+        }
+
+        async function login() {
+            const username = document.getElementById('loginUser').value.trim();
+            const password = document.getElementById('loginPass').value;
+            if (!username || !password) { showAlert('loginAlert', 'Vui lòng nhập đầy đủ thông tin', 'error'); return; }
+
+            const snap = await db.ref('users_5s/' + username).once('value');
+            if (snap.exists() && snap.val().password === password) {
+                currentUser = { ...snap.val(), id: username };
+                localStorage.setItem('session_5s', JSON.stringify(currentUser));
+                showMainApp();
+            } else {
+                showAlert('loginAlert', 'Sai tên đăng nhập hoặc mật khẩu', 'error');
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('session_5s');
+            currentUser = null;
+            document.getElementById('loginSection').classList.remove('hidden');
+            document.getElementById('mainApp').classList.add('hidden');
+            document.getElementById('loginUser').value = '';
+            document.getElementById('loginPass').value = '';
+        }
+
+        function showMainApp() {
+            document.getElementById('loginSection').classList.add('hidden');
+            document.getElementById('mainApp').classList.remove('hidden');
+            document.getElementById('userInfo').classList.remove('hidden');
+            document.getElementById('userInfo').innerHTML = `👤 ${currentUser.fullname} <span class="badge ${currentUser.role === 'admin' ? 'badge-admin' : 'badge-user'}">${currentUser.role === 'admin' ? 'Admin' : 'User'}</span>`;
+
+            if (currentUser.role === 'admin') {
+                document.querySelectorAll('.admin-only').forEach(el => el.classList.remove('hidden'));
+            }
+
+            loadDepartments();
+            loadStats();
+            loadRecentScores();
+            loadChartDeptFilter();
+            loadDeptStats();
+            renderMonthlyChart();
+        }
+
+        function showTab(tab) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tab + 'Tab').classList.add('active');
+            event.target.classList.add('active');
+
+            if (tab === 'zones') loadZonesList();
+            if (tab === 'users') loadUsersList();
+            if (tab === 'report') loadDepartments();
+        }
+
+        async function loadDepartments() {
+            const snap = await db.ref('departments_5s').once('value');
+            const depts = snap.val() || {};
+
+            ['scoreDept', 'reportDept', 'newDept'].forEach(id => {
+                const sel = document.getElementById(id);
+                if (!sel) return;
+
+                // Preserve the first placeholder option
+                const firstOptionText = id === 'newDept' ? '' : (id === 'reportDept' ? '-- Tất cả --' : '-- Chọn khoa/phòng --');
+                sel.innerHTML = `<option value="">${firstOptionText}</option>`;
+
+                Object.entries(depts).forEach(([k, v]) => {
+                    const opt = document.createElement('option');
+                    opt.value = k;
+                    opt.textContent = v.name;
+                    sel.appendChild(opt);
+                });
+            });
+        }
+
+        async function loadZones() {
+            const deptId = document.getElementById('scoreDept').value;
+            const sel = document.getElementById('scoreZone');
+            sel.innerHTML = '<option value="">-- Chọn khu vực --</option>';
+            document.getElementById('scoreItem').innerHTML = '<option value="">-- Chọn đại diện --</option>';
+
+            if (!deptId) return;
+            const snap = await db.ref('departments_5s/' + deptId + '/zones').once('value');
+            const zones = snap.val() || {};
+            Object.entries(zones).forEach(([k, v]) => {
+                const opt = document.createElement('option');
+                opt.value = k;
+                opt.textContent = v.name;
+                sel.appendChild(opt);
+            });
+        }
+
+        async function loadItems() {
+            const deptId = document.getElementById('scoreDept').value;
+            const zoneId = document.getElementById('scoreZone').value;
+            const sel = document.getElementById('scoreItem');
+            sel.innerHTML = '<option value="">-- Chọn đại diện --</option>';
+
+            if (!deptId || !zoneId) return;
+            const snap = await db.ref('departments_5s/' + deptId + '/zones/' + zoneId + '/items').once('value');
+            const items = snap.val() || [];
+            items.forEach((item, i) => {
+                const opt = document.createElement('option');
+                opt.value = i;
+                opt.textContent = item;
+                sel.appendChild(opt);
+            });
+        }
+
+        function renderCriteriaTable() {
+            let html = `<thead><tr><th style="width:50px">STT</th><th>Tiêu chí đánh giá</th><th style="width:200px">Mức điểm (1-5)</th><th style="width:200px">Lý do</th></tr></thead><tbody>`;
+            CRITERIA_5S.forEach(group => {
+                html += `<tr class="s-group"><td colspan="4">${group.group}</td></tr>`;
+                group.items.forEach(item => {
+                    html += `<tr>
+                <td>${item.id}</td>
+                <td>${item.text} <button type="button" class="btn-guide" onclick="showGuide(${item.id})" title="Xem hướng dẫn">📖</button></td>
+                <td><div class="score-radio">${[1, 2, 3, 4, 5].map(n => `<label><input type="radio" name="score_${item.id}" value="${n}" onchange="calculateScore()"><span>${n}</span></label>`).join('')}</div></td>
+                <td><input type="text" class="reason-input" id="reason_${item.id}" placeholder="Lý do..."></td>
+            </tr>`;
+                });
+            });
+            html += '</tbody>';
+            document.getElementById('criteriaTable').innerHTML = html;
+        }
+
+        function showGuide(criteriaId) {
+            const guide = CRITERIA_GUIDES[criteriaId];
+            if (!guide) return;
+
+            const criteriaText = (() => {
+                for (const group of CRITERIA_5S) {
+                    for (const item of group.items) {
+                        if (item.id === criteriaId) return item.text;
+                    }
+                }
+                return '';
+            })();
+
+            let levelsHtml = '<div class="guide-levels">';
+            for (let i = 1; i <= 5; i++) {
+                levelsHtml += `<div class="guide-level"><span class="level-score">${i}</span> ${guide.levels[i]}</div>`;
+            }
+            levelsHtml += '</div>';
+
+            const modal = document.createElement('div');
+            modal.className = 'guide-modal-overlay';
+            modal.innerHTML = `
+                <div class="guide-modal">
+                    <div class="guide-modal-header">
+                        <h3>📖 Hướng dẫn Tiêu chí ${criteriaId}</h3>
+                        <button onclick="this.closest('.guide-modal-overlay').remove()">✕</button>
+                    </div>
+                    <div class="guide-modal-body">
+                        <div class="guide-criteria-text"><strong>${criteriaText}</strong></div>
+                        <div class="guide-section">
+                            <h4>📋 Hướng dẫn chấm điểm</h4>
+                            <p>${guide.guide}</p>
+                        </div>
+                        <div class="guide-section">
+                            <h4>💡 Gợi ý thực hiện</h4>
+                            <p style="white-space:pre-line">${guide.suggestion}</p>
+                        </div>
+                        <div class="guide-section">
+                            <h4>📊 Các mức điểm</h4>
+                            ${levelsHtml}
+                        </div>
+                    </div>
+                </div>
+            `;
+            modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
+            document.body.appendChild(modal);
+        }
+
+        function calculateScore() {
+            let total = 0;
+            let answered = 0;
+            for (let i = 1; i <= 20; i++) {
+                const selected = document.querySelector(`input[name="score_${i}"]:checked`);
+                if (selected) {
+                    total += parseInt(selected.value);
+                    answered++;
+                }
+            }
+
+            const percentage = answered > 0 ? Math.round((total / (answered * 5)) * 100) : 0;
+            const average = answered > 0 ? (total / answered).toFixed(2) : 0;
+
+            // Find classification
+            let classification = SCORE_CLASSIFICATION[SCORE_CLASSIFICATION.length - 1];
+            for (const cls of SCORE_CLASSIFICATION) {
+                if (percentage >= cls.min && percentage <= cls.max) {
+                    classification = cls;
+                    break;
+                }
+            }
+
+            const resultHtml = `
+                <div class="score-result">
+                    <div class="score-result-item">
+                        <span class="score-label">Tổng điểm:</span>
+                        <span class="score-value">${total}/${answered * 5}</span>
+                    </div>
+                    <div class="score-result-item">
+                        <span class="score-label">Điểm TB:</span>
+                        <span class="score-value">${average}/5</span>
+                    </div>
+                    <div class="score-result-item">
+                        <span class="score-label">Tỷ lệ:</span>
+                        <span class="score-value">${percentage}%</span>
+                    </div>
+                    <div class="score-result-item">
+                        <span class="score-label">Xếp loại:</span>
+                        <span class="score-classification" style="background:${classification.color}">${classification.label}</span>
+                    </div>
+                    <div class="score-result-desc">${classification.desc}</div>
+                </div>
+            `;
+
+            let resultDiv = document.getElementById('scoreResultSummary');
+            if (!resultDiv) {
+                resultDiv = document.createElement('div');
+                resultDiv.id = 'scoreResultSummary';
+                document.getElementById('criteriaTable').parentNode.appendChild(resultDiv);
+            }
+            resultDiv.innerHTML = answered > 0 ? resultHtml : '';
+        }
+
+        async function submitScore() {
+            const deptId = document.getElementById('scoreDept').value;
+            const zoneId = document.getElementById('scoreZone').value;
+            const itemIdx = document.getElementById('scoreItem').value;
+            const month = document.getElementById('scoreMonth').value;
+            const evaluator = document.getElementById('scoreEvaluator').value.trim();
+            const representative = document.getElementById('scoreRepresentative').value.trim();
+            const imageFile = document.getElementById('scoreImageFile').files[0];
+
+            if (!deptId || !zoneId || itemIdx === '' || !month || !evaluator) {
+                showAlert('scoreAlert', 'Vui lòng điền đầy đủ thông tin', 'error');
+                return;
+            }
+
+            const criteria = [];
+            let total = 0, count = 0;
+            CRITERIA_5S.forEach(group => {
+                group.items.forEach(item => {
+                    const radio = document.querySelector(`input[name="score_${item.id}"]:checked`);
+                    const reason = document.getElementById(`reason_${item.id}`).value;
+                    const score = radio ? parseInt(radio.value) : 0;
+                    criteria.push({ id: item.id, score, reason });
+                    total += score;
+                    if (score > 0) count++;
+                });
+            });
+
+            if (count < 20) {
+                showAlert('scoreAlert', 'Vui lòng chấm điểm tất cả 20 tiêu chí', 'error');
+                return;
+            }
+
+            // Upload image to Cloudinary if selected
+            let imageUrl = '';
+            if (imageFile) {
+                showAlert('scoreAlert', '⏳ Đang upload ảnh...', 'success');
+                imageUrl = await uploadToCloudinary(imageFile);
+                if (!imageUrl) {
+                    showAlert('scoreAlert', '❌ Upload ảnh thất bại, vui lòng thử lại', 'error');
+                    return;
+                }
+            }
+
+            const deptSnap = await db.ref('departments_5s/' + deptId).once('value');
+            const zoneSnap = await db.ref('departments_5s/' + deptId + '/zones/' + zoneId).once('value');
+            const itemsSnap = await db.ref('departments_5s/' + deptId + '/zones/' + zoneId + '/items').once('value');
+
+            const scoreData = {
+                department: deptSnap.val().name,
+                departmentId: deptId,
+                zone: zoneSnap.val().name,
+                zoneId: zoneId,
+                item: (itemsSnap.val() || [])[itemIdx],
+                itemIdx: parseInt(itemIdx),
+                month,
+                evaluator,
+                representative,
+                imageUrl,
+                criteria,
+                total,
+                average: (total / 20).toFixed(2),
+                createdAt: new Date().toISOString(),
+                createdBy: currentUser.username
+            };
+
+            await db.ref('scores_5s').push(scoreData);
+
+            // Show inline success message
+            const successMsg = document.getElementById('submitSuccessMsg');
+            successMsg.style.display = 'block';
+            setTimeout(() => {
+                successMsg.style.display = 'none';
+            }, 3000);
+
+            // Reset form
+            document.querySelectorAll('.score-radio input').forEach(r => r.checked = false);
+            document.querySelectorAll('.reason-input').forEach(r => r.value = '');
+            clearImage();
+            loadStats();
+            loadRecentScores();
+        }
+
+        async function loadStats() {
+            const deptsSnap = await db.ref('departments_5s').once('value');
+            const scoresSnap = await db.ref('scores_5s').once('value');
+
+            const depts = deptsSnap.val() || {};
+            let zoneCount = 0;
+            Object.values(depts).forEach(d => { zoneCount += Object.keys(d.zones || {}).length; });
+
+            document.getElementById('statDepts').textContent = Object.keys(depts).length;
+            document.getElementById('statZones').textContent = zoneCount;
+            document.getElementById('statScores').textContent = Object.keys(scoresSnap.val() || {}).length;
+        }
+
+        async function loadRecentScores() {
+            const snap = await db.ref('scores_5s').orderByChild('createdAt').limitToLast(5).once('value');
+            const scores = [];
+            snap.forEach(s => { scores.unshift({ id: s.key, ...s.val() }); });
+
+            if (scores.length === 0) {
+                document.getElementById('recentScores').innerHTML = '<p class="text-center">Chưa có dữ liệu</p>';
+                return;
+            }
+
+            let html = '<table><thead><tr><th>Ngày</th><th>Khoa/Phòng</th><th>Khu vực</th><th>Điểm TB</th></tr></thead><tbody>';
+            scores.forEach(s => {
+                html += `<tr><td>${new Date(s.createdAt).toLocaleDateString('vi-VN')}</td><td>${s.department}</td><td>${s.zone}</td><td><strong>${s.average}</strong>/5</td></tr>`;
+            });
+            html += '</tbody></table>';
+            document.getElementById('recentScores').innerHTML = html;
+        }
+
+        let monthlyChartInstance = null;
+
+        async function loadChartDeptFilter() {
+            const deptsSnap = await db.ref('departments_5s').once('value');
+            const depts = deptsSnap.val() || {};
+            const sel = document.getElementById('chartDeptFilter');
+            sel.innerHTML = '<option value="">-- Tất cả khoa/phòng --</option>';
+            Object.entries(depts).sort((a, b) => a[1].name.localeCompare(b[1].name)).forEach(([k, v]) => {
+                const opt = document.createElement('option');
+                opt.value = v.name;
+                opt.textContent = v.name;
+                sel.appendChild(opt);
+            });
+        }
+
+        function filterDashboard() {
+            const deptFilter = document.getElementById('chartDeptFilter').value;
+            loadDeptStats(deptFilter);
+            renderMonthlyChart(deptFilter);
+        }
+
+        async function loadDeptStats(deptFilter = '') {
+            const scoresSnap = await db.ref('scores_5s').once('value');
+            let allScores = [];
+            scoresSnap.forEach(s => { allScores.push(s.val()); });
+
+            // Apply filter if specified
+            if (deptFilter) {
+                allScores = allScores.filter(s => s.department === deptFilter);
+            }
+
+            if (allScores.length === 0) {
+                document.getElementById('deptStatsContainer').innerHTML = '<p class="text-center">Chưa có dữ liệu chấm điểm</p>';
+                return;
+            }
+
+            // Group by department
+            const deptMap = {};
+            allScores.forEach(s => {
+                const deptName = s.department || 'Không xác định';
+                if (!deptMap[deptName]) {
+                    deptMap[deptName] = { count: 0, totalAvg: 0, latestDate: null };
+                }
+                deptMap[deptName].count++;
+                deptMap[deptName].totalAvg += parseFloat(s.average) || 0;
+                const scoreDate = new Date(s.createdAt);
+                if (!deptMap[deptName].latestDate || scoreDate > deptMap[deptName].latestDate) {
+                    deptMap[deptName].latestDate = scoreDate;
+                }
+            });
+
+            // Build table
+            let html = '<table><thead><tr><th>Khoa/Phòng</th><th>Số lượt chấm</th><th>Điểm TB</th><th>Chấm điểm gần nhất</th></tr></thead><tbody>';
+            const sortedDepts = Object.entries(deptMap).sort((a, b) => b[1].count - a[1].count);
+            sortedDepts.forEach(([name, data]) => {
+                const avg = (data.totalAvg / data.count).toFixed(2);
+                const avgClass = avg >= 4 ? 'color:#10b981;' : avg >= 3 ? 'color:#f59e0b;' : 'color:#ef4444;';
+                const dateStr = data.latestDate ? data.latestDate.toLocaleDateString('vi-VN') : '-';
+                html += `<tr><td>${name}</td><td>${data.count}</td><td style="${avgClass}font-weight:600;">${avg}</td><td>${dateStr}</td></tr>`;
+            });
+            html += '</tbody></table>';
+            document.getElementById('deptStatsContainer').innerHTML = html;
+        }
+
+        async function renderMonthlyChart(deptFilter = '') {
+            const scoresSnap = await db.ref('scores_5s').once('value');
+            let allScores = [];
+            scoresSnap.forEach(s => { allScores.push(s.val()); });
+
+            // Apply filter if specified
+            if (deptFilter) {
+                allScores = allScores.filter(s => s.department === deptFilter);
+            }
+
+            if (allScores.length === 0) {
+                if (monthlyChartInstance) monthlyChartInstance.destroy();
+                return;
+            }
+
+            // Group by month
+            const monthMap = {};
+            allScores.forEach(s => {
+                const month = s.month || 'N/A';
+                if (!monthMap[month]) {
+                    monthMap[month] = { total: 0, count: 0 };
+                }
+                monthMap[month].total += parseFloat(s.average) || 0;
+                monthMap[month].count++;
+            });
+
+            // Sort months and prepare data
+            const sortedMonths = Object.keys(monthMap).sort();
+            const labels = sortedMonths.map(m => {
+                const [year, month] = m.split('-');
+                return `T${parseInt(month)}/${year}`;
+            });
+            const data = sortedMonths.map(m => (monthMap[m].total / monthMap[m].count).toFixed(2));
+
+            // Destroy old chart if exists
+            if (monthlyChartInstance) {
+                monthlyChartInstance.destroy();
+            }
+
+            const ctx = document.getElementById('monthlyChart').getContext('2d');
+            monthlyChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Điểm trung bình',
+                        data: data,
+                        borderColor: '#2563eb',
+                        backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#2563eb',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 6,
+                        pointHoverRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(0,0,0,0.8)',
+                            padding: 12,
+                            titleFont: { size: 14 },
+                            bodyFont: { size: 13 }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            min: 0,
+                            max: 5,
+                            ticks: { stepSize: 1 },
+                            grid: { color: 'rgba(0,0,0,0.05)' }
+                        },
+                        x: {
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+        }
+
+        async function loadReport() {
+            const deptId = document.getElementById('reportDept').value;
+            const deptName = document.getElementById('reportDept').selectedOptions[0]?.text || '';
+            const from = document.getElementById('reportFrom').value;
+            const to = document.getElementById('reportTo').value;
+
+            const snap = await db.ref('scores_5s').once('value');
+            let scores = [];
+            snap.forEach(s => { scores.push({ id: s.key, ...s.val() }); });
+
+            // Filter by department - check departmentId OR normalize department name comparison
+            if (deptId) {
+                scores = scores.filter(s => {
+                    if (s.departmentId === deptId) return true;
+                    // Normalize and compare names (remove extra spaces, compare case-insensitive)
+                    const normalizedDeptName = deptName.trim().toUpperCase();
+                    const normalizedScoreDept = (s.department || '').trim().toUpperCase();
+                    return normalizedScoreDept === normalizedDeptName || normalizedScoreDept.includes(normalizedDeptName) || normalizedDeptName.includes(normalizedScoreDept);
+                });
+            }
+            if (from) scores = scores.filter(s => s.month >= from);
+            if (to) scores = scores.filter(s => s.month <= to);
+
+            scores.sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
+
+            if (scores.length === 0) {
+                document.getElementById('reportResult').innerHTML = '<p class="text-center">Không có dữ liệu phù hợp</p>';
+                return;
+            }
+
+            const isAdmin = currentUser && currentUser.role === 'admin';
+            let html = '<table><thead><tr><th>Tháng</th><th>Khoa/Phòng</th><th>Khu vực</th><th>Đại diện</th><th>Người đánh giá</th><th>Điểm TB</th><th>Ảnh</th><th>Ngày tạo</th>' + (isAdmin ? '<th>Xóa</th>' : '') + '</tr></thead><tbody>';
+            scores.forEach(s => {
+                const imgHtml = s.imageUrl
+                    ? `<a href="${s.imageUrl}" target="_blank"><img src="${s.imageUrl}" style="width:50px;height:50px;object-fit:cover;border-radius:4px;cursor:pointer;"></a>`
+                    : '<span style="color:var(--gray-600);">-</span>';
+                const deleteBtn = isAdmin
+                    ? `<button onclick="deleteScore('${s.id}')" class="btn btn-danger" style="padding:4px 8px;font-size:12px;">🗑️</button>`
+                    : '';
+                html += `<tr><td>${s.month}</td><td>${s.department}</td><td>${s.zone}</td><td>${s.item}</td><td>${s.evaluator}</td><td><strong>${s.average}</strong></td><td>${imgHtml}</td><td>${new Date(s.createdAt).toLocaleDateString('vi-VN')}</td>${isAdmin ? '<td>' + deleteBtn + '</td>' : ''}</tr>`;
+            });
+            html += '</tbody></table>';
+            document.getElementById('reportResult').innerHTML = html;
+        }
+
+        async function deleteScore(scoreId) {
+            if (!currentUser || currentUser.role !== 'admin') {
+                alert('Bạn không có quyền xóa báo cáo!');
+                return;
+            }
+            if (!confirm('Bạn có chắc muốn xóa bản ghi này?')) return;
+            try {
+                await db.ref('scores_5s/' + scoreId).remove();
+                alert('Đã xóa thành công!');
+                loadReport();
+                loadRecentScores();
+                loadStats();
+            } catch (err) {
+                alert('Lỗi khi xóa: ' + err.message);
+            }
+        }
+
+        async function exportExcel() {
+            const deptId = document.getElementById('reportDept').value;
+            const from = document.getElementById('reportFrom').value;
+            const to = document.getElementById('reportTo').value;
+
+            const snap = await db.ref('scores_5s').once('value');
+            let scores = [];
+            snap.forEach(s => { scores.push({ id: s.key, ...s.val() }); });
+
+            if (deptId) scores = scores.filter(s => s.departmentId === deptId);
+            if (from) scores = scores.filter(s => s.month >= from);
+            if (to) scores = scores.filter(s => s.month <= to);
+
+            if (scores.length === 0) { alert('Không có dữ liệu để xuất'); return; }
+
+            const data = [['Tháng', 'Khoa/Phòng', 'Khu vực', 'Đại diện', 'Người đánh giá', 'Đại diện nơi ĐG', 'Tổng điểm', 'Điểm TB', 'Ngày tạo']];
+            scores.forEach(s => {
+                data.push([s.month, s.department, s.zone, s.item, s.evaluator, s.representative, s.total, s.average, new Date(s.createdAt).toLocaleDateString('vi-VN')]);
+            });
+
+            const ws = XLSX.utils.aoa_to_sheet(data);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'Báo cáo 5S');
+            XLSX.writeFile(wb, `Bao_cao_5S_${from || 'all'}_${to || 'all'}.xlsx`);
+        }
+
+        async function loadZonesList() {
+            const snap = await db.ref('departments_5s').once('value');
+            const depts = snap.val() || {};
+
+            let html = '';
+            Object.entries(depts).forEach(([deptId, dept]) => {
+                html += `<div style="border:1px solid var(--gray-200);border-radius:12px;padding:16px;margin-bottom:16px;">
+            <div class="flex flex-between"><h3>${dept.name}</h3>
+            <div><button class="btn btn-primary btn-sm" onclick="showAddZoneModal('${deptId}')">➕ Thêm khu vực</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteDept('${deptId}')">🗑️</button></div></div>`;
+
+                const zones = dept.zones || {};
+                if (Object.keys(zones).length > 0) {
+                    html += '<div style="margin-top:12px;">';
+                    Object.entries(zones).forEach(([zoneId, zone]) => {
+                        html += `<div style="background:var(--gray-50);padding:12px;border-radius:8px;margin-top:8px;">
+                    <div class="flex flex-between"><strong>${zone.name}</strong>
+                    <button class="btn btn-danger btn-sm" onclick="deleteZone('${deptId}','${zoneId}')">🗑️</button></div>
+                    <p style="font-size:0.85rem;color:var(--gray-600);margin-top:4px;">Đại diện: ${(zone.items || []).join(', ')}</p>
+                </div>`;
+                    });
+                    html += '</div>';
+                }
+                html += '</div>';
+            });
+
+            document.getElementById('zonesList').innerHTML = html || '<p class="text-center">Chưa có khoa/phòng nào</p>';
+        }
+
+        async function loadUsersList() {
+            const snap = await db.ref('users_5s').once('value');
+            const users = snap.val() || {};
+
+            let html = '';
+            Object.entries(users).forEach(([id, u]) => {
+                html += `<tr><td>${u.username}</td><td>${u.fullname}</td><td>${u.department || '-'}</td>
+            <td><span class="badge ${u.role === 'admin' ? 'badge-admin' : 'badge-user'}">${u.role}</span></td>
+            <td>${id !== 'admin' ? `<button class="btn btn-danger btn-sm" onclick="deleteUser('${id}')">🗑️</button>` : ''}</td></tr>`;
+            });
+            document.getElementById('usersList').innerHTML = html;
+        }
+
+        function showAddUserModal() { loadDepartments(); document.getElementById('addUserModal').classList.add('show'); }
+        function showAddDeptModal() { document.getElementById('addDeptModal').classList.add('show'); }
+        function showAddZoneModal(deptId) { document.getElementById('zoneDeptId').value = deptId; document.getElementById('addZoneModal').classList.add('show'); }
+        function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+
+        async function addUser() {
+            const username = document.getElementById('newUsername').value.trim();
+            const password = document.getElementById('newPassword').value;
+            const fullname = document.getElementById('newFullname').value.trim();
+            const dept = document.getElementById('newDept').value;
+            const role = document.getElementById('newRole').value;
+
+            if (!username || !password || !fullname) { alert('Vui lòng điền đầy đủ thông tin'); return; }
+
+            await db.ref('users_5s/' + username).set({ username, password, fullname, department: dept, role });
+            closeModal('addUserModal');
+            loadUsersList();
+            document.getElementById('newUsername').value = '';
+            document.getElementById('newPassword').value = '';
+            document.getElementById('newFullname').value = '';
+        }
+
+        async function deleteUser(id) {
+            if (!confirm('Bạn có chắc muốn xóa tài khoản này?')) return;
+            await db.ref('users_5s/' + id).remove();
+            loadUsersList();
+        }
+
+        async function addDepartment() {
+            const name = document.getElementById('newDeptName').value.trim();
+            if (!name) { alert('Vui lòng nhập tên khoa/phòng'); return; }
+            const id = name.replace(/\s+/g, '_').toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            await db.ref('departments_5s/' + id).set({ name, zones: {} });
+            closeModal('addDeptModal');
+            loadDepartments();
+            loadZonesList();
+            loadStats();
+            document.getElementById('newDeptName').value = '';
+        }
+
+        async function deleteDept(id) {
+            if (!confirm('Bạn có chắc muốn xóa khoa/phòng này và tất cả khu vực con?')) return;
+            await db.ref('departments_5s/' + id).remove();
+            loadDepartments();
+            loadZonesList();
+            loadStats();
+        }
+
+        async function addZone() {
+            const deptId = document.getElementById('zoneDeptId').value;
+            const name = document.getElementById('newZoneName').value.trim();
+            const itemsText = document.getElementById('newZoneItems').value.trim();
+            if (!name) { alert('Vui lòng nhập tên khu vực'); return; }
+
+            const items = itemsText.split('\n').map(i => i.trim()).filter(i => i);
+            const id = name.replace(/\s+/g, '_').toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            await db.ref('departments_5s/' + deptId + '/zones/' + id).set({ name, items });
+            closeModal('addZoneModal');
+            loadZonesList();
+            loadStats();
+            document.getElementById('newZoneName').value = '';
+            document.getElementById('newZoneItems').value = '';
+        }
+
+        async function deleteZone(deptId, zoneId) {
+            if (!confirm('Bạn có chắc muốn xóa khu vực này?')) return;
+            await db.ref('departments_5s/' + deptId + '/zones/' + zoneId).remove();
+            loadZonesList();
+            loadStats();
+        }
+
+        function showAlert(id, msg, type) {
+            const el = document.getElementById(id);
+            el.innerHTML = `<div class="alert alert-${type}">${msg}</div>`;
+            setTimeout(() => el.innerHTML = '', 5000);
+        }
+    </script>
+</body>
+
+</html>
