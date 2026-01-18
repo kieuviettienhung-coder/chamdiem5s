@@ -1043,8 +1043,44 @@
 
             #deptStatsContainer > div {
                 background: var(--gray-50);
-                padding: 12px;
+                padding: 0;
                 border-radius: 10px;
+            }
+
+            /* Dept header mobile */
+            .dept-header > div {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+            }
+
+            .dept-header > div > div {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 6px !important;
+                font-size: 0.75rem !important;
+            }
+
+            .dept-header h3 {
+                font-size: 0.9rem !important;
+            }
+
+            /* Dept detail table mobile */
+            .dept-detail {
+                padding: 8px !important;
+            }
+
+            .dept-detail table {
+                font-size: 0.8rem !important;
+            }
+
+            .dept-detail th,
+            .dept-detail td {
+                padding: 6px 4px !important;
+            }
+
+            .dept-detail td:first-child {
+                max-width: 120px;
+                word-wrap: break-word;
             }
 
             /* Recent scores */
@@ -2695,45 +2731,141 @@
 
         async function loadDeptStats(deptFilter = '') {
             const scoresSnap = await db.ref('scores_5s').once('value');
+            const deptsSnap = await db.ref('departments_5s').once('value');
+            let depts = deptsSnap.val() || {};
+
             let allScores = [];
             scoresSnap.forEach(s => { allScores.push(s.val()); });
 
-            // Apply filter if specified
+            // Apply filter if specified - filter both scores and departments
             if (deptFilter) {
                 allScores = allScores.filter(s => s.department === deptFilter);
+                // Also filter departments to show only the selected one
+                const filteredDepts = {};
+                Object.entries(depts).forEach(([id, dept]) => {
+                    if (dept.name === deptFilter) {
+                        filteredDepts[id] = dept;
+                    }
+                });
+                depts = filteredDepts;
             }
 
-            if (allScores.length === 0) {
-                document.getElementById('deptStatsContainer').innerHTML = '<p class="text-center">Chưa có dữ liệu chấm điểm</p>';
+            if (Object.keys(depts).length === 0) {
+                document.getElementById('deptStatsContainer').innerHTML = '<p class="text-center">Chưa có khoa/phòng nào</p>';
                 return;
             }
 
-            // Group by department
-            const deptMap = {};
-            allScores.forEach(s => {
-                const deptName = s.department || 'Không xác định';
-                if (!deptMap[deptName]) {
-                    deptMap[deptName] = { count: 0, totalAvg: 0, latestDate: null };
+            // Build detailed stats for each department
+            let html = '';
+
+            Object.entries(depts).forEach(([deptId, dept]) => {
+                const deptName = dept.name;
+                const zones = dept.zones || {};
+                const zoneCount = Object.keys(zones).length;
+
+                // Filter scores for this department
+                const deptScores = allScores.filter(s => s.department === deptName);
+                const deptScoreCount = deptScores.length;
+                const deptAvg = deptScoreCount > 0
+                    ? (deptScores.reduce((sum, s) => sum + (parseFloat(s.average) || 0), 0) / deptScoreCount).toFixed(2)
+                    : '-';
+                const avgClass = deptAvg >= 4 ? 'color:#10b981;' : deptAvg >= 3 ? 'color:#f59e0b;' : 'color:#ef4444;';
+
+                // Count total items across all zones
+                let totalItems = 0;
+                Object.values(zones).forEach(z => {
+                    totalItems += (z.items || []).length;
+                });
+
+                html += `<div class="dept-stats-card" style="background:white;border:1px solid var(--gray-200);border-radius:12px;margin-bottom:16px;overflow:hidden;">
+                    <div class="dept-header" style="background:linear-gradient(135deg, var(--primary) 0%, #7c3aed 100%);color:white;padding:14px 16px;cursor:pointer;" onclick="toggleDeptDetail('${deptId}')">
+                        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+                            <h3 style="margin:0;font-size:1rem;">🏥 ${deptName}</h3>
+                            <div style="display:flex;gap:12px;font-size:0.85rem;">
+                                <span>📍 ${zoneCount} khu vực</span>
+                                <span>📦 ${totalItems} đại diện</span>
+                                <span>📝 ${deptScoreCount} lượt chấm</span>
+                                <span style="font-weight:700;">⭐ ${deptAvg !== '-' ? deptAvg : 'Chưa có'}</span>
+                            </div>
+                            <span id="arrow-${deptId}" style="transition:transform 0.3s;">▼</span>
+                        </div>
+                    </div>
+                    <div id="detail-${deptId}" class="dept-detail" style="display:none;padding:12px 16px;">`;
+
+                if (zoneCount === 0) {
+                    html += '<p style="color:var(--gray-600);text-align:center;">Chưa có khu vực nào</p>';
+                } else {
+                    html += `<table style="width:100%;font-size:0.9rem;">
+                        <thead>
+                            <tr style="background:var(--gray-100);">
+                                <th style="text-align:left;padding:10px;">Khu vực định danh</th>
+                                <th style="text-align:center;padding:10px;">Đại diện định lượng</th>
+                                <th style="text-align:center;padding:10px;">Số lượt chấm</th>
+                                <th style="text-align:center;padding:10px;">Điểm TB</th>
+                            </tr>
+                        </thead>
+                        <tbody>`;
+
+                    Object.entries(zones).forEach(([zoneId, zone]) => {
+                        const zoneName = zone.name;
+                        const items = zone.items || [];
+                        const itemCount = items.length;
+
+                        // Filter scores for this zone
+                        const zoneScores = deptScores.filter(s => s.zone === zoneName);
+                        const zoneScoreCount = zoneScores.length;
+                        const zoneAvg = zoneScoreCount > 0
+                            ? (zoneScores.reduce((sum, s) => sum + (parseFloat(s.average) || 0), 0) / zoneScoreCount).toFixed(2)
+                            : '-';
+                        const zoneAvgClass = zoneAvg >= 4 ? 'color:#10b981;' : zoneAvg >= 3 ? 'color:#f59e0b;' : 'color:#ef4444;';
+
+                        html += `<tr style="border-bottom:1px solid var(--gray-200);">
+                            <td style="padding:10px;font-weight:500;">📍 ${zoneName}</td>
+                            <td style="text-align:center;padding:10px;">${itemCount}</td>
+                            <td style="text-align:center;padding:10px;">${zoneScoreCount}</td>
+                            <td style="text-align:center;padding:10px;font-weight:600;${zoneAvgClass}">${zoneAvg}</td>
+                        </tr>`;
+
+                        // Show items detail if there are any
+                        if (itemCount > 0) {
+                            items.forEach(item => {
+                                const itemScores = zoneScores.filter(s => s.item === item);
+                                const itemScoreCount = itemScores.length;
+                                const itemAvg = itemScoreCount > 0
+                                    ? (itemScores.reduce((sum, s) => sum + (parseFloat(s.average) || 0), 0) / itemScoreCount).toFixed(2)
+                                    : '-';
+                                const itemAvgClass = itemAvg >= 4 ? 'color:#10b981;' : itemAvg >= 3 ? 'color:#f59e0b;' : 'color:#ef4444;';
+
+                                html += `<tr style="background:var(--gray-50);font-size:0.85rem;">
+                                    <td style="padding:8px 10px 8px 30px;color:var(--gray-600);">└ ${item}</td>
+                                    <td style="text-align:center;padding:8px;">-</td>
+                                    <td style="text-align:center;padding:8px;">${itemScoreCount}</td>
+                                    <td style="text-align:center;padding:8px;font-weight:500;${itemAvgClass}">${itemAvg}</td>
+                                </tr>`;
+                            });
+                        }
+                    });
+
+                    html += '</tbody></table>';
                 }
-                deptMap[deptName].count++;
-                deptMap[deptName].totalAvg += parseFloat(s.average) || 0;
-                const scoreDate = new Date(s.createdAt);
-                if (!deptMap[deptName].latestDate || scoreDate > deptMap[deptName].latestDate) {
-                    deptMap[deptName].latestDate = scoreDate;
-                }
+
+                html += '</div></div>';
             });
 
-            // Build table
-            let html = '<table><thead><tr><th>Khoa/Phòng</th><th>Số lượt chấm</th><th>Điểm TB</th><th>Chấm điểm gần nhất</th></tr></thead><tbody>';
-            const sortedDepts = Object.entries(deptMap).sort((a, b) => b[1].count - a[1].count);
-            sortedDepts.forEach(([name, data]) => {
-                const avg = (data.totalAvg / data.count).toFixed(2);
-                const avgClass = avg >= 4 ? 'color:#10b981;' : avg >= 3 ? 'color:#f59e0b;' : 'color:#ef4444;';
-                const dateStr = data.latestDate ? data.latestDate.toLocaleDateString('vi-VN') : '-';
-                html += `<tr><td>${name}</td><td>${data.count}</td><td style="${avgClass}font-weight:600;">${avg}</td><td>${dateStr}</td></tr>`;
-            });
-            html += '</tbody></table>';
             document.getElementById('deptStatsContainer').innerHTML = html;
+        }
+
+        // Toggle department detail view
+        function toggleDeptDetail(deptId) {
+            const detail = document.getElementById('detail-' + deptId);
+            const arrow = document.getElementById('arrow-' + deptId);
+            if (detail.style.display === 'none') {
+                detail.style.display = 'block';
+                arrow.style.transform = 'rotate(180deg)';
+            } else {
+                detail.style.display = 'none';
+                arrow.style.transform = 'rotate(0deg)';
+            }
         }
 
         async function renderMonthlyChart(deptFilter = '') {
