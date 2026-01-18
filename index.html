@@ -243,6 +243,11 @@
             color: #92400e;
         }
 
+        .badge-mod {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
         .badge-user {
             background: #dbeafe;
             color: #1e40af;
@@ -1389,7 +1394,7 @@
                 <button class="nav-btn active" onclick="showTab('home')">🏠 Trang chủ</button>
                 <button class="nav-btn" onclick="showTab('score')">📝 Chấm điểm</button>
                 <button class="nav-btn" onclick="showTab('report')">📊 Báo cáo</button>
-                <button class="nav-btn admin-only hidden" onclick="showTab('zones')">📍 Quản lý khu vực</button>
+                <button class="nav-btn mod-only hidden" onclick="showTab('zones')">📍 Quản lý khu vực</button>
                 <button class="nav-btn admin-only hidden" onclick="showTab('users')">👥 Quản lý tài khoản</button>
                 <button class="nav-btn" onclick="logout()" style="background:#ef4444;">🚪 Đăng xuất</button>
             </nav>
@@ -1592,6 +1597,7 @@
             <div class="form-group"><label>Khoa/Phòng</label><select id="newDept" class="form-control"></select></div>
             <div class="form-group"><label>Quyền</label><select id="newRole" class="form-control">
                     <option value="user">Người dùng</option>
+                    <option value="mod">Điều phối viên (Mod)</option>
                     <option value="admin">Quản trị viên</option>
                 </select></div>
             <button class="btn btn-success" style="width:100%" onclick="addUser()">Tạo tài khoản</button>
@@ -2336,11 +2342,29 @@
             document.getElementById('loginSection').classList.add('hidden');
             document.getElementById('mainApp').classList.remove('hidden');
             document.getElementById('userInfo').classList.remove('hidden');
-            document.getElementById('userInfo').innerHTML = `👤 ${currentUser.fullname} <span class="badge ${currentUser.role === 'admin' ? 'badge-admin' : 'badge-user'}">${currentUser.role === 'admin' ? 'Admin' : 'User'}</span>`;
 
+            // Display role badge
+            let badgeClass = 'badge-user';
+            let badgeText = 'User';
             if (currentUser.role === 'admin') {
-                document.querySelectorAll('.admin-only').forEach(el => el.classList.remove('hidden'));
+                badgeClass = 'badge-admin';
+                badgeText = 'Admin';
+            } else if (currentUser.role === 'mod') {
+                badgeClass = 'badge-mod';
+                badgeText = 'Mod';
             }
+            document.getElementById('userInfo').innerHTML = `👤 ${currentUser.fullname} <span class="badge ${badgeClass}">${badgeText}</span>`;
+
+            // Show tabs based on role
+            if (currentUser.role === 'admin') {
+                // Admin: full access
+                document.querySelectorAll('.admin-only').forEach(el => el.classList.remove('hidden'));
+                document.querySelectorAll('.mod-only').forEach(el => el.classList.remove('hidden'));
+            } else if (currentUser.role === 'mod') {
+                // Mod: zones management + delete reports
+                document.querySelectorAll('.mod-only').forEach(el => el.classList.remove('hidden'));
+            }
+            // User: only home, score, report (already visible by default)
 
             loadDepartments();
             loadStats();
@@ -2829,23 +2853,23 @@
                 return;
             }
 
-            const isAdmin = currentUser && currentUser.role === 'admin';
-            let html = '<table><thead><tr><th>Tháng</th><th>Khoa/Phòng</th><th>Khu vực</th><th>Đại diện</th><th>Người đánh giá</th><th>Điểm TB</th><th>Ảnh</th><th>Ngày tạo</th>' + (isAdmin ? '<th>Xóa</th>' : '') + '</tr></thead><tbody>';
+            const canDelete = currentUser && (currentUser.role === 'admin' || currentUser.role === 'mod');
+            let html = '<table><thead><tr><th>Tháng</th><th>Khoa/Phòng</th><th>Khu vực</th><th>Đại diện</th><th>Người đánh giá</th><th>Điểm TB</th><th>Ảnh</th><th>Ngày tạo</th>' + (canDelete ? '<th>Xóa</th>' : '') + '</tr></thead><tbody>';
             scores.forEach(s => {
                 const imgHtml = s.imageUrl
                     ? `<a href="${s.imageUrl}" target="_blank"><img src="${s.imageUrl}" style="width:50px;height:50px;object-fit:cover;border-radius:4px;cursor:pointer;"></a>`
                     : '<span style="color:var(--gray-600);">-</span>';
-                const deleteBtn = isAdmin
+                const deleteBtn = canDelete
                     ? `<button onclick="deleteScore('${s.id}')" class="btn btn-danger" style="padding:4px 8px;font-size:12px;">🗑️</button>`
                     : '';
-                html += `<tr><td>${s.month}</td><td>${s.department}</td><td>${s.zone}</td><td>${s.item}</td><td>${s.evaluator}</td><td><strong>${s.average}</strong></td><td>${imgHtml}</td><td>${new Date(s.createdAt).toLocaleDateString('vi-VN')}</td>${isAdmin ? '<td>' + deleteBtn + '</td>' : ''}</tr>`;
+                html += `<tr><td>${s.month}</td><td>${s.department}</td><td>${s.zone}</td><td>${s.item}</td><td>${s.evaluator}</td><td><strong>${s.average}</strong></td><td>${imgHtml}</td><td>${new Date(s.createdAt).toLocaleDateString('vi-VN')}</td>${canDelete ? '<td>' + deleteBtn + '</td>' : ''}</tr>`;
             });
             html += '</tbody></table>';
             document.getElementById('reportResult').innerHTML = html;
         }
 
         async function deleteScore(scoreId) {
-            if (!currentUser || currentUser.role !== 'admin') {
+            if (!currentUser || (currentUser.role !== 'admin' && currentUser.role !== 'mod')) {
                 alert('Bạn không có quyền xóa báo cáo!');
                 return;
             }
@@ -2922,8 +2946,15 @@
 
             let html = '';
             Object.entries(users).forEach(([id, u]) => {
+                // Determine badge class based on role
+                let badgeClass = 'badge-user';
+                if (u.role === 'admin') badgeClass = 'badge-admin';
+                else if (u.role === 'mod') badgeClass = 'badge-mod';
+
+                const roleDisplay = u.role === 'admin' ? 'Admin' : (u.role === 'mod' ? 'Mod' : 'User');
+
                 html += `<tr><td>${u.username}</td><td>${u.fullname}</td><td>${u.department || '-'}</td>
-            <td><span class="badge ${u.role === 'admin' ? 'badge-admin' : 'badge-user'}">${u.role}</span></td>
+            <td><span class="badge ${badgeClass}">${roleDisplay}</span></td>
             <td>${id !== 'admin' ? `<button class="btn btn-danger btn-sm" onclick="deleteUser('${id}')">🗑️</button>` : ''}</td></tr>`;
             });
             document.getElementById('usersList').innerHTML = html;
@@ -2935,6 +2966,10 @@
         function closeModal(id) { document.getElementById(id).classList.remove('show'); }
 
         async function addUser() {
+            if (!currentUser || currentUser.role !== 'admin') {
+                alert('Chỉ Admin mới có quyền thêm tài khoản!');
+                return;
+            }
             const username = document.getElementById('newUsername').value.trim();
             const password = document.getElementById('newPassword').value;
             const fullname = document.getElementById('newFullname').value.trim();
@@ -2952,12 +2987,20 @@
         }
 
         async function deleteUser(id) {
+            if (!currentUser || currentUser.role !== 'admin') {
+                alert('Chỉ Admin mới có quyền xóa tài khoản!');
+                return;
+            }
             if (!confirm('Bạn có chắc muốn xóa tài khoản này?')) return;
             await db.ref('users_5s/' + id).remove();
             loadUsersList();
         }
 
         async function addDepartment() {
+            if (!currentUser || (currentUser.role !== 'admin' && currentUser.role !== 'mod')) {
+                alert('Bạn không có quyền thêm khoa/phòng!');
+                return;
+            }
             const name = document.getElementById('newDeptName').value.trim();
             if (!name) { alert('Vui lòng nhập tên khoa/phòng'); return; }
             const id = name.replace(/\s+/g, '_').toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
@@ -2970,6 +3013,10 @@
         }
 
         async function deleteDept(id) {
+            if (!currentUser || (currentUser.role !== 'admin' && currentUser.role !== 'mod')) {
+                alert('Bạn không có quyền xóa khoa/phòng!');
+                return;
+            }
             if (!confirm('Bạn có chắc muốn xóa khoa/phòng này và tất cả khu vực con?')) return;
             await db.ref('departments_5s/' + id).remove();
             loadDepartments();
@@ -2978,6 +3025,10 @@
         }
 
         async function addZone() {
+            if (!currentUser || (currentUser.role !== 'admin' && currentUser.role !== 'mod')) {
+                alert('Bạn không có quyền thêm khu vực!');
+                return;
+            }
             const deptId = document.getElementById('zoneDeptId').value;
             const name = document.getElementById('newZoneName').value.trim();
             const itemsText = document.getElementById('newZoneItems').value.trim();
@@ -2994,6 +3045,10 @@
         }
 
         async function deleteZone(deptId, zoneId) {
+            if (!currentUser || (currentUser.role !== 'admin' && currentUser.role !== 'mod')) {
+                alert('Bạn không có quyền xóa khu vực!');
+                return;
+            }
             if (!confirm('Bạn có chắc muốn xóa khu vực này?')) return;
             await db.ref('departments_5s/' + deptId + '/zones/' + zoneId).remove();
             loadZonesList();
