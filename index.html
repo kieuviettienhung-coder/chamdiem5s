@@ -954,6 +954,401 @@
                 transform: translateY(0);
             }
         }
+
+        /* ===== MOBILE RESPONSIVE CHO TẤT CẢ CÁC TAB ===== */
+
+        /* --- NAVIGATION BAR MOBILE --- */
+        @media (max-width: 768px) {
+            .nav {
+                display: flex;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+                padding: 8px 0;
+                gap: 8px;
+                justify-content: flex-start;
+            }
+
+            .nav::-webkit-scrollbar {
+                display: none;
+            }
+
+            .nav-btn {
+                flex-shrink: 0;
+                padding: 10px 14px;
+                font-size: 13px;
+                white-space: nowrap;
+                border-radius: 20px;
+            }
+
+            /* Header mobile */
+            .header {
+                padding: 16px 12px;
+            }
+
+            .header h1 {
+                font-size: 1.1rem;
+                line-height: 1.4;
+            }
+
+            .header p {
+                font-size: 0.75rem;
+            }
+
+            /* Card title mobile */
+            .card h2 {
+                font-size: 1.1rem;
+            }
+        }
+
+        /* --- HOME TAB MOBILE --- */
+        @media (max-width: 600px) {
+            /* Stats cards */
+            .grid-3 {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .stats-card {
+                padding: 16px;
+                border-radius: 10px;
+            }
+
+            .stats-card h3 {
+                font-size: 1.6rem;
+            }
+
+            .stats-card p {
+                font-size: 0.85rem;
+            }
+
+            /* Chart container */
+            #homeTab .card div[style*="height:300px"] {
+                height: 200px !important;
+            }
+
+            /* Dept stats - dạng card */
+            #deptStatsContainer {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            #deptStatsContainer > div {
+                background: var(--gray-50);
+                padding: 12px;
+                border-radius: 10px;
+            }
+
+            /* Recent scores */
+            #recentScores {
+                font-size: 0.9rem;
+            }
+
+            #recentScores table {
+                display: block;
+            }
+
+            #recentScores thead {
+                display: none;
+            }
+
+            #recentScores tbody,
+            #recentScores tr {
+                display: block;
+                width: 100%;
+            }
+
+            #recentScores tr {
+                background: var(--gray-50);
+                border-radius: 10px;
+                padding: 12px;
+                margin-bottom: 10px;
+                border: 1px solid var(--gray-200);
+            }
+
+            #recentScores td {
+                display: block;
+                padding: 4px 0;
+                border: none;
+                text-align: left;
+            }
+
+            #recentScores td::before {
+                font-weight: 600;
+                color: var(--gray-600);
+                margin-right: 8px;
+            }
+        }
+
+        /* --- REPORT TAB MOBILE --- */
+        @media (max-width: 600px) {
+            #reportTab .grid-2 {
+                grid-template-columns: 1fr;
+            }
+
+            #reportTab .form-group[style*="display:flex"] {
+                flex-direction: column;
+                align-items: stretch !important;
+                gap: 10px;
+            }
+
+            #reportTab .form-group[style*="display:flex"] .btn {
+                width: 100%;
+                margin-left: 0 !important;
+            }
+
+            /* Report result table */
+            #reportResult table {
+                display: block;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            #reportResult th,
+            #reportResult td {
+                white-space: nowrap;
+                min-width: 100px;
+                padding: 10px 8px;
+                font-size: 0.85rem;
+            }
+
+            /* Alternative: card layout for report */
+            #reportResult .report-card-mobile {
+                display: block;
+            }
+        }
+
+        /* --- ZONES TAB MOBILE --- */
+        @media (max-width: 600px) {
+            #zonesTab .flex-between {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+            }
+
+            #zonesTab .flex-between h2 {
+                text-align: center;
+            }
+
+            #zonesTab .flex-between .btn {
+                width: 100%;
+            }
+
+            /* Zone cards */
+            #zonesList .card,
+            #zonesList > div {
+                padding: 14px;
+                margin-bottom: 12px;
+            }
+
+            #zonesList .flex-between {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+
+            #zonesList h3 {
+                font-size: 1rem;
+                flex: 1 1 100%;
+                margin-bottom: 8px;
+            }
+
+            #zonesList .btn-sm {
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+
+            /* Zone items list */
+            #zonesList ul,
+            #zonesList ol {
+                padding-left: 20px;
+            }
+
+            #zonesList li {
+                padding: 8px 0;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* --- USERS TAB MOBILE --- */
+        @media (max-width: 600px) {
+            #usersTab .flex-between {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+            }
+
+            #usersTab .flex-between h2 {
+                text-align: center;
+            }
+
+            #usersTab .flex-between .btn {
+                width: 100%;
+            }
+
+            /* Users table to cards */
+            #usersTab table {
+                display: block;
+            }
+
+            #usersTab thead {
+                display: none;
+            }
+
+            #usersTab tbody {
+                display: block;
+            }
+
+            #usersTab tr {
+                display: block;
+                background: var(--gray-50);
+                border: 1px solid var(--gray-200);
+                border-radius: 12px;
+                padding: 14px;
+                margin-bottom: 12px;
+            }
+
+            #usersTab td {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 6px 0;
+                border: none;
+                font-size: 0.9rem;
+            }
+
+            #usersTab td::before {
+                content: attr(data-label);
+                font-weight: 600;
+                color: var(--gray-600);
+                flex-shrink: 0;
+                margin-right: 10px;
+            }
+
+            #usersTab td:last-child {
+                justify-content: flex-end;
+                padding-top: 12px;
+                margin-top: 8px;
+                border-top: 1px solid var(--gray-200);
+            }
+
+            #usersTab td:last-child::before {
+                display: none;
+            }
+
+            #usersTab td .btn {
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+
+            /* Badge */
+            .badge {
+                padding: 4px 10px;
+                font-size: 0.75rem;
+            }
+        }
+
+        /* --- MODAL MOBILE --- */
+        @media (max-width: 600px) {
+            .modal-content {
+                width: 95%;
+                max-height: 90vh;
+                padding: 16px;
+                border-radius: 12px;
+                margin: 10px;
+            }
+
+            .modal-header {
+                margin-bottom: 16px;
+            }
+
+            .modal-header h3 {
+                font-size: 1.1rem;
+            }
+
+            .modal .form-control {
+                padding: 14px 12px;
+                font-size: 16px;
+            }
+
+            .modal .btn {
+                padding: 14px;
+                font-size: 16px;
+            }
+        }
+
+        /* --- GENERAL MOBILE IMPROVEMENTS --- */
+        @media (max-width: 480px) {
+            /* Smaller screens */
+            .container {
+                padding: 8px;
+            }
+
+            .card {
+                padding: 14px;
+                margin-bottom: 12px;
+                border-radius: 10px;
+            }
+
+            .btn {
+                padding: 12px 16px;
+                font-size: 14px;
+            }
+
+            .btn-sm {
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+
+            /* Form labels */
+            .form-group label {
+                font-size: 0.9rem;
+                margin-bottom: 4px;
+            }
+
+            /* Flex gap adjustments */
+            .gap-10 {
+                gap: 8px;
+            }
+        }
+
+        /* --- SMOOTH TRANSITIONS --- */
+        @media (max-width: 768px) {
+            .tab-content {
+                animation: fadeIn 0.2s ease-in-out;
+            }
+
+            .card,
+            .stats-card,
+            .btn {
+                transition: transform 0.2s ease, box-shadow 0.2s ease;
+            }
+
+            /* Active states for touch */
+            .btn:active {
+                transform: scale(0.97);
+            }
+
+            .nav-btn:active {
+                transform: scale(0.95);
+            }
+        }
+
+        /* --- FIX iOS SPECIFIC ISSUES --- */
+        @supports (-webkit-touch-callout: none) {
+            /* iOS specific */
+            input[type="month"],
+            input[type="date"] {
+                -webkit-appearance: none;
+                min-height: 44px;
+            }
+
+            select.form-control {
+                -webkit-appearance: none;
+            }
+        }
     </style>
 </head>
 
