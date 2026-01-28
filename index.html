@@ -1,9 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="mobile-web-app-capable" content="yes">
@@ -428,6 +429,40 @@
             gap: 10px;
         }
 
+        /* CSS cho danh sách đại diện định lượng */
+        .item-list-display {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 12px;
+            max-height: 120px;
+            overflow-y: auto;
+        }
+
+        .item-list-display ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .item-list-display li {
+            padding: 6px 10px;
+            background: white;
+            border-radius: 4px;
+            margin-bottom: 4px;
+            border-left: 3px solid #2563eb;
+            font-size: 0.9rem;
+        }
+
+        .item-list-display li:last-child {
+            margin-bottom: 0;
+        }
+
+        .item-list-display .text-muted {
+            color: #94a3b8;
+            font-style: italic;
+        }
+
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 1.4rem;
@@ -446,6 +481,7 @@
 
         /* ===== MOBILE RESPONSIVE CHO TAB CHẤM ĐIỂM ===== */
         @media (max-width: 768px) {
+
             /* Container padding cho mobile */
             .container {
                 padding: 10px;
@@ -465,7 +501,8 @@
             /* Form controls lớn hơn cho touch */
             .form-control {
                 padding: 14px 12px;
-                font-size: 16px; /* Ngăn iOS zoom khi focus */
+                font-size: 16px;
+                /* Ngăn iOS zoom khi focus */
                 border-radius: 10px;
                 -webkit-appearance: none;
                 appearance: none;
@@ -486,6 +523,7 @@
 
         /* ===== BẢNG CHẤM ĐIỂM DẠNG CARD TRÊN MOBILE ===== */
         @media (max-width: 600px) {
+
             /* Ẩn header của bảng */
             .score-table thead {
                 display: none;
@@ -505,7 +543,7 @@
                 border-radius: 12px;
                 padding: 16px;
                 margin-bottom: 12px;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
             }
 
             .score-table tr:hover {
@@ -639,6 +677,7 @@
 
         /* ===== TOUCH OPTIMIZATIONS CHO iOS & ANDROID ===== */
         @media (hover: none) and (pointer: coarse) {
+
             /* Tắt hiệu ứng hover trên touch devices */
             .nav-btn:hover,
             .btn:hover,
@@ -1010,6 +1049,7 @@
 
         /* --- HOME TAB MOBILE --- */
         @media (max-width: 600px) {
+
             /* Stats cards */
             .grid-3 {
                 grid-template-columns: 1fr;
@@ -1041,19 +1081,19 @@
                 gap: 12px;
             }
 
-            #deptStatsContainer > div {
+            #deptStatsContainer>div {
                 background: var(--gray-50);
                 padding: 0;
                 border-radius: 10px;
             }
 
             /* Dept header mobile */
-            .dept-header > div {
+            .dept-header>div {
                 flex-direction: column !important;
                 align-items: flex-start !important;
             }
 
-            .dept-header > div > div {
+            .dept-header>div>div {
                 display: flex;
                 flex-wrap: wrap;
                 gap: 6px !important;
@@ -1180,7 +1220,7 @@
 
             /* Zone cards */
             #zonesList .card,
-            #zonesList > div {
+            #zonesList>div {
                 padding: 14px;
                 margin-bottom: 12px;
             }
@@ -1322,6 +1362,7 @@
 
         /* --- GENERAL MOBILE IMPROVEMENTS --- */
         @media (max-width: 480px) {
+
             /* Smaller screens */
             .container {
                 padding: 8px;
@@ -1379,6 +1420,7 @@
 
         /* --- FIX iOS SPECIFIC ISSUES --- */
         @supports (-webkit-touch-callout: none) {
+
             /* iOS specific */
             input[type="month"],
             input[type="date"] {
@@ -1404,7 +1446,8 @@
         <!-- Login -->
         <div id="loginSection">
             <div class="card login-box">
-                <h1 style="text-align:center; color:var(--primary); font-size:1.8rem; margin-bottom:8px;">📋 Chấm điểm 5S</h1>
+                <h1 style="text-align:center; color:var(--primary); font-size:1.8rem; margin-bottom:8px;">📋 Chấm điểm
+                    5S</h1>
                 <h2>🔐 Đăng nhập</h2>
                 <div id="loginAlert"></div>
                 <form id="loginForm" onsubmit="handleLoginSubmit(event)">
@@ -1502,16 +1545,16 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Khu vực định danh</label>
+                            <label>Tên khu vực</label>
                             <select id="scoreZone" class="form-control" onchange="loadItems()">
                                 <option value="">-- Chọn khu vực --</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Đại diện định lượng</label>
-                            <select id="scoreItem" class="form-control">
-                                <option value="">-- Chọn đại diện --</option>
-                            </select>
+                            <label>📋 Mô tả chi tiết khu vực</label>
+                            <div id="scoreItemList" class="item-list-display">
+                                <p class="text-muted">Chọn tên khu vực để xem mô tả chi tiết</p>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label>Tháng/Năm</label>
@@ -1658,9 +1701,9 @@
                 <h3>Thêm Khu vực</h3><button class="modal-close" onclick="closeModal('addZoneModal')">&times;</button>
             </div>
             <input type="hidden" id="zoneDeptId">
-            <div class="form-group"><label>Tên khu vực định danh</label><input type="text" id="newZoneName"
-                    class="form-control"></div>
-            <div class="form-group"><label>Đại diện định lượng (mỗi dòng 1 đại diện)</label><textarea id="newZoneItems"
+            <div class="form-group"><label>Tên khu vực</label><input type="text" id="newZoneName" class="form-control">
+            </div>
+            <div class="form-group"><label>Mô tả chi tiết khu vực (mỗi dòng 1 mô tả)</label><textarea id="newZoneItems"
                     class="form-control" rows="4"></textarea></div>
             <button class="btn btn-success" style="width:100%" onclick="addZone()">Thêm khu vực</button>
         </div>
@@ -1776,223 +1819,223 @@
         // Hướng dẫn chấm điểm chi tiết cho từng tiêu chí
         const CRITERIA_GUIDES = {
             1: {
-                guide: "Không có vật dụng không liên quan đến công việc tại nơi đánh giá (vd: cốc riêng, túi xách cá nhân, nón,nước giải khát, bánh trái, thức ăn, đồ trang điểm... trên bàn làm việc)",
-                suggestion: "✅ Kiểm tra nhanh xung quanh khu vực: có đồ cá nhân nào không thuộc công việc?\n✅ Các vật dụng phải rõ ràng liên quan đến chuyên môn của khoa/phòng",
+                guide: "Căn cứ theo hình ảnh/sơ đồ dán tại khu vực so sánh với hiện trạng, quan sát đếm số lượng vật không vị trí/không nhãn theo thực tế",
+                suggestion: "📌 Ví dụ:\n▪ Vật dụng trong khu vực làm việc (kệ, bàn, xe đẩy…) được đặt đúng vị trí quy định\n▪ Không xuất hiện các vật không liên quan (đồ cá nhân, vật tư hư hỏng, giấy tờ rác…)",
                 levels: {
-                    1: "≥10 vật dụng không liên quan công việc",
-                    2: "5–9 vật dụng không liên quan",
-                    3: "3–4 vật dụng không liên quan",
-                    4: "1–2 vật dụng không liên quan",
-                    5: "Không có bất kỳ vật dụng nào không liên quan"
+                    1: "Có ≥5 vật không có nhãn/vị trí, không liên quan, gây rối",
+                    2: "Có 3–4 vật không có nhãn/vị trí, không liên quan, gây rối",
+                    3: "Còn 2 vật không có nhãn/vị trí, không liên quan, gây rối",
+                    4: "Còn sót 1 vật dụng không có nhãn/vị trí, không liên quan, gây rối",
+                    5: "Tuân thủ đúng vị trí, nhận diện đầy đủ; không có vật dụng không liên quan"
                 }
             },
             2: {
-                guide: "Vật dụng, tài liệu không liên quan không được giấu trong ngăn kéo, tủ,... có thể nhận biết ngay",
-                suggestion: "✅ Mở kiểm tra ngẫu nhiên 2–3 ngăn kéo, tủ, hộc bàn\n✅ Có đồ cá nhân giấu bên trong không?",
+                guide: "Căn cứ theo sơ đồ/hình ảnh (nhãn dán, vị trí/ký hiệu) được dán tại khu vực, các vật chưa có tên phải được đánh dấu – ghi chú rõ ràng",
+                suggestion: "📌 Ví dụ:\n▪ Nhãn \"Chờ tiêu hủy ngày xx\"\n▪ Nhãn \"Xem xét lại\"\n▪ Để vào khu vực riêng có bảng \"Vật chờ xử lý\"\n▪ Ngày 10/6, tại kho hồ sơ, có 2 thùng hồ sơ cũ ghi rõ \"Chờ tiêu hủy 30/6\", 1 kệ bị hư có bảng \"đang chờ hoàn trả\"",
                 levels: {
-                    1: "Có nhiều vật không liên quan giấu trong các ngăn kéo, tủ",
-                    2: "Một số vật không liên quan giấu kín",
-                    3: "2–3 vật cá nhân còn để lẫn",
-                    4: "1 vật cá nhân còn sót",
-                    5: "Không có vật dụng cá nhân giấu trong ngăn, tủ"
+                    1: "Nhiều vật không cần thiết (≥5) vẫn tồn tại, không ai biết hoặc không xử lý",
+                    2: "Có từ 3-4 vật không phân loại, xử lý bị động (chờ kiểm tra mới phát hiện)",
+                    3: "Có từ 2 vật không rõ nguồn gốc, hoặc không có thông tin xử lý",
+                    4: "Có 1 vật chưa dán nhãn/vị trí, chưa rõ tình trạng",
+                    5: "Nhận diện đầy đủ – kịp thời – có nhãn/mốc xử lý rõ ràng, đúng theo quy định"
                 }
             },
             3: {
-                guide: "Không có số lượng thừa của tất cả các vật dụng được sử dụng",
-                suggestion: "✅ Số lượng vật dụng phải phù hợp nhu cầu thực tế (không quá nhiều, không thiếu)\n✅ Có quy định số lượng tồn trữ hợp lý",
+                guide: "Khu vực làm việc có niêm yết rõ số lượng vật tư/dụng cụ tối đa được phép trữ (tại tủ, bàn, xe…). Số lượng thực tế phải khớp với sổ bàn giao hoặc bảng kiểm kê",
+                suggestion: "📌 Ví dụ:\n▪ Xe tiêm trong ca trực - Có dán quy định số lượng tại xe: Găng tay tối đa 2 hộp, cồn 1 chai, 1 hộp bông, kim tiêm theo số mũi dự kiến, không tồn dư\n▪ Bàn làm việc cá nhân: Bình nước, khăn giấy để trong hộp ghi tên, đặt đúng vị trí theo sơ đồ dán tại bàn",
                 levels: {
-                    1: "Rất nhiều vật dụng thừa, không cần thiết",
-                    2: "Nhiều vật dụng thừa hoặc trùng lặp",
-                    3: "Một số vật dụng thừa",
-                    4: "Ít vật dụng thừa, đã kiểm soát tốt",
-                    5: "Số lượng vật dụng hợp lý, không có thừa"
+                    1: "Thừa nhiều (≥5 món), không kiểm soát, không theo đúng số lượng quy định dán tại khu vực/sổ bàn giao",
+                    2: "Thừa 3–4 món, không có lý do, không theo đúng số lượng quy định dán tại khu vực/sổ bàn giao",
+                    3: "Thừa 2 món, không theo đúng quy định số lượng dán tại khu vực",
+                    4: "Thừa 1 món, có lý do hợp lý (ví dụ: thay ca, mượn tạm), có bảng dán quy định số lượng/sổ bàn giao",
+                    5: "Đúng số lượng theo quy định dán tại KV (tủ/kệ/bàn/xe), có sổ bàn giao, kiểm kê, theo dõi định kỳ"
                 }
             },
             4: {
-                guide: "Có quy tắc/hướng dẫn sàng lọc vật dụng định kỳ (bỏ những thứ không dùng, không cần)",
-                suggestion: "📌 Phải có văn bản/hướng dẫn sàng lọc và thực hiện định kỳ\n✅ Ví dụ: Mỗi quý kiểm tra và loại bỏ vật dụng không còn sử dụng",
+                guide: "Có bảng hướng dẫn Quy tắc sàng lọc (QTSL), phân theo màu sắc và tần suất sử dụng, được dán cố định cho nhân viên dễ thấy",
+                suggestion: "📌 Ví dụ:\nKhi hỏi 10 nhân viên tại khoa, cả 10 đều nói đúng: Khoa mình sàng lọc định kỳ (? thời gian), hiểu phân loại màu theo nhóm sử dụng theo bảng quy tắc → Nhân viên hiểu – có bằng chứng → 5 điểm",
                 levels: {
-                    1: "Không có quy định sàng lọc",
-                    2: "Có quy định nhưng không thực hiện",
-                    3: "Có thực hiện nhưng không định kỳ",
-                    4: "Có quy định và thực hiện gần định kỳ",
-                    5: "Có quy định rõ ràng và thực hiện đúng định kỳ"
+                    1: "Không ai biết QTSL là gì – hoặc không có hướng dẫn phổ biến",
+                    2: "Chỉ có vài nhân viên biết quy tắc, không rõ thời điểm thực hiện",
+                    3: "≥60% nhân viên hiểu đúng – nhưng không có/thiếu minh chứng áp dụng",
+                    4: "≥80% nhân viên hiểu đúng & có minh chứng thực hiện",
+                    5: "100% nhân viên được hỏi trả lời đúng nội dung sàng lọc & có minh chứng đã áp dụng thực tế"
                 }
             },
             5: {
-                guide: "Văn phòng phẩm, công cụ lao động, thuốc, vật tư y tế,… được sắp xếp một cách ngăn nắp, khoa học, thẩm mỹ",
-                suggestion: "✅ Kiểm tra các kệ, tủ, bàn làm việc\n✅ Vật dụng phải được phân loại và sắp xếp hợp lý",
+                guide: "Có dán sơ đồ bố trí/dán nhãn tại tủ/kệ/bàn/xe/TTB (phân ô, đánh số, mã màu…)",
+                suggestion: "📌 Ví dụ:\n1. Kệ VPP: bút, kéo, giấy, băng keo chia ô, có nhãn, vị trí cố định\n2. Kệ thuốc: sắp theo nhóm, lọc theo hạn, không để chồng\n3. Tủ vật tư: chia ngăn găng tay – khẩu trang – gạc tiệt trùng, có ghi tên từng ngăn",
                 levels: {
-                    1: "Bừa bộn, không theo trật tự",
-                    2: "Có sắp xếp nhưng còn lộn xộn nhiều",
-                    3: "Sắp xếp tương đối nhưng chưa khoa học",
-                    4: "Sắp xếp tốt, chỉ còn vài điểm chưa hoàn chỉnh",
-                    5: "Ngăn nắp, khoa học, thẩm mỹ, dễ tìm kiếm"
+                    1: "Lộn xộn (≥5 vật), không nhãn, không sơ đồ, khó tìm, không quy định vị trí",
+                    2: "Sắp xếp sơ sài, 3–4 nhóm vật để tạm, ghi tay, thiếu nhãn/phân ô",
+                    3: "Còn 2 nhóm vật để tạm, không có nhãn rõ hoặc sai vị trí theo sơ đồ",
+                    4: "Sắp xếp hợp lý, phần lớn đúng vị trí, còn 1 nhóm chưa ngăn nắp",
+                    5: "Gọn gàng, sạch sẽ, có sơ đồ/nhãn rõ, đồng bộ toàn khu vực, đảm bảo thẩm mỹ"
                 }
             },
             6: {
-                guide: "Mọi thứ được cất, giữ tại một nơi CỐ ĐỊNH và trả về đúng vị trí sau khi sử dụng",
-                suggestion: "📌 Mỗi vật dụng có vị trí riêng, được đánh dấu/nhãn\n✅ Hỏi nhân viên: Sau khi dùng xong, có trả về đúng chỗ không?",
+                guide: "Các vật dụng được bố trí theo sơ đồ/bảng hướng dẫn/có nhãn định vị rõ ràng. Kiểm tra ngẫu nhiên bằng cách hỏi nhân viên về vị trí sử dụng",
+                suggestion: "📌 Ví dụ:\n✔ Hồ sơ/Công văn/Bệnh án: Sắp xếp kệ riêng, phân loại theo nhóm và được trả về đúng vị trí ngay sau khi sử dụng\n✔ Vật tư – thuốc: Không để tạm trong hộp không tên, không di dời qua khu vực khác khi chưa sử dụng\n✔ Xe tiêm: Luôn được đưa về đúng vị trí cố định sau mỗi lần sử dụng",
                 levels: {
-                    1: "Không có vị trí cố định, để tùy tiện",
-                    2: "Có nhưng thường xuyên không trả về đúng chỗ",
-                    3: "Đa số có vị trí nhưng thỉnh thoảng sai",
-                    4: "Hầu hết đúng vị trí, còn 1-2 điểm sai",
-                    5: "Tất cả đều có vị trí cố định và trả về đúng chỗ"
+                    1: "Có ≥5 vật không nhãn, để tạm không tên, không có sơ đồ/hướng dẫn",
+                    2: "Có 3–4 vật sai vị trí hoặc không trùng khớp sơ đồ/bảng hướng dẫn",
+                    3: "Có 2 vật đặt sai vị trí hoặc không trùng khớp sơ đồ/bảng hướng dẫn",
+                    4: "Hầu hết vật dụng đúng vị trí, chỉ còn 1 vật sai hoặc thiếu nhãn",
+                    5: "Tất cả vật dụng đều có nhãn/vị trí đúng quy định theo sơ đồ/bảng hướng dẫn"
                 }
             },
             7: {
-                guide: "Nơi cất giữ được thiết kế dễ dàng và thuận tiện khi sử dụng",
-                suggestion: "✅ Kiểm tra: Vật dụng thường dùng có dễ lấy không?\n✅ Có cần leo trèo, di chuyển nhiều để lấy đồ không?",
+                guide: "Hồ sơ/công văn/bệnh án/thiết bị/vật tư phải được bố trí ở nơi: Gần vị trí sử dụng thực tế, Dễ thấy – dễ lấy – dễ trả lại. Hỏi nhân viên không mất thời gian tìm kiếm",
+                suggestion: "📌 Ví dụ:\n▪ Xe tiêm, tủ thuốc, bàn làm việc mỗi nơi đều bố trí kéo cắt sử dụng riêng, không dùng chung\n▪ Hỏi 3 nhân viên (bất kỳ): đều chỉ đúng nơi để từng loại vật dụng",
                 levels: {
-                    1: "Rất khó tiếp cận, thiết kế không hợp lý",
-                    2: "Khó lấy, mất nhiều thời gian",
-                    3: "Tương đối thuận tiện nhưng có thể cải thiện",
-                    4: "Thuận tiện, chỉ còn 1-2 điểm cần cải tiến",
-                    5: "Thiết kế tối ưu, rất thuận tiện khi sử dụng"
+                    1: "Có ≥5 vật dụng thường dùng bị đặt sai nơi sử dụng. Nhân viên không biết chỗ để",
+                    2: "Có 3-4 vật dụng đặt xa nơi sử dụng thực tế. Hỏi nhân viên đều lúng túng tìm đồ",
+                    3: "Có 2 vật dụng chưa đặt thuận tiện hoặc cần cải tiến thêm",
+                    4: "Chỉ 1 vật dụng đặt chưa phù hợp. Nhân viên đều biết nơi cất – lấy dễ dàng",
+                    5: "Tất cả vật dụng cần thiết đều được bố trí thuận tiện – hợp lý. 100% nhân viên được hỏi biết đúng vị trí"
                 }
             },
             8: {
-                guide: "Tủ nhiều ngăn, giá kệ lưu trữ và các thiết bị có GHI NHÃN RÕ RÀNG, dễ đọc",
-                suggestion: "📌 Kiểm tra: Tủ, kệ, ngăn có dán nhãn không?\n✅ Nhãn phải rõ ràng, dễ đọc, đúng nội dung bên trong",
+                guide: "Tất cả các kệ – tủ – khay – hộp chứa vật dụng tại khoa/phòng đều phải có nhãn dán rõ ràng: Đúng tên vật dụng chứa bên trong, dán nhãn đồng nhất (cỡ chữ, kích thước, không bị lem/mờ/rách)",
+                suggestion: "📌 Ví dụ:\n✅ Tủ thuốc có dán nhãn \"Hạ sốt\", \"Kháng sinh\", \"Dung dịch truyền\" đúng vị trí\n✅ Hỏi 3 nhân viên đều chỉ đúng nơi đặt từng loại vật tư mà không cần tìm kiếm lâu",
                 levels: {
-                    1: "Không có nhãn",
-                    2: "Rất ít nhãn, không rõ ràng",
-                    3: "Có nhãn nhưng không đầy đủ hoặc khó đọc",
-                    4: "Đa số có nhãn rõ ràng, còn vài chỗ thiếu",
-                    5: "Tất cả đều có nhãn rõ ràng, đúng nội dung"
+                    1: "Có ≥5 vị trí không ghi nhãn. Nhân viên không biết đồ bên trong",
+                    2: "Có 3-4 vị trí ghi không rõ hoặc sai nhãn. Nhân viên khó tìm đồ trong hộp/tủ/kệ",
+                    3: "Có 2 vị trí còn thiếu nhãn/ghi chưa rõ/bị phai. Nhân viên lúng túng khi hỏi",
+                    4: "Chỉ 1 vị trí thiếu nhãn hoặc bị phai. Nhân viên dễ tìm, đúng chỗ",
+                    5: "100% vị trí đều dán nhãn. Nội dung đúng – dễ đọc – dễ hiểu. Nhân viên chỉ đúng vị trí ngay khi hỏi"
                 }
             },
             9: {
-                guide: "Các vị trí chỉ định đã được ĐÁNH DẤU/KẺ LÊN để dễ nhìn thấy (xe lăn, bình chữa cháy,...)",
-                suggestion: "📌 Vị trí để xe, thiết bị lớn phải có đánh dấu trên sàn hoặc tường\n✅ Ví dụ: Kẻ ô cho xe lăn, đánh dấu vị trí bình chữa cháy",
+                guide: "Hồ sơ/công văn/bệnh án/thiết bị/vật tư/thuốc/hộp dụng cụ… cần được định vị bằng vạch, ô, khung, màu... để xác định nơi đặt, giúp trả về đúng nơi không cần hỏi",
+                suggestion: "📌 Ví dụ:\n✅ Hồ sơ/công văn/bệnh án có đánh số, chia ô, định vị vị trí\n✅ Trên bàn đặt máy đo đường huyết có dán ô ghi \"Vị trí để máy đo đường huyết\"\n✅ Các thùng rác y tế đều được kẻ len ghi \"Vị trí đặt thùng rác\"",
                 levels: {
-                    1: "Không có đánh dấu vị trí nào",
-                    2: "Rất ít vị trí được đánh dấu",
-                    3: "Có đánh dấu nhưng không đầy đủ",
-                    4: "Đa số vị trí quan trọng được đánh dấu",
-                    5: "Tất cả vị trí quan trọng đều được đánh dấu rõ ràng, định vị trực quan"
+                    1: "Có ≥5 vị trí chưa rõ nơi được định vị hoặc định vị bị mờ/rách/phai",
+                    2: "Có 3-4 vị trí chưa rõ nơi được định vị hoặc định vị bị mờ/rách/phai",
+                    3: "Có 2 chỗ chưa rõ nơi được định vị hoặc định vị bị mờ/rách/phai",
+                    4: "Chỉ 1 chỗ chưa rõ nơi được định vị hoặc định vị bị mờ/rách/phai",
+                    5: "100% vị trí đều có đánh dấu định vị rõ ràng – không mờ/bong tróc/khó nhìn. Nhân viên chỉ đúng vị trí ngay khi hỏi"
                 }
             },
             10: {
-                guide: "Vùng làm việc, các vật dụng đều sạch sẽ, không bụi bẩn",
-                suggestion: "✅ Kiểm tra bề mặt bàn, tủ, thiết bị: có bụi không?\n✅ Sàn nhà, góc tường có sạch không?",
+                guide: "Đánh giá vệ sinh thực tế tại nơi làm việc: bàn làm việc, thiết bị, hộp đựng, kệ, tủ, các vật dụng sử dụng hằng ngày. Phải lau chùi, vệ sinh định kỳ, không để vết bụi rõ",
+                suggestion: "📌 Ví dụ:\n✅ Tại phòng hành chính, bàn làm việc, kệ hồ sơ, đều sạch bóng, không có lớp bụi, không phát hiện vết bẩn khi kiểm tra tay hoặc khăn giấy",
                 levels: {
-                    1: "Rất bẩn, nhiều bụi và vết bẩn",
-                    2: "Bẩn nhiều nơi",
-                    3: "Tương đối sạch nhưng còn bụi/vết bẩn",
-                    4: "Sạch sẽ, chỉ còn 1-2 điểm nhỏ",
-                    5: "Hoàn toàn sạch sẽ, không bụi bẩn"
+                    1: "≥5 khu vực/vật dụng có bụi bẩn, bám dính, không vệ sinh",
+                    2: "Có 3–4 khu vực/vật dụng có bụi bẩn, dấu vết không vệ sinh",
+                    3: "Có 2 khu vực/vật dụng còn bụi nhẹ, lau sạch được ngay",
+                    4: "Chỉ có 1 điểm có bụi nhẹ, gần như không đáng kể",
+                    5: "Tất cả khu vực, thiết bị, vật dụng đều sạch sẽ, không bụi bẩn rõ rệt"
                 }
             },
             11: {
-                guide: "Cửa sổ, bậu cửa sổ, nền nhà, tường, bóng đèn, quạt,… đều sạch sẽ",
-                suggestion: "✅ Kiểm tra các vị trí thường bị bỏ quên: bậu cửa, quạt trần, đèn\n✅ Phải có lịch vệ sinh định kỳ cho các vị trí này",
+                guide: "Những khu vực dễ bị bỏ sót khi vệ sinh như: cửa sổ, bậu cửa, thanh trượt, kệ cao, tủ trên, mép cửa kính... phải được làm sạch định kỳ, không có bụi đóng lớp, mạng nhện",
+                suggestion: "📌 Ví dụ:\n✅ Tại phòng khám, kiểm tra bậu cửa sổ, cạnh kệ tủ, nóc tủ hồ sơ… đều không có bụi khi dùng tay lau thử; không có mạng nhện hoặc vết bẩn đọng lại ở góc khuất",
                 levels: {
-                    1: "Rất bẩn, không được vệ sinh",
-                    2: "Bẩn nhiều nơi khó thấy",
-                    3: "Tương đối sạch nhưng còn một số vị trí bẩn",
-                    4: "Sạch sẽ, chỉ còn 1-2 vị trí chưa hoàn hảo",
-                    5: "Tất cả đều sạch sẽ, kể cả vị trí khó thấy"
+                    1: "≥5 vị trí bị bám bụi rõ, có mạng nhện, không được vệ sinh",
+                    2: "Có 3–4 vị trí có bụi/mảng bẩn/dấu lâu ngày không lau",
+                    3: "Có 2 vị trí bị bụi nhẹ, lau là sạch, không đóng dày",
+                    4: "Chỉ có 1 điểm bị bụi nhẹ, ít thấy, không đáng kể",
+                    5: "Tất cả khu vực cao, cửa sổ, bậu cửa đều sạch sẽ, không bụi/mạng nhện"
                 }
             },
             12: {
-                guide: "Có nơi lưu trữ các vật dụng ít/không sử dụng, sạch sẽ, có dán nhãn",
-                suggestion: "📌 Vật dụng ít dùng phải có kho riêng, không để lẫn với đồ thường dùng\n✅ Kho phải sạch sẽ, có nhãn, dễ tìm khi cần",
+                guide: "Đánh giá tình trạng vệ sinh tại các nơi lưu trữ ít sử dụng (kho chứa/tủ/kệ…). Không có mùi hôi, ẩm mốc, không có dấu hiệu hư mục, không có bụi cũ bám lâu ngày",
+                suggestion: "📌 Ví dụ:\n✅ Kiểm tra tất cả tủ vật tư, tủ thuốc, ngăn bàn… không có bụi, không mùi ẩm, không phát hiện có giấy vụn hay vật dư thừa tích tụ. Có dấu hiệu đã được vệ sinh thường xuyên",
                 levels: {
-                    1: "Không có nơi lưu trữ riêng",
-                    2: "Có nhưng lộn xộn, không nhãn",
-                    3: "Có nơi lưu trữ nhưng chưa gọn gàng",
-                    4: "Có nơi lưu trữ tốt, còn thiếu một số nhãn",
-                    5: "Có nơi lưu trữ riêng, sạch sẽ, có nhãn đầy đủ"
+                    1: "≥5 vị trí lưu trữ có mùi hôi, bụi mốc, đồ vật ẩm, có dấu hiệu lâu ngày không vệ sinh",
+                    2: "Có 3-4 vị trí có mùi nhẹ, bụi bẩn, hoặc có vết ố do ẩm đọng lâu ngày",
+                    3: "Có 2 vị trí lưu trữ chưa sạch hẳn (bụi nhẹ, hơi ẩm) nhưng không nặng mùi",
+                    4: "Chỉ có 1 nơi lưu trữ còn hơi bụi hoặc có dấu hiệu chưa dọn",
+                    5: "Tất cả tủ, ngăn kéo, nơi lưu trữ đều sạch sẽ, không mùi, không bụi/mốc – vệ sinh tốt"
                 }
             },
             13: {
-                guide: "Vệ sinh kèm kiểm tra hiện trạng các vật dụng (có bằng chứng như checklist kiểm tra, sổ bàn giao...)",
-                suggestion: "📌 Khi vệ sinh phải kiểm tra luôn tình trạng thiết bị\n✅ Có sổ/checklist ghi nhận kết quả kiểm tra",
+                guide: "Đánh giá mức độ được kiểm tra, vệ sinh, và bảo quản các vật dụng đang sử dụng. Nhãn dán: rõ ràng, không bong tróc, không mờ. Máy móc: không gỉ sét, không nứt vỡ, dây dẫn đầy đủ. Hạn sử dụng: không có vật quá hạn",
+                suggestion: "📌 Ví dụ:\n✅ Nơi chứa thiết bị (máy BTTĐ/Truyền dịch) sạch, không bụi; nhãn dán thông tin hiệu chuẩn rõ ràng, không bong\n✅ Các hộp thuốc/vật tư có dán mốc hạn sử dụng còn thời gian, không có vỏ hộp méo, không bụi mốc",
                 levels: {
-                    1: "Không kiểm tra khi vệ sinh",
-                    2: "Có kiểm tra nhưng không ghi chép",
-                    3: "Có ghi chép nhưng không đầy đủ/định kỳ",
-                    4: "Có checklist, thực hiện tương đối đều",
-                    5: "Có checklist đầy đủ, thực hiện và ghi chép định kỳ"
+                    1: "≥5 vật dụng có dấu hiệu hư hỏng, nhãn bong tróc, không kiểm tra được tình trạng, có vật quá hạn",
+                    2: "3–4 vật dụng hư hỏng nhẹ, nhãn không rõ, bụi bẩn lâu ngày, hoặc quá hạn",
+                    3: "2 vật dụng không đạt, còn sót thiết bị chưa vệ sinh kỹ, chưa kiểm tra hạn",
+                    4: "Chỉ 1 vật dụng thiếu vệ sinh hoặc chưa có nhãn, chưa kiểm tra tình trạng",
+                    5: "Tất cả vật dụng, thiết bị đều sạch, còn hạn, nhãn dán rõ, không bong tróc, không hư hao. Có checklist kiểm định định kỳ, cập nhật rõ"
                 }
             },
             14: {
-                guide: "Không để các vật dụng bừa bãi (dây điện, dây mạng, dây oxy thở được bố trí gọn gàng)",
-                suggestion: "✅ Kiểm tra dây điện, dây mạng: có được bó gọn không?\n✅ Không có dây rối, chằng chịt gây mất an toàn",
+                guide: "Mức độ sắp xếp gọn gàng, trật tự và hợp lý của vật dụng tại nơi làm việc: đúng vị trí, đúng theo chức năng từng khu vực",
+                suggestion: "📌 Ví dụ:\n✅ Xe tiêm đặt đúng vị trí quy định, không chắn lối đi\n✅ Vật dụng tại khu vực tiêm chích, không có vật dụng hay đồ dùng cá nhân chen vào",
                 levels: {
-                    1: "Rất bừa bãi, dây rối nhiều nơi",
-                    2: "Nhiều dây chưa được gom gọn",
-                    3: "Tương đối gọn nhưng còn vài chỗ rối",
-                    4: "Gọn gàng, chỉ còn 1-2 điểm cần cải thiện",
-                    5: "Tất cả dây điện, dây mạng đều được bố trí gọn gàng, an toàn"
+                    1: "≥5 vật dụng để bừa bãi, sai vị trí, gây cản trở công việc hoặc mất an toàn",
+                    2: "Có 3–4 vật để không đúng chỗ hoặc đặt gây rối, chưa được xử lý",
+                    3: "Có 2 vật sai vị trí, nhưng không gây cản trở nhiều",
+                    4: "Chỉ còn 1 vật sai vị trí, không gây cản trở nhiều",
+                    5: "Tất cả vật dụng đúng chỗ, thuận tiện, đúng khu vực công năng, không có đồ bừa bộn"
                 }
             },
             15: {
-                guide: "Luôn cải tiến và sắp xếp ngăn nắp (CÓ HÌNH ẢNH TRƯỚC SAU để chứng minh cải tiến)",
-                suggestion: "📌 Phải có ảnh TRƯỚC-SAU để minh chứng cải tiến\n✅ Ví dụ: Thay đổi vị trí xe tiêm gần giường bệnh hơn → giảm thao tác khi cấp cứu",
+                guide: "Khoa/phòng phải có ít nhất 1 lần chủ động cải tiến, thay đổi cách bố trí, sắp xếp, ghi nhãn, vị trí vật dụng sao cho phù hợp hơn với công việc trong năm. Bằng chứng: ảnh trước–sau, biên bản họp nhóm, tin nhắn, file chia sẻ ý tưởng cải tiến",
+                suggestion: "📌 Ví dụ:\n✅ Khoa thay đổi vị trí xe tiêm – gần giường bệnh hơn → giảm thao tác khi cấp cứu (ảnh chụp trước–sau + sơ đồ mới)\n✅ Tủ Thuốc được chia ngăn theo nhóm bệnh → tránh nhầm lẫn khi điều dưỡng thao tác nhanh",
                 levels: {
-                    1: "Không có cải tiến nào trong năm",
-                    2: "Có 1 cải tiến nhỏ, không có ảnh trước–sau",
-                    3: "Có ít nhất 1 cải tiến rõ ràng (ảnh hoặc mô tả)",
-                    4: "Có ít nhất 1 cải tiến rõ ràng (ảnh trước–sau)",
-                    5: "Có ≥2 cải tiến cụ thể, có văn bản/họp/báo cáo, hiệu quả rõ"
+                    1: "Trong 2 năm, chưa từng đăng ký cải tiến/chưa từng phát hiện ra sự không phù hợp để cải tiến",
+                    2: "Có 1 cải tiến nhỏ, nhưng không có ảnh trước–sau hoặc không rõ hiệu quả, không có đăng ký KH 5S khoa/phòng trong năm",
+                    3: "Có ít nhất 1 cải tiến rõ ràng (ảnh hoặc mô tả), không có trong KH 5S, chưa phổ biến cho cả khoa/phòng",
+                    4: "Có ít nhất 1 cải tiến rõ ràng (ảnh trước–sau), có/không có đăng ký KH 5S, cải tiến phù hợp công việc thực tế",
+                    5: "Có ≥2 cải tiến cụ thể, phổ biến trong KH 5S (có văn bản/họp/thảo luận nhóm/báo cáo), hiệu quả rõ"
                 }
             },
             16: {
-                guide: "Có lịch phân công trực nhật 5S tại khu vực chấm điểm",
-                suggestion: "📌 Phải có lịch phân công trực 5S: họ tên, thời gian, nhiệm vụ\n✅ Người trực phải biết nhiệm vụ và có ký tên xác nhận",
+                guide: "Phải có lịch phân công trực 5S cụ thể tại khu vực: dán tại nơi dễ thấy (bảng thông báo, bảng phân công trực, bảng kế hoạch tuần…). Ghi rõ họ tên – thời gian – nhiệm vụ của người trực/làm vệ sinh – sàng lọc – sắp xếp hằng ngày hoặc định kỳ. Có bằng chứng thực hiện đi kèm",
+                suggestion: "📌 Ví dụ:\n✅ Nhân viên trực hôm đó biết tên mình trong lịch, mô tả được nhiệm vụ 5S (lau bàn, sàng lọc vật dụng, kiểm tra nhãn…)\n✅ Có sổ ký tên bàn giao phiên 5S",
                 levels: {
-                    1: "Không có lịch trực hoặc lịch cũ, sai ngày",
-                    2: "Có lịch nhưng không rõ ràng (thiếu họ tên, phân công)",
-                    3: "Có lịch đầy đủ nhưng người trực không biết/không thực hiện",
-                    4: "Có lịch, người trực biết việc nhưng không có bằng chứng thực hiện",
-                    5: "Có lịch rõ, người trực biết, khu vực sạch, có bằng chứng (ký tên, ảnh...)"
+                    1: "Không có lịch trực hoặc treo lịch cũ, sai ngày, không tên người trực",
+                    2: "Có lịch nhưng không rõ ràng (thiếu họ tên, thiếu phân công cụ thể)",
+                    3: "Có lịch trực đầy đủ nhưng người trực không biết hoặc không thực hiện đúng",
+                    4: "Có lịch trực, người trực biết việc nhưng không có bằng chứng thực hiện (chưa có chữ ký, ảnh chụp, checklist...)",
+                    5: "Có lịch trực rõ – người trực biết – khu vực sạch sẽ đúng ngày trực – có bằng chứng thực hiện (ký tên, ảnh thực hành 5S...)"
                 }
             },
             17: {
-                guide: "Có phổ biến – chia sẻ phương pháp 5S cho tất cả nhân viên tại khoa (sổ họp/bảng hoạt động 5S)",
-                suggestion: "📌 Nhân viên phải biết – hiểu – thực hành 5S cơ bản\n✅ Hỏi ngẫu nhiên 5 nhân viên về 5S: họ có biết không?",
+                guide: "Mục tiêu thực chất: Không chỉ có họp/sổ sách, mà nhân viên phải biết – hiểu – thực hành cơ bản về 5S, hiểu được 5S hỗ trợ gì trong an toàn người bệnh và đặc thù theo chuyên môn khoa, phòng",
+                suggestion: "📌 Ví dụ:\n✅ Bố trí thuốc hợp lý → tiêm thuốc không nhầm\n✅ Phân loại rác đúng → tránh lây nhiễm\n✅ Sắp xếp dụng cụ cấp cứu thuận tiện → cấp cứu bệnh kịp thời\n✅ Lưu trữ hồ sơ/công văn hợp lý → dễ truy xuất, kiểm tra, tăng hiệu quả làm việc",
                 levels: {
-                    1: "Không có họp/bản tin 5S, không ai biết 5S là gì",
-                    2: "Có bảng thông tin 5S nhưng không phổ biến cho nhân viên",
-                    3: "Có họp/triển khai nhưng ≤2 nhân viên nắm đúng",
-                    4: "Có minh chứng họp/triển khai, 1–2 hoạt động 5S giúp giảm rủi ro",
-                    5: "Có sổ họp/bảng tin, ≥5 nhân viên được hỏi đều trả lời đúng"
+                    1: "Không có họp/bản tin/KH 5S, không ai trong khoa phòng biết 5S là gì",
+                    2: "Có bảng thông tin/KH 5S của khoa/phòng, nhưng không phổ biến cho nhân viên, hỏi đều không biết",
+                    3: "Có họp/triển khai KH 5S, nhưng ≤2 nhân viên nắm đúng khái niệm cơ bản 5S, nhưng mơ hồ thực hiện",
+                    4: "Có minh chứng họp/triển khai, nói rõ 1–2 hoạt động 5S tại khoa/phòng giúp giảm rủi ro, tăng hiệu quả làm việc",
+                    5: "Có sổ họp/bảng tin, ≥5 nhân viên được hỏi đều trả lời đúng nguyên tắc 5S và hiểu mục tiêu áp dụng"
                 }
             },
             18: {
-                guide: "Có đánh giá định kỳ (Bảng kiểm 5S mỗi tháng/khu vực) đúng thời hạn",
-                suggestion: "📌 Gửi điểm 5S đúng hạn (ngày 25 mỗi tháng) kèm ảnh khu vực chấm\n✅ Có lưu minh chứng tại khoa/phòng",
+                guide: "Mỗi khoa/phòng phải thực hiện chấm điểm 5S đúng thời gian quy định (ngày 25 mỗi tháng) và gửi kèm ảnh khu vực chấm, lưu minh chứng tại khoa/phòng",
+                suggestion: "📌 Ví dụ:\n- Khoa HSTC-CĐ gửi điểm 5S định kỳ ngày 25, có kèm ảnh chấm của tháng, có lưu tại bảng hoạt động 5S",
                 levels: {
-                    1: "3 tháng/quý không gửi điểm hay ảnh chấm",
-                    2: "Chỉ gửi điểm khi được nhắc, không có ảnh minh chứng",
-                    3: "Trễ hạn và thiếu ảnh minh chứng",
-                    4: "Đúng hạn nhưng ảnh minh chứng trễ/thiếu",
-                    5: "Gửi đúng hạn, đủ ảnh minh chứng rõ ràng từng tháng"
+                    1: "Có nhắc nhở, nhưng 3 tháng/quý không có gửi điểm hay bất kỳ ảnh chấm khu vực nào",
+                    2: "Chỉ gửi điểm khi được nhắc, không có ảnh minh chứng nào trong quý",
+                    3: "Trễ hạn, và thiếu ảnh minh chứng khu vực",
+                    4: "Đúng hạn, nhưng ảnh minh chứng trễ hạn hoặc thiếu trong tháng",
+                    5: "Gửi đúng hạn, đủ ảnh minh chứng theo từng tháng chấm điểm rõ ràng tại khu vực được chấm"
                 }
             },
             19: {
-                guide: "Vật dụng ở tình trạng sẵn sàng sử dụng (không hư, hết hạn, hết pin, không tìm thấy...)",
-                suggestion: "📌 Tất cả dụng cụ phải sẵn sàng: đúng vật dụng, đúng tình trạng, đúng thời điểm\n✅ Kiểm tra ngẫu nhiên: pin còn không? Hạn sử dụng? Có tìm thấy không?",
+                guide: "Dụng cụ – hồ sơ – máy móc – vật tư… có thể sử dụng ngay khi cần, không bị hết pin – hư – thiếu – hết hạn – mất tem – không tìm thấy… Phải luôn đảm bảo: đúng vật dụng – đúng tình trạng – đúng thời điểm cần dùng. Có quy định 5S tại khu vực",
+                suggestion: "📌 Ví dụ:\n✅ Tại tủ dụng cụ cấp cứu, tất cả dụng cụ còn hạn, kiểm tra hàng tuần, bố trí đúng vị trí, rõ ràng, ngăn nắp, sạch sẽ, đủ số lượng. Có pin dự phòng\n✅ Không phát hiện bất kỳ vật dụng nào bị lỗi, hư, thiếu hoặc lẫn đồ không liên quan",
                 levels: {
-                    1: "≥5 vật dụng không sẵn sàng (hư, hết hạn, hết pin,...)",
-                    2: "3–4 vật dụng không sẵn sàng",
-                    3: "2 vật dụng không sẵn sàng",
-                    4: "1 vật dụng không sẵn sàng",
-                    5: "Tất cả vật dụng sẵn sàng, ≥3 nhân viên biết rõ vị trí"
+                    1: "Có ≥5 vật dụng không sẵn sàng (hư, hết hạn, hết pin, không tìm thấy…)",
+                    2: "Có 3-4 vật dụng không sẵn sàng (hư, hết hạn, hết pin, không tìm thấy…)",
+                    3: "Có 2 vật dụng không sẵn sàng (hư, hết hạn, hết pin, không tìm thấy…)",
+                    4: "Có 1 vật dụng không sẵn sàng (hư, hết hạn, hết pin, không tìm thấy…)",
+                    5: "Tất cả vật dụng sẵn sàng và ≥3 nhân viên biết rõ vị trí, tình trạng đang sử dụng (bảo trì, cho mượn,..)"
                 }
             },
             20: {
-                guide: "Có phân tích nguyên nhân – cải tiến sau đánh giá mỗi tháng",
-                suggestion: "📌 Sau chấm điểm phải xem lại điểm chưa tốt, tìm nguyên nhân, đề ra cách khắc phục\n✅ Có chia sẻ điểm tốt để nhân rộng",
+                guide: "Ngoài chấm điểm 5S mỗi tháng, khoa/phòng phải thường xuyên xem lại những điểm chưa tốt, tìm nguyên nhân, đề ra cách khắc phục, đồng thời ghi nhận – chia sẻ điểm tốt để nhân rộng",
+                suggestion: "📌 Ví dụ:\n- Tháng 5, phòng Tiêm thuốc được 85 điểm 5S, thông báo họp giao ban hoặc Zalo nhóm: 4 xe tiêm không trả về đúng vị trí, mâm tiêm không dọn sạch (có ảnh).\nNguyên nhân: chưa rõ quy định, thiếu người kiểm tra cuối ca.\nGiải pháp: nhắc lại quy định, dán nhãn vị trí đậu, phân công người kiểm tra.\nKết quả khắc phục: sau 1 tuần, xe đặt đúng vị trí, sạch sẽ (có ảnh trước–sau)",
                 levels: {
-                    1: "Không có hoạt động đánh giá – phân tích – cải tiến nào",
-                    2: "Có đánh giá nhưng không liên tục, không nêu nguyên nhân",
-                    3: "Có ghi nhận nguyên nhân + hướng khắc phục, không có minh chứng",
-                    4: "Có phân tích nguyên nhân + giải pháp, đã cải tiến ít nhất 1 điểm yếu",
-                    5: "Có đánh giá định kỳ, cải tiến liên tục, chia sẻ công khai mỗi tháng"
+                    1: "Không có bất kỳ hoạt động đánh giá – phân tích – cải tiến nào mỗi tháng. Nhân viên không ai biết",
+                    2: "Có đánh giá 5S nhưng không liên tục, không nêu rõ nguyên nhân – giải pháp cụ thể",
+                    3: "Có ghi nhận nguyên nhân + hướng khắc phục, nhưng không có minh chứng đã thực hiện",
+                    4: "Có đánh giá – phân tích nguyên nhân – đề xuất giải pháp, có bằng chứng đã cải tiến ít nhất 1 điểm yếu",
+                    5: "Có đánh giá định kỳ, bằng chứng thực hiện cải tiến liên tục và có ghi nhận điểm tốt, chia sẻ công khai mỗi tháng cho tất cả nhân viên trong giao ban khoa hoặc bảng 5S"
                 }
             }
         };
@@ -2446,7 +2489,8 @@
             const deptId = document.getElementById('scoreDept').value;
             const sel = document.getElementById('scoreZone');
             sel.innerHTML = '<option value="">-- Chọn khu vực --</option>';
-            document.getElementById('scoreItem').innerHTML = '<option value="">-- Chọn đại diện --</option>';
+            // Reset mô tả chi tiết khu vực
+            document.getElementById('scoreItemList').innerHTML = '<p class="text-muted">Chọn tên khu vực để xem mô tả chi tiết</p>';
 
             if (!deptId) return;
             const snap = await db.ref('departments_5s/' + deptId + '/zones').once('value');
@@ -2462,18 +2506,28 @@
         async function loadItems() {
             const deptId = document.getElementById('scoreDept').value;
             const zoneId = document.getElementById('scoreZone').value;
-            const sel = document.getElementById('scoreItem');
-            sel.innerHTML = '<option value="">-- Chọn đại diện --</option>';
+            const listContainer = document.getElementById('scoreItemList');
+
+            // Reset về trạng thái mặc định
+            listContainer.innerHTML = '<p class="text-muted">Chọn tên khu vực để xem mô tả chi tiết</p>';
 
             if (!deptId || !zoneId) return;
+
             const snap = await db.ref('departments_5s/' + deptId + '/zones/' + zoneId + '/items').once('value');
             const items = snap.val() || [];
+
+            if (items.length === 0) {
+                listContainer.innerHTML = '<p class="text-muted">Không có mô tả chi tiết cho khu vực này</p>';
+                return;
+            }
+
+            // Render danh sách
+            let html = '<ul>';
             items.forEach((item, i) => {
-                const opt = document.createElement('option');
-                opt.value = i;
-                opt.textContent = item;
-                sel.appendChild(opt);
+                html += `<li>📌 ${item}</li>`;
             });
+            html += '</ul>';
+            listContainer.innerHTML = html;
         }
 
         function renderCriteriaTable() {
@@ -2598,15 +2652,25 @@
         async function submitScore() {
             const deptId = document.getElementById('scoreDept').value;
             const zoneId = document.getElementById('scoreZone').value;
-            const itemIdx = document.getElementById('scoreItem').value;
             const month = document.getElementById('scoreMonth').value;
             const evaluator = document.getElementById('scoreEvaluator').value.trim();
             const representative = document.getElementById('scoreRepresentative').value.trim();
             const imageFile = document.getElementById('scoreImageFile').files[0];
 
-            if (!deptId || !zoneId || itemIdx === '' || !month || !evaluator) {
-                showAlert('scoreAlert', 'Vui lòng điền đầy đủ thông tin', 'error');
+            // Chỉ yêu cầu chọn đến khu vực định danh (không cần chọn đại diện)
+            if (!deptId || !zoneId || !month || !evaluator) {
+                showAlert('scoreAlert', 'Vui lòng điền đầy đủ thông tin (Khoa/Phòng, Khu vực, Tháng/Năm, Người đánh giá)', 'error');
                 return;
+            }
+
+            // Kiểm tra quyền chấm điểm: user chỉ được chấm tháng hiện tại
+            if (currentUser && currentUser.role === 'user') {
+                const now = new Date();
+                const currentMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+                if (month !== currentMonth) {
+                    showAlert('scoreAlert', '⚠️ Bạn chỉ được chấm điểm cho tháng hiện tại (' + currentMonth + '). Liên hệ Admin nếu cần chấm tháng khác.', 'error');
+                    return;
+                }
             }
 
             const criteria = [];
@@ -2647,8 +2711,7 @@
                 departmentId: deptId,
                 zone: zoneSnap.val().name,
                 zoneId: zoneId,
-                item: (itemsSnap.val() || [])[itemIdx],
-                itemIdx: parseInt(itemIdx),
+                items: itemsSnap.val() || [], // Lưu danh sách các đại diện định lượng
                 month,
                 evaluator,
                 representative,
@@ -2798,8 +2861,8 @@
                     html += `<table style="width:100%;font-size:0.9rem;">
                         <thead>
                             <tr style="background:var(--gray-100);">
-                                <th style="text-align:left;padding:10px;">Khu vực định danh</th>
-                                <th style="text-align:center;padding:10px;">Đại diện định lượng</th>
+                                <th style="text-align:left;padding:10px;">Tên khu vực</th>
+                                <th style="text-align:center;padding:10px;">Mô tả chi tiết</th>
                                 <th style="text-align:center;padding:10px;">Số lượt chấm</th>
                                 <th style="text-align:center;padding:10px;">Điểm TB</th>
                             </tr>
@@ -2955,6 +3018,37 @@
             });
         }
 
+        // Kiểm tra chấm điểm đúng hạn
+        // Tháng 01-11: ngày 25-30 hàng tháng
+        // Tháng 12: ngày 05-10
+        function isOnTime(createdAt, month) {
+            if (!createdAt || !month) return { onTime: false, label: 'Không xác định' };
+
+            const createdDate = new Date(createdAt);
+            const day = createdDate.getDate();
+            const createdMonth = createdDate.getMonth() + 1; // 1-12
+            const createdYear = createdDate.getFullYear();
+
+            // Parse month from format "YYYY-MM"
+            const [targetYear, targetMonthStr] = month.split('-');
+            const targetMonth = parseInt(targetMonthStr);
+
+            let onTime = false;
+
+            if (targetMonth === 12) {
+                // Tháng 12: chấm từ ngày 05-10 của tháng 12
+                onTime = (createdMonth === 12 && createdYear === parseInt(targetYear) && day >= 5 && day <= 10);
+            } else {
+                // Tháng 1-11: chấm từ ngày 25-30 của tháng đó
+                onTime = (createdMonth === targetMonth && createdYear === parseInt(targetYear) && day >= 25 && day <= 30);
+            }
+
+            return {
+                onTime: onTime,
+                label: onTime ? '✅ Đúng hạn' : '❌ Không đúng hạn'
+            };
+        }
+
         async function loadReport() {
             const deptId = document.getElementById('reportDept').value;
             const deptName = document.getElementById('reportDept').selectedOptions[0]?.text || '';
@@ -2986,7 +3080,7 @@
             }
 
             const canDelete = currentUser && (currentUser.role === 'admin' || currentUser.role === 'mod');
-            let html = '<table><thead><tr><th>Tháng</th><th>Khoa/Phòng</th><th>Khu vực</th><th>Đại diện</th><th>Người đánh giá</th><th>Điểm TB</th><th>Ảnh</th><th>Ngày tạo</th>' + (canDelete ? '<th>Xóa</th>' : '') + '</tr></thead><tbody>';
+            let html = '<table><thead><tr><th>Tháng</th><th>Khoa/Phòng</th><th>Khu vực</th><th>Mô tả</th><th>Người đánh giá</th><th>Điểm TB</th><th>Thời gian chấm</th><th>Ảnh</th><th>Ngày tạo</th>' + (canDelete ? '<th>Xóa</th>' : '') + '</tr></thead><tbody>';
             scores.forEach(s => {
                 const imgHtml = s.imageUrl
                     ? `<a href="${s.imageUrl}" target="_blank"><img src="${s.imageUrl}" style="width:50px;height:50px;object-fit:cover;border-radius:4px;cursor:pointer;"></a>`
@@ -2994,7 +3088,9 @@
                 const deleteBtn = canDelete
                     ? `<button onclick="deleteScore('${s.id}')" class="btn btn-danger" style="padding:4px 8px;font-size:12px;">🗑️</button>`
                     : '';
-                html += `<tr><td>${s.month}</td><td>${s.department}</td><td>${s.zone}</td><td>${s.item}</td><td>${s.evaluator}</td><td><strong>${s.average}</strong></td><td>${imgHtml}</td><td>${new Date(s.createdAt).toLocaleDateString('vi-VN')}</td>${canDelete ? '<td>' + deleteBtn + '</td>' : ''}</tr>`;
+                const timeStatus = isOnTime(s.createdAt, s.month);
+                const timeStyle = timeStatus.onTime ? 'color:#10b981;' : 'color:#ef4444;';
+                html += `<tr><td>${s.month}</td><td>${s.department}</td><td>${s.zone}</td><td>${s.item || (s.items ? s.items.join(', ') : '-')}</td><td>${s.evaluator}</td><td><strong>${s.average}</strong></td><td style="${timeStyle}">${timeStatus.label}</td><td>${imgHtml}</td><td>${new Date(s.createdAt).toLocaleDateString('vi-VN')}</td>${canDelete ? '<td>' + deleteBtn + '</td>' : ''}</tr>`;
             });
             html += '</tbody></table>';
             document.getElementById('reportResult').innerHTML = html;
@@ -3032,9 +3128,11 @@
 
             if (scores.length === 0) { alert('Không có dữ liệu để xuất'); return; }
 
-            const data = [['Tháng', 'Khoa/Phòng', 'Khu vực', 'Đại diện', 'Người đánh giá', 'Đại diện nơi ĐG', 'Tổng điểm', 'Điểm TB', 'Ngày tạo']];
+            const data = [['Tháng', 'Khoa/Phòng', 'Khu vực', 'Mô tả', 'Người đánh giá', 'Đại diện nơi ĐG', 'Tổng điểm', 'Điểm TB', 'Thời gian chấm', 'Ngày tạo']];
             scores.forEach(s => {
-                data.push([s.month, s.department, s.zone, s.item, s.evaluator, s.representative, s.total, s.average, new Date(s.createdAt).toLocaleDateString('vi-VN')]);
+                const timeStatus = isOnTime(s.createdAt, s.month);
+                const itemDisplay = s.item || (s.items ? s.items.join(', ') : '-');
+                data.push([s.month, s.department, s.zone, itemDisplay, s.evaluator, s.representative, s.total, s.average, timeStatus.onTime ? 'Đúng hạn' : 'Không đúng hạn', new Date(s.createdAt).toLocaleDateString('vi-VN')]);
             });
 
             const ws = XLSX.utils.aoa_to_sheet(data);
@@ -3061,7 +3159,7 @@
                         html += `<div style="background:var(--gray-50);padding:12px;border-radius:8px;margin-top:8px;">
                     <div class="flex flex-between"><strong>${zone.name}</strong>
                     <button class="btn btn-danger btn-sm" onclick="deleteZone('${deptId}','${zoneId}')">🗑️</button></div>
-                    <p style="font-size:0.85rem;color:var(--gray-600);margin-top:4px;">Đại diện: ${(zone.items || []).join(', ')}</p>
+                    <p style="font-size:0.85rem;color:var(--gray-600);margin-top:4px;">Mô tả: ${(zone.items || []).join(', ')}</p>
                 </div>`;
                     });
                     html += '</div>';
