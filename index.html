@@ -1709,6 +1709,22 @@
         </div>
     </div>
 
+    <div id="editZoneModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>✏️ Chỉnh sửa Khu vực</h3><button class="modal-close"
+                    onclick="closeModal('editZoneModal')">&times;</button>
+            </div>
+            <input type="hidden" id="editZoneDeptId">
+            <input type="hidden" id="editZoneId">
+            <div class="form-group"><label>Tên khu vực</label><input type="text" id="editZoneName" class="form-control">
+            </div>
+            <div class="form-group"><label>Mô tả chi tiết khu vực (mỗi dòng 1 mô tả)</label><textarea id="editZoneItems"
+                    class="form-control" rows="4"></textarea></div>
+            <button class="btn btn-primary" style="width:100%" onclick="saveEditZone()">💾 Lưu thay đổi</button>
+        </div>
+    </div>
+
     <script>
         // Firebase Config
         const firebaseConfig = {
@@ -3158,7 +3174,8 @@
                     Object.entries(zones).forEach(([zoneId, zone]) => {
                         html += `<div style="background:var(--gray-50);padding:12px;border-radius:8px;margin-top:8px;">
                     <div class="flex flex-between"><strong>${zone.name}</strong>
-                    <button class="btn btn-danger btn-sm" onclick="deleteZone('${deptId}','${zoneId}')">🗑️</button></div>
+                    <div><button class="btn btn-primary btn-sm" onclick="showEditZoneModal('${deptId}','${zoneId}')">✏️ Sửa</button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteZone('${deptId}','${zoneId}')">🗑️</button></div></div>
                     <p style="font-size:0.85rem;color:var(--gray-600);margin-top:4px;">Mô tả: ${(zone.items || []).join(', ')}</p>
                 </div>`;
                     });
@@ -3272,6 +3289,37 @@
             loadStats();
             document.getElementById('newZoneName').value = '';
             document.getElementById('newZoneItems').value = '';
+        }
+
+        async function showEditZoneModal(deptId, zoneId) {
+            const snap = await db.ref('departments_5s/' + deptId + '/zones/' + zoneId).once('value');
+            const zone = snap.val();
+            if (!zone) { alert('Không tìm thấy khu vực!'); return; }
+
+            document.getElementById('editZoneDeptId').value = deptId;
+            document.getElementById('editZoneId').value = zoneId;
+            document.getElementById('editZoneName').value = zone.name || '';
+            document.getElementById('editZoneItems').value = (zone.items || []).join('\n');
+            document.getElementById('editZoneModal').classList.add('show');
+        }
+
+        async function saveEditZone() {
+            if (!currentUser || (currentUser.role !== 'admin' && currentUser.role !== 'mod')) {
+                alert('Bạn không có quyền chỉnh sửa khu vực!');
+                return;
+            }
+            const deptId = document.getElementById('editZoneDeptId').value;
+            const zoneId = document.getElementById('editZoneId').value;
+            const name = document.getElementById('editZoneName').value.trim();
+            const itemsText = document.getElementById('editZoneItems').value.trim();
+
+            if (!name) { alert('Vui lòng nhập tên khu vực'); return; }
+
+            const items = itemsText.split('\n').map(i => i.trim()).filter(i => i);
+            await db.ref('departments_5s/' + deptId + '/zones/' + zoneId).update({ name, items });
+            closeModal('editZoneModal');
+            loadZonesList();
+            alert('Đã cập nhật khu vực thành công!');
         }
 
         async function deleteZone(deptId, zoneId) {
