@@ -2898,23 +2898,36 @@
             const banner = document.getElementById('lockBanner');
             if (!banner) return;
 
-            const status = await getScoringLockStatus();
             const isMod = currentUser && (currentUser.role === 'admin' || currentUser.role === 'mod');
-            const window = isScoringWindowOpen();
+            const win = isScoringWindowOpen();
+
+            // Kiểm tra override trực tiếp từ Firebase (không qua getScoringLockStatus vì nó skip cho Admin/Mod)
+            let hasOverride = false;
+            let overrideData = {};
+            try {
+                const snap = await db.ref('settings_5s/scoringLock').once('value');
+                const lockData = snap.val();
+                if (lockData && lockData.manualUnlock === true && lockData.forMonth === win.currentMonth) {
+                    hasOverride = true;
+                    overrideData = lockData;
+                }
+            } catch (e) {
+                console.error('Error checking lock for banner:', e);
+            }
 
             let bannerClass, iconHtml, textHtml, btnHtml = '';
 
-            if (window.isOpen) {
+            if (win.isOpen) {
                 // Auto-open
                 bannerClass = 'lock-banner-open';
                 iconHtml = '🟢';
-                textHtml = `<strong>Đang mở chấm điểm</strong><small>Thời gian: ${status.windowDesc} — Tháng ${window.currentMonth}</small>`;
-            } else if (status.isManualOverride) {
+                textHtml = `<strong>Đang mở chấm điểm</strong><small>Thời gian: ${win.windowDesc} — Tháng ${win.currentMonth}</small>`;
+            } else if (hasOverride) {
                 // Override bởi Mod/Admin
                 bannerClass = 'lock-banner-override';
                 iconHtml = '🟡';
-                const timeStr = status.unlockedAt ? new Date(status.unlockedAt).toLocaleString('vi-VN') : '';
-                textHtml = `<strong>Đã mở bởi ${status.unlockedBy || 'Admin'}</strong><small>Chấm điểm ngoài thời hạn sẽ ghi nhận ❌ Không đúng hạn${timeStr ? ' — Mở lúc: ' + timeStr : ''}</small>`;
+                const timeStr = overrideData.unlockedAt ? new Date(overrideData.unlockedAt).toLocaleString('vi-VN') : '';
+                textHtml = `<strong>Đã mở bởi ${overrideData.unlockedBy || 'Admin'}</strong><small>Chấm điểm ngoài thời hạn sẽ ghi nhận ❌ Không đúng hạn${timeStr ? ' — Mở lúc: ' + timeStr : ''}</small>`;
                 if (isMod) {
                     btnHtml = `<button class="lock-toggle-btn lock-btn" onclick="toggleScoringLock(true)">🔒 Khóa lại</button>`;
                 }
@@ -2922,7 +2935,7 @@
                 // Đã khóa
                 bannerClass = 'lock-banner-locked';
                 iconHtml = '🔴';
-                textHtml = `<strong>Đã khóa chấm điểm</strong><small>Thời gian chấm: ${status.windowDesc} — Liên hệ QLCL để mở khóa nếu cần</small>`;
+                textHtml = `<strong>Đã khóa chấm điểm</strong><small>Thời gian chấm: ${win.windowDesc} — Liên hệ QLCL để mở khóa nếu cần</small>`;
                 if (isMod) {
                     btnHtml = `<button class="lock-toggle-btn unlock-btn" onclick="toggleScoringLock(false)">🔓 Mở khóa</button>`;
                 }
