@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="vi">
 
 <head>
@@ -974,6 +974,104 @@
             font-style: italic;
         }
 
+        /* ===== SCORING LOCK BANNER ===== */
+        .lock-banner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding: 14px 18px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .lock-banner-open {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            border: 2px solid #10b981;
+            color: #065f46;
+        }
+
+        .lock-banner-locked {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            border: 2px solid #ef4444;
+            color: #991b1b;
+        }
+
+        .lock-banner-override {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 2px solid #f59e0b;
+            color: #92400e;
+        }
+
+        .lock-banner-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .lock-banner-icon {
+            font-size: 1.5rem;
+        }
+
+        .lock-banner-text {
+            line-height: 1.4;
+        }
+
+        .lock-banner-text small {
+            display: block;
+            font-weight: 400;
+            opacity: 0.8;
+            font-size: 0.82rem;
+            margin-top: 2px;
+        }
+
+        .lock-toggle-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .lock-toggle-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .lock-toggle-btn.unlock-btn {
+            background: #10b981;
+            color: white;
+        }
+
+        .lock-toggle-btn.lock-btn {
+            background: #ef4444;
+            color: white;
+        }
+
+        @media (max-width: 600px) {
+            .lock-banner {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+
+            .lock-banner-info {
+                justify-content: center;
+            }
+
+            .lock-toggle-btn {
+                width: 100%;
+                padding: 12px;
+            }
+        }
+
         .success-message {
             margin-top: 10px;
             padding: 10px;
@@ -1475,6 +1573,7 @@
                 <button class="nav-btn" onclick="showTab('report')">📊 Báo cáo</button>
                 <button class="nav-btn mod-only hidden" onclick="showTab('zones')">📍 Quản lý khu vực</button>
                 <button class="nav-btn admin-only hidden" onclick="showTab('users')">👥 Quản lý tài khoản</button>
+                <button class="nav-btn mod-only hidden" onclick="showTab('backup')">💾 Sao lưu</button>
                 <button class="nav-btn" onclick="logout()" style="background:#ef4444;">🚪 Đăng xuất</button>
             </nav>
 
@@ -1534,6 +1633,13 @@
 
             <!-- Score Tab -->
             <div id="scoreTab" class="tab-content">
+                <!-- Lock Status Banner -->
+                <div id="lockBanner" class="lock-banner lock-banner-locked">
+                    <div class="lock-banner-info">
+                        <span class="lock-banner-icon">🔒</span>
+                        <div class="lock-banner-text">Đang kiểm tra trạng thái...</div>
+                    </div>
+                </div>
                 <div class="card">
                     <h2 style="margin-bottom:20px;">📝 Chấm điểm 5S</h2>
                     <div id="scoreAlert"></div>
@@ -1656,6 +1762,43 @@
                         </thead>
                         <tbody id="usersList"></tbody>
                     </table>
+                </div>
+            </div>
+
+            <!-- Backup Tab -->
+            <div id="backupTab" class="tab-content">
+                <div class="card">
+                    <h2 style="margin-bottom:20px;">💾 Sao lưu & Khôi phục dữ liệu</h2>
+                    <div id="backupAlert"></div>
+
+                    <div class="grid grid-2">
+                        <!-- Sao lưu -->
+                        <div style="background:linear-gradient(135deg,#f0f9ff,#e0f2fe);border:2px solid #3b82f6;border-radius:12px;padding:20px;">
+                            <h3 style="color:#1e40af;margin-bottom:12px;">📥 Sao lưu dữ liệu</h3>
+                            <p style="color:#4b5563;margin-bottom:16px;font-size:0.9rem;">Tải toàn bộ dữ liệu (điểm, khoa/phòng, tài khoản, cài đặt) về máy dưới dạng file JSON.</p>
+                            <button class="btn btn-primary" style="width:100%" onclick="backupData()">📥 Tải file sao lưu</button>
+                            <div id="backupInfo" style="margin-top:12px;font-size:0.85rem;color:#6b7280;"></div>
+                        </div>
+
+                        <!-- Khôi phục -->
+                        <div style="background:linear-gradient(135deg,#fef3c7,#fde68a);border:2px solid #f59e0b;border-radius:12px;padding:20px;">
+                            <h3 style="color:#92400e;margin-bottom:12px;">📤 Khôi phục dữ liệu</h3>
+                            <p style="color:#4b5563;margin-bottom:16px;font-size:0.9rem;">⚠️ <strong>Cảnh báo:</strong> Thao tác này sẽ <strong>ghi đè</strong> toàn bộ dữ liệu hiện tại. Hãy sao lưu trước khi khôi phục.</p>
+                            <input type="file" id="restoreFile" accept=".json" class="form-control" style="margin-bottom:12px;">
+                            <button class="btn btn-danger" style="width:100%" onclick="restoreData()">📤 Khôi phục từ file</button>
+                        </div>
+                    </div>
+
+                    <!-- Lịch sử sao lưu -->
+                    <div style="margin-top:20px;padding:16px;background:var(--gray-50);border-radius:12px;">
+                        <h3 style="margin-bottom:12px;color:var(--gray-700);">📋 Thông tin</h3>
+                        <ul style="list-style:none;padding:0;margin:0;font-size:0.9rem;color:var(--gray-600);">
+                            <li style="padding:6px 0;">📦 Dữ liệu sao lưu bao gồm: <strong>scores_5s, departments_5s, users_5s, settings_5s</strong></li>
+                            <li style="padding:6px 0;">📁 File lưu dạng: <code>Backup_5S_YYYY-MM-DD_HHMMSS.json</code></li>
+                            <li style="padding:6px 0;">🔐 Chỉ Mod và Admin có quyền sao lưu/khôi phục</li>
+                            <li style="padding:6px 0;">⚠️ Khôi phục sẽ ghi đè toàn bộ dữ liệu — không thể hoàn tác</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -2467,6 +2610,7 @@
             loadChartDeptFilter();
             loadDeptStats();
             renderMonthlyChart();
+            updateLockBanner();
         }
 
         function showTab(tab) {
@@ -2665,6 +2809,166 @@
             resultDiv.innerHTML = answered > 0 ? resultHtml : '';
         }
 
+        // ===== SCORING LOCK/UNLOCK LOGIC =====
+
+        // Kiểm tra cửa sổ chấm điểm theo quy tắc thời gian
+        function isScoringWindowOpen() {
+            const now = new Date();
+            const day = now.getDate();
+            const month = now.getMonth() + 1; // 1-12
+            const year = now.getFullYear();
+            const currentMonth = `${year}-${String(month).padStart(2, '0')}`;
+
+            let isOpen = false;
+            let windowDesc = '';
+
+            if (month === 12) {
+                isOpen = (day >= 5 && day <= 10);
+                windowDesc = 'ngày 05–10 tháng 12';
+            } else {
+                isOpen = (day >= 25 && day <= 30);
+                windowDesc = 'ngày 25–30 hàng tháng';
+            }
+
+            return { isOpen, currentMonth, day, month, year, windowDesc };
+        }
+
+        // Lấy trạng thái khóa/mở đầy đủ (bao gồm override từ Firebase)
+        async function getScoringLockStatus() {
+            const window = isScoringWindowOpen();
+
+            // Admin/Mod luôn được chấm
+            if (currentUser && (currentUser.role === 'admin' || currentUser.role === 'mod')) {
+                return {
+                    canScore: true,
+                    isAutoOpen: window.isOpen,
+                    isManualOverride: false,
+                    reason: window.isOpen ? 'Đang trong thời gian chấm điểm' : 'Admin/Mod luôn có quyền chấm',
+                    windowDesc: window.windowDesc,
+                    currentMonth: window.currentMonth
+                };
+            }
+
+            // Auto-open: cửa sổ đang mở
+            if (window.isOpen) {
+                return {
+                    canScore: true,
+                    isAutoOpen: true,
+                    isManualOverride: false,
+                    reason: `Đang trong thời gian chấm điểm (${window.windowDesc})`,
+                    windowDesc: window.windowDesc,
+                    currentMonth: window.currentMonth
+                };
+            }
+
+            // Kiểm tra override thủ công từ Firebase
+            try {
+                const snap = await db.ref('settings_5s/scoringLock').once('value');
+                const lockData = snap.val();
+
+                if (lockData && lockData.manualUnlock === true && lockData.forMonth === window.currentMonth) {
+                    return {
+                        canScore: true,
+                        isAutoOpen: false,
+                        isManualOverride: true,
+                        reason: `Đã được mở bởi ${lockData.unlockedBy || 'Admin'}`,
+                        unlockedBy: lockData.unlockedBy,
+                        unlockedAt: lockData.unlockedAt,
+                        windowDesc: window.windowDesc,
+                        currentMonth: window.currentMonth
+                    };
+                }
+            } catch (e) {
+                console.error('Error checking lock status:', e);
+            }
+
+            // Mặc định: khóa
+            return {
+                canScore: false,
+                isAutoOpen: false,
+                isManualOverride: false,
+                reason: `Ngoài thời gian chấm điểm (${window.windowDesc})`,
+                windowDesc: window.windowDesc,
+                currentMonth: window.currentMonth
+            };
+        }
+
+        // Cập nhật UI banner hiển thị trạng thái khóa/mở
+        async function updateLockBanner() {
+            const banner = document.getElementById('lockBanner');
+            if (!banner) return;
+
+            const status = await getScoringLockStatus();
+            const isMod = currentUser && (currentUser.role === 'admin' || currentUser.role === 'mod');
+            const window = isScoringWindowOpen();
+
+            let bannerClass, iconHtml, textHtml, btnHtml = '';
+
+            if (window.isOpen) {
+                // Auto-open
+                bannerClass = 'lock-banner-open';
+                iconHtml = '🟢';
+                textHtml = `<strong>Đang mở chấm điểm</strong><small>Thời gian: ${status.windowDesc} — Tháng ${window.currentMonth}</small>`;
+            } else if (status.isManualOverride) {
+                // Override bởi Mod/Admin
+                bannerClass = 'lock-banner-override';
+                iconHtml = '🟡';
+                const timeStr = status.unlockedAt ? new Date(status.unlockedAt).toLocaleString('vi-VN') : '';
+                textHtml = `<strong>Đã mở bởi ${status.unlockedBy || 'Admin'}</strong><small>Chấm điểm ngoài thời hạn sẽ ghi nhận ❌ Không đúng hạn${timeStr ? ' — Mở lúc: ' + timeStr : ''}</small>`;
+                if (isMod) {
+                    btnHtml = `<button class="lock-toggle-btn lock-btn" onclick="toggleScoringLock(true)">🔒 Khóa lại</button>`;
+                }
+            } else {
+                // Đã khóa
+                bannerClass = 'lock-banner-locked';
+                iconHtml = '🔴';
+                textHtml = `<strong>Đã khóa chấm điểm</strong><small>Thời gian chấm: ${status.windowDesc} — Liên hệ QLCL để mở khóa nếu cần</small>`;
+                if (isMod) {
+                    btnHtml = `<button class="lock-toggle-btn unlock-btn" onclick="toggleScoringLock(false)">🔓 Mở khóa</button>`;
+                }
+            }
+
+            banner.className = `lock-banner ${bannerClass}`;
+            banner.innerHTML = `
+                <div class="lock-banner-info">
+                    <span class="lock-banner-icon">${iconHtml}</span>
+                    <div class="lock-banner-text">${textHtml}</div>
+                </div>
+                ${btnHtml}
+            `;
+        }
+
+        // Toggle khóa/mở (chỉ Mod/Admin)
+        async function toggleScoringLock(shouldLock) {
+            if (!currentUser || (currentUser.role !== 'admin' && currentUser.role !== 'mod')) {
+                alert('Bạn không có quyền thay đổi trạng thái khóa!');
+                return;
+            }
+
+            const window = isScoringWindowOpen();
+
+            if (shouldLock) {
+                // Khóa lại: xóa override
+                await db.ref('settings_5s/scoringLock').set({
+                    manualUnlock: false,
+                    unlockedBy: null,
+                    unlockedAt: null,
+                    forMonth: window.currentMonth
+                });
+            } else {
+                // Mở khóa: tạo override
+                if (!confirm('Mở khóa sẽ cho phép tất cả khoa/phòng chấm điểm.\nĐiểm chấm ngoài thời hạn sẽ ghi nhận ❌ Không đúng hạn.\n\nBạn có chắc muốn mở khóa?')) return;
+                await db.ref('settings_5s/scoringLock').set({
+                    manualUnlock: true,
+                    unlockedBy: currentUser.fullname || currentUser.username,
+                    unlockedAt: new Date().toISOString(),
+                    forMonth: window.currentMonth
+                });
+            }
+
+            updateLockBanner();
+        }
+
         async function submitScore() {
             const deptId = document.getElementById('scoreDept').value;
             const zoneId = document.getElementById('scoreZone').value;
@@ -2676,6 +2980,13 @@
             // Chỉ yêu cầu chọn đến khu vực định danh (không cần chọn đại diện)
             if (!deptId || !zoneId || !month || !evaluator) {
                 showAlert('scoreAlert', 'Vui lòng điền đầy đủ thông tin (Khoa/Phòng, Khu vực, Tháng/Năm, Người đánh giá)', 'error');
+                return;
+            }
+
+            // Kiểm tra trạng thái khóa/mở
+            const lockStatus = await getScoringLockStatus();
+            if (!lockStatus.canScore) {
+                showAlert('scoreAlert', '🔒 Chấm điểm đang bị khóa. ' + lockStatus.reason + '. Liên hệ QLCL (Mod/Admin) để mở khóa.', 'error');
                 return;
             }
 
@@ -3337,6 +3648,132 @@
             const el = document.getElementById(id);
             el.innerHTML = `<div class="alert alert-${type}">${msg}</div>`;
             setTimeout(() => el.innerHTML = '', 5000);
+        }
+
+        // ===== BACKUP / RESTORE =====
+
+        async function backupData() {
+            if (!currentUser || (currentUser.role !== 'admin' && currentUser.role !== 'mod')) {
+                alert('Bạn không có quyền sao lưu!');
+                return;
+            }
+
+            showAlert('backupAlert', '⏳ Đang sao lưu dữ liệu...', 'success');
+
+            try {
+                const [scoresSnap, deptsSnap, usersSnap, settingsSnap] = await Promise.all([
+                    db.ref('scores_5s').once('value'),
+                    db.ref('departments_5s').once('value'),
+                    db.ref('users_5s').once('value'),
+                    db.ref('settings_5s').once('value')
+                ]);
+
+                const backupData = {
+                    _meta: {
+                        app: 'App 5S - Bệnh viện Nhi đồng TP Cần Thơ',
+                        exportedAt: new Date().toISOString(),
+                        exportedBy: currentUser.fullname || currentUser.username,
+                        version: '1.0'
+                    },
+                    scores_5s: scoresSnap.val() || {},
+                    departments_5s: deptsSnap.val() || {},
+                    users_5s: usersSnap.val() || {},
+                    settings_5s: settingsSnap.val() || {}
+                };
+
+                const jsonStr = JSON.stringify(backupData, null, 2);
+                const blob = new Blob([jsonStr], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+
+                const now = new Date();
+                const filename = `Backup_5S_${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}_${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}${String(now.getSeconds()).padStart(2, '0')}.json`;
+
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+
+                const scoreCount = Object.keys(backupData.scores_5s).length;
+                const deptCount = Object.keys(backupData.departments_5s).length;
+                const userCount = Object.keys(backupData.users_5s).length;
+
+                showAlert('backupAlert', `✅ Sao lưu thành công! File: ${filename}`, 'success');
+                document.getElementById('backupInfo').innerHTML = `📊 <strong>${scoreCount}</strong> bản ghi điểm | <strong>${deptCount}</strong> khoa/phòng | <strong>${userCount}</strong> tài khoản | Kích thước: <strong>${(jsonStr.length / 1024).toFixed(1)} KB</strong>`;
+            } catch (error) {
+                console.error('Backup error:', error);
+                showAlert('backupAlert', '❌ Lỗi sao lưu: ' + error.message, 'error');
+            }
+        }
+
+        async function restoreData() {
+            if (!currentUser || (currentUser.role !== 'admin' && currentUser.role !== 'mod')) {
+                alert('Bạn không có quyền khôi phục!');
+                return;
+            }
+
+            const fileInput = document.getElementById('restoreFile');
+            if (!fileInput.files || !fileInput.files[0]) {
+                showAlert('backupAlert', '⚠️ Vui lòng chọn file JSON để khôi phục', 'error');
+                return;
+            }
+
+            const file = fileInput.files[0];
+            if (!file.name.endsWith('.json')) {
+                showAlert('backupAlert', '⚠️ File phải có định dạng .json', 'error');
+                return;
+            }
+
+            try {
+                const text = await file.text();
+                const data = JSON.parse(text);
+
+                // Validate structure
+                if (!data.scores_5s && !data.departments_5s && !data.users_5s) {
+                    showAlert('backupAlert', '❌ File không đúng định dạng sao lưu App 5S', 'error');
+                    return;
+                }
+
+                const scoreCount = Object.keys(data.scores_5s || {}).length;
+                const deptCount = Object.keys(data.departments_5s || {}).length;
+                const userCount = Object.keys(data.users_5s || {}).length;
+                const meta = data._meta || {};
+
+                const confirmMsg = `⚠️ KHÔI PHỤC DỮ LIỆU\n\nFile: ${file.name}\n${meta.exportedAt ? 'Ngày sao lưu: ' + new Date(meta.exportedAt).toLocaleString('vi-VN') + '\n' : ''}${meta.exportedBy ? 'Người sao lưu: ' + meta.exportedBy + '\n' : ''}\nDữ liệu trong file:\n• ${scoreCount} bản ghi điểm\n• ${deptCount} khoa/phòng\n• ${userCount} tài khoản\n\n⚠️ Thao tác này sẽ GHI ĐÈ toàn bộ dữ liệu hiện tại!\nBạn có chắc chắn muốn tiếp tục?`;
+
+                if (!confirm(confirmMsg)) return;
+                if (!confirm('Xác nhận lần cuối: BẠN CHẮC CHẮN MUỐN GHI ĐÈ TOÀN BỘ DỮ LIỆU?')) return;
+
+                showAlert('backupAlert', '⏳ Đang khôi phục dữ liệu...', 'success');
+
+                const updates = {};
+                if (data.scores_5s) updates['scores_5s'] = data.scores_5s;
+                if (data.departments_5s) updates['departments_5s'] = data.departments_5s;
+                if (data.users_5s) updates['users_5s'] = data.users_5s;
+                if (data.settings_5s) updates['settings_5s'] = data.settings_5s;
+
+                await db.ref('/').update(updates);
+
+                showAlert('backupAlert', '✅ Khôi phục thành công! Đang tải lại dữ liệu...', 'success');
+                fileInput.value = '';
+
+                // Reload data
+                setTimeout(() => {
+                    loadDepartments();
+                    loadStats();
+                    loadRecentScores();
+                    updateLockBanner();
+                }, 1000);
+            } catch (error) {
+                console.error('Restore error:', error);
+                if (error instanceof SyntaxError) {
+                    showAlert('backupAlert', '❌ File JSON không hợp lệ', 'error');
+                } else {
+                    showAlert('backupAlert', '❌ Lỗi khôi phục: ' + error.message, 'error');
+                }
+            }
         }
     </script>
 </body>
