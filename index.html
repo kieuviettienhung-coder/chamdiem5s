@@ -1697,7 +1697,7 @@
                         <table class="score-table" id="criteriaTable"></table>
                     </div>
                     <div class="text-center mt-20">
-                        <button class="btn btn-success" onclick="submitScore()">💾 Lưu kết quả chấm điểm</button>
+                        <button id="btnSubmitScore" class="btn btn-success" onclick="submitScore()">💾 Lưu kết quả chấm điểm</button>
                         <div id="submitSuccessMsg" class="success-message">✅ Đã lưu kết quả chấm điểm thành công!</div>
                     </div>
                 </div>
@@ -1722,12 +1722,20 @@
                             <label>Đến tháng</label>
                             <input type="month" id="reportTo" class="form-control" min="2026-01" max="2030-12">
                         </div>
-                        <div class="form-group" style="display:flex;align-items:flex-end;">
+                        <div class="form-group">
+                            <label>Trạng thái</label>
+                            <select id="reportStatus" class="form-control">
+                                <option value="all">-- Tất cả --</option>
+                                <option value="reported">✅ Đã báo cáo</option>
+                                <option value="unreported">❌ Chưa báo cáo</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="display:flex;align-items:flex-end;gap:10px;">
                             <button class="btn btn-primary" onclick="loadReport()">🔍 Xem báo cáo</button>
-                            <button class="btn btn-success" style="margin-left:10px;" onclick="exportExcel()">📥 Xuất
-                                Excel</button>
+                            <button class="btn btn-success" onclick="exportExcel()">📥 Xuất Excel</button>
                         </div>
                     </div>
+                    <div id="reportSummaryBanner" style="display:none;"></div>
                     <div id="reportResult" class="mt-20"></div>
                 </div>
             </div>
@@ -2982,7 +2990,15 @@
             updateLockBanner();
         }
 
+        let _isSubmitting = false; // Chống spam bấm gửi nhiều lần
+
         async function submitScore() {
+            // Chống spam: nếu đang submit thì bỏ qua
+            if (_isSubmitting) {
+                showAlert('scoreAlert', '⏳ Đang xử lý, vui lòng chờ...', 'error');
+                return;
+            }
+
             const deptId = document.getElementById('scoreDept').value;
             const zoneId = document.getElementById('scoreZone').value;
             const month = document.getElementById('scoreMonth').value;
@@ -3063,21 +3079,41 @@
                 createdBy: currentUser.username
             };
 
-            await db.ref('scores_5s').push(scoreData);
+            // Khóa nút + đánh dấu đang submit
+            _isSubmitting = true;
+            const submitBtn = document.getElementById('btnSubmitScore');
+            const originalBtnText = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '⏳ Đang gửi...';
+            submitBtn.style.opacity = '0.6';
 
-            // Show inline success message
-            const successMsg = document.getElementById('submitSuccessMsg');
-            successMsg.style.display = 'block';
-            setTimeout(() => {
-                successMsg.style.display = 'none';
-            }, 3000);
+            try {
+                await db.ref('scores_5s').push(scoreData);
 
-            // Reset form
-            document.querySelectorAll('.score-radio input').forEach(r => r.checked = false);
-            document.querySelectorAll('.reason-input').forEach(r => r.value = '');
-            clearImage();
-            loadStats();
-            loadRecentScores();
+                // Show inline success message
+                const successMsg = document.getElementById('submitSuccessMsg');
+                successMsg.style.display = 'block';
+                setTimeout(() => {
+                    successMsg.style.display = 'none';
+                }, 3000);
+
+                // Reset form
+                document.querySelectorAll('.score-radio input').forEach(r => r.checked = false);
+                document.querySelectorAll('.reason-input').forEach(r => r.value = '');
+                clearImage();
+                loadStats();
+                loadRecentScores();
+            } catch (err) {
+                showAlert('scoreAlert', '❌ Lỗi khi gửi điểm: ' + err.message, 'error');
+            } finally {
+                // Mở lại nút sau 3 giây (tránh bấm liên tục)
+                setTimeout(() => {
+                    _isSubmitting = false;
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalBtnText;
+                    submitBtn.style.opacity = '1';
+                }, 3000);
+            }
         }
 
         async function loadStats() {
@@ -3394,23 +3430,78 @@
             const deptName = document.getElementById('reportDept').selectedOptions[0]?.text || '';
             const from = document.getElementById('reportFrom').value;
             const to = document.getElementById('reportTo').value;
+            const statusFilter = document.getElementById('reportStatus').value; // all | reported | unreported
 
             const snap = await db.ref('scores_5s').once('value');
             let scores = [];
             snap.forEach(s => { scores.push({ id: s.key, ...s.val() }); });
 
-            // Filter by department - check departmentId OR normalize department name comparison
+            // Filter by month range first (needed for status filter)
+            if (from) scores = scores.filter(s => s.month >= from);
+            if (to) scores = scores.filter(s => s.month <= to);
+
+            // Get all departments for status filter
+            const deptsSnap = await db.ref('departments_5s').once('value');
+            const allDepts = deptsSnap.val() || {};
+            const reportedDeptIds = new Set();
+            scores.forEach(s => {
+                if (s.departmentId) reportedDeptIds.add(s.departmentId);
+            });
+
+            // Build reported/unreported lists
+            const allDeptEntries = Object.entries(allDepts);
+            const reportedDepts = allDeptEntries.filter(([id]) => reportedDeptIds.has(id));
+            const unreportedDepts = allDeptEntries.filter(([id]) => !reportedDeptIds.has(id));
+
+            // Show summary banner
+            const bannerEl = document.getElementById('reportSummaryBanner');
+            const monthLabel = from ? (from === to ? from : `${from} → ${to || '...'}`) : 'Tất cả';
+            bannerEl.style.display = 'flex';
+            bannerEl.style.cssText = 'display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px;';
+            bannerEl.innerHTML = `
+                <div style="flex:1;min-width:200px;background:linear-gradient(135deg,#10b981,#059669);color:white;padding:14px 18px;border-radius:10px;">
+                    <div style="font-size:0.85rem;opacity:0.9;">✅ Đã báo cáo</div>
+                    <div style="font-size:1.5rem;font-weight:700;">${reportedDepts.length}/${allDeptEntries.length}</div>
+                    <div style="font-size:0.8rem;opacity:0.8;margin-top:2px;">${reportedDepts.map(([,d]) => d.name).join(', ') || 'Chưa có'}</div>
+                </div>
+                <div style="flex:1;min-width:200px;background:linear-gradient(135deg,#ef4444,#dc2626);color:white;padding:14px 18px;border-radius:10px;">
+                    <div style="font-size:0.85rem;opacity:0.9;">❌ Chưa báo cáo</div>
+                    <div style="font-size:1.5rem;font-weight:700;">${unreportedDepts.length}/${allDeptEntries.length}</div>
+                    <div style="font-size:0.8rem;opacity:0.8;margin-top:2px;">${unreportedDepts.map(([,d]) => d.name).join(', ') || 'Tất cả đã báo cáo'}</div>
+                </div>
+            `;
+
+            // Handle status filter: show unreported departments list
+            if (statusFilter === 'unreported') {
+                if (unreportedDepts.length === 0) {
+                    document.getElementById('reportResult').innerHTML = '<p class="text-center" style="color:#10b981;font-weight:600;">🎉 Tất cả khoa/phòng đã nộp báo cáo!</p>';
+                } else {
+                    let html = '<h3 style="margin-bottom:12px;color:#ef4444;">📋 Danh sách Khoa/Phòng chưa báo cáo (' + unreportedDepts.length + ')</h3>';
+                    html += '<table><thead><tr><th>STT</th><th>Khoa/Phòng</th><th>Số khu vực</th><th>Trạng thái</th></tr></thead><tbody>';
+                    unreportedDepts.forEach(([id, dept], idx) => {
+                        const zoneCount = Object.keys(dept.zones || {}).length;
+                        html += `<tr><td style="text-align:center;font-weight:600;">${idx + 1}</td><td>${dept.name}</td><td style="text-align:center;">${zoneCount}</td><td style="color:#ef4444;font-weight:500;">❌ Chưa báo cáo</td></tr>`;
+                    });
+                    html += '</tbody></table>';
+                    document.getElementById('reportResult').innerHTML = html;
+                }
+                return;
+            }
+
+            // Filter by department
             if (deptId) {
                 scores = scores.filter(s => {
                     if (s.departmentId === deptId) return true;
-                    // Normalize and compare names (remove extra spaces, compare case-insensitive)
                     const normalizedDeptName = deptName.trim().toUpperCase();
                     const normalizedScoreDept = (s.department || '').trim().toUpperCase();
                     return normalizedScoreDept === normalizedDeptName || normalizedScoreDept.includes(normalizedDeptName) || normalizedDeptName.includes(normalizedScoreDept);
                 });
             }
-            if (from) scores = scores.filter(s => s.month >= from);
-            if (to) scores = scores.filter(s => s.month <= to);
+
+            // If status = reported, only show departments that have reports
+            if (statusFilter === 'reported') {
+                scores = scores.filter(s => reportedDeptIds.has(s.departmentId));
+            }
 
             scores.sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
 
@@ -3420,8 +3511,8 @@
             }
 
             const canDelete = currentUser && (currentUser.role === 'admin' || currentUser.role === 'mod');
-            let html = '<table><thead><tr><th>Tháng</th><th>Khoa/Phòng</th><th>Khu vực</th><th>Mô tả</th><th>Người đánh giá</th><th>Điểm TB</th><th>Thời gian chấm</th><th>Ảnh</th><th>Ngày tạo</th>' + (canDelete ? '<th>Xóa</th>' : '') + '</tr></thead><tbody>';
-            scores.forEach(s => {
+            let html = '<table><thead><tr><th>STT</th><th>Tháng</th><th>Khoa/Phòng</th><th>Khu vực</th><th>Mô tả</th><th>Người đánh giá</th><th>Điểm TB</th><th>Thời gian chấm</th><th>Ảnh</th><th>Ngày tạo</th>' + (canDelete ? '<th>Xóa</th>' : '') + '</tr></thead><tbody>';
+            scores.forEach((s, index) => {
                 const imgHtml = s.imageUrl
                     ? `<a href="${s.imageUrl}" target="_blank"><img src="${s.imageUrl}" style="width:50px;height:50px;object-fit:cover;border-radius:4px;cursor:pointer;"></a>`
                     : '<span style="color:var(--gray-600);">-</span>';
@@ -3430,7 +3521,7 @@
                     : '';
                 const timeStatus = isOnTime(s.createdAt, s.month);
                 const timeStyle = timeStatus.onTime ? 'color:#10b981;' : 'color:#ef4444;';
-                html += `<tr><td>${s.month}</td><td>${s.department}</td><td>${s.zone}</td><td>${s.item || (s.items ? s.items.join(', ') : '-')}</td><td>${s.evaluator}</td><td><strong>${s.average}</strong></td><td style="${timeStyle}">${timeStatus.label}</td><td>${imgHtml}</td><td>${new Date(s.createdAt).toLocaleDateString('vi-VN')}</td>${canDelete ? '<td>' + deleteBtn + '</td>' : ''}</tr>`;
+                html += `<tr><td style="text-align:center;font-weight:600;">${index + 1}</td><td>${s.month}</td><td>${s.department}</td><td>${s.zone}</td><td>${s.item || (s.items ? s.items.join(', ') : '-')}</td><td>${s.evaluator}</td><td><strong>${s.average}</strong></td><td style="${timeStyle}">${timeStatus.label}</td><td>${imgHtml}</td><td>${new Date(s.createdAt).toLocaleDateString('vi-VN')}</td>${canDelete ? '<td>' + deleteBtn + '</td>' : ''}</tr>`;
             });
             html += '</tbody></table>';
             document.getElementById('reportResult').innerHTML = html;
