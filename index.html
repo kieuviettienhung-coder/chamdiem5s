@@ -1579,54 +1579,57 @@
 
             <!-- Home Tab -->
             <div id="homeTab" class="tab-content active">
-                <div class="card">
-                    <h2 style="margin-bottom:20px;">📊 Thống kê tổng quan</h2>
-                    <div class="grid grid-3">
-                        <div class="stats-card">
-                            <h3 id="statDepts">0</h3>
-                            <p>Khoa/Phòng</p>
+                <div class="grid grid-3" style="margin-bottom:24px;">
+                    <div class="stats-card" style="background:linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); display:flex; align-items:center; justify-content:space-between; padding:24px; text-align:left; box-shadow:0 10px 20px -5px rgba(37,99,235,0.4); border:none;">
+                        <div>
+                            <p style="text-transform:uppercase; font-size:0.8rem; font-weight:700; letter-spacing:1px; margin-bottom:4px; opacity:0.9;">Khoa/Phòng</p>
+                            <h3 id="statDepts" style="font-size:2.5rem; margin:0; line-height:1;">0</h3>
                         </div>
-                        <div class="stats-card" style="background:linear-gradient(135deg,#10b981 0%,#059669 100%);">
-                            <h3 id="statZones">0</h3>
-                            <p>Khu vực</p>
-                        </div>
-                        <div class="stats-card" style="background:linear-gradient(135deg,#f59e0b 0%,#d97706 100%);">
-                            <h3 id="statScores">0</h3>
-                            <p>Lượt chấm điểm</p>
-                        </div>
+                        <div style="font-size:3rem; opacity:0.3; transform:rotate(-10deg);">🏥</div>
                     </div>
-                </div>
-
-                <!-- Bộ lọc khoa phòng cho biểu đồ -->
-                <div class="card">
-                    <h2 style="margin-bottom:20px;">🔍 Lọc theo Khoa/Phòng</h2>
-                    <div class="form-group">
-                        <select id="chartDeptFilter" class="form-control" onchange="filterDashboard()">
-                            <option value="">-- Tất cả khoa/phòng --</option>
-                        </select>
+                    <div class="stats-card" style="background:linear-gradient(135deg, #10b981 0%, #059669 100%); display:flex; align-items:center; justify-content:space-between; padding:24px; text-align:left; box-shadow:0 10px 20px -5px rgba(16,185,129,0.4); border:none;">
+                        <div>
+                            <p style="text-transform:uppercase; font-size:0.8rem; font-weight:700; letter-spacing:1px; margin-bottom:4px; opacity:0.9;">Khu vực</p>
+                            <h3 id="statZones" style="font-size:2.5rem; margin:0; line-height:1;">0</h3>
+                        </div>
+                        <div style="font-size:3rem; opacity:0.3; transform:rotate(10deg);">📍</div>
+                    </div>
+                    <div class="stats-card" style="background:linear-gradient(135deg, #f59e0b 0%, #d97706 100%); display:flex; align-items:center; justify-content:space-between; padding:24px; text-align:left; box-shadow:0 10px 20px -5px rgba(245,158,11,0.4); border:none;">
+                        <div>
+                            <p style="text-transform:uppercase; font-size:0.8rem; font-weight:700; letter-spacing:1px; margin-bottom:4px; opacity:0.9;">Lượt chấm</p>
+                            <h3 id="statScores" style="font-size:2.5rem; margin:0; line-height:1;">0</h3>
+                        </div>
+                        <div style="font-size:3rem; opacity:0.3; transform:scale(1.1);">📝</div>
                     </div>
                 </div>
 
                 <!-- Biểu đồ điểm theo tháng -->
-                <div class="card">
-                    <h2 style="margin-bottom:20px;">📈 Biểu đồ điểm trung bình theo tháng</h2>
-                    <div style="position:relative;height:300px;">
+                <div class="card" style="padding:24px; box-shadow:0 4px 15px rgba(0,0,0,0.05);">
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; margin-bottom:24px;">
+                        <h2 style="margin:0; color:var(--gray-800); font-size:1.3rem;">📈 Biểu đồ Điểm Trung Bình</h2>
+                        <div style="min-width:250px;">
+                            <select id="chartDeptFilter" class="form-control" onchange="filterDashboard()" style="background-color:var(--gray-50); border-color:var(--gray-200); font-size:0.95rem;">
+                                <option value="">-- Tất cả Khoa/Phòng --</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div style="position:relative; height:320px;">
                         <canvas id="monthlyChart"></canvas>
                     </div>
                 </div>
 
                 <!-- Thống kê theo khoa phòng -->
-                <div class="card">
-                    <h2 style="margin-bottom:20px;">🏥 Thống kê theo Khoa/Phòng</h2>
+                <div class="card" style="padding:24px; box-shadow:0 4px 15px rgba(0,0,0,0.05);">
+                    <h2 style="margin:0 0 20px 0; color:var(--gray-800); font-size:1.3rem;">🏥 Thống kê chi tiết Khoa/Phòng</h2>
                     <div id="deptStatsContainer">
-                        <p class="text-center">Đang tải...</p>
+                        <p class="text-center" style="color:var(--gray-500);">Đang tải...</p>
                     </div>
                 </div>
 
-                <div class="card">
-                    <h2 style="margin-bottom:20px;">📋 Chấm điểm gần đây</h2>
+                <div class="card" style="padding:24px; box-shadow:0 4px 15px rgba(0,0,0,0.05);">
+                    <h2 style="margin:0 0 20px 0; color:var(--gray-800); font-size:1.3rem;">📋 Chấm điểm gần đây</h2>
                     <div id="recentScores">
-                        <p class="text-center">Chưa có dữ liệu</p>
+                        <p class="text-center" style="color:var(--gray-500);">Chưa có dữ liệu</p>
                     </div>
                 </div>
             </div>
@@ -2875,11 +2878,12 @@
                 const lockData = snap.val();
 
                 if (lockData && lockData.manualUnlock === true && lockData.forMonth === window.currentMonth) {
+                    const unlockedName = lockData.unlockedBy === 'Kiều Việt Tiến Hưng' ? 'Admin' : (lockData.unlockedBy || 'Admin');
                     return {
                         canScore: true,
                         isAutoOpen: false,
                         isManualOverride: true,
-                        reason: `Đã được mở bởi ${lockData.unlockedBy || 'Admin'}`,
+                        reason: `Đã được mở bởi ${unlockedName}`,
                         unlockedBy: lockData.unlockedBy,
                         unlockedAt: lockData.unlockedAt,
                         windowDesc: window.windowDesc,
@@ -2935,7 +2939,8 @@
                 bannerClass = 'lock-banner-override';
                 iconHtml = '🟡';
                 const timeStr = overrideData.unlockedAt ? new Date(overrideData.unlockedAt).toLocaleString('vi-VN') : '';
-                textHtml = `<strong>Đã mở bởi ${overrideData.unlockedBy || 'Admin'}</strong><small>Chấm điểm ngoài thời hạn sẽ ghi nhận ❌ Không đúng hạn${timeStr ? ' — Mở lúc: ' + timeStr : ''}</small>`;
+                const unlockedName = overrideData.unlockedBy === 'Kiều Việt Tiến Hưng' ? 'Admin' : (overrideData.unlockedBy || 'Admin');
+                textHtml = `<strong>Đã mở bởi ${unlockedName}</strong><small>Chấm điểm ngoài thời hạn sẽ ghi nhận ❌ Không đúng hạn${timeStr ? ' — Mở lúc: ' + timeStr : ''}</small>`;
                 if (isMod) {
                     btnHtml = `<button class="lock-toggle-btn lock-btn" onclick="toggleScoringLock(true)">🔒 Khóa lại</button>`;
                 }
@@ -2981,7 +2986,7 @@
                 if (!confirm('Mở khóa sẽ cho phép tất cả khoa/phòng chấm điểm.\nĐiểm chấm ngoài thời hạn sẽ ghi nhận ❌ Không đúng hạn.\n\nBạn có chắc muốn mở khóa?')) return;
                 await db.ref('settings_5s/scoringLock').set({
                     manualUnlock: true,
-                    unlockedBy: currentUser.fullname || currentUser.username,
+                    unlockedBy: currentUser.role === 'admin' ? 'Admin' : (currentUser.fullname || currentUser.username),
                     unlockedAt: new Date().toISOString(),
                     forMonth: window.currentMonth
                 });
@@ -3348,6 +3353,12 @@
             }
 
             const ctx = document.getElementById('monthlyChart').getContext('2d');
+            
+            // Create beautiful gradient
+            const gradient = ctx.createLinearGradient(0, 0, 0, 320);
+            gradient.addColorStop(0, 'rgba(37, 99, 235, 0.4)'); // opacity primary
+            gradient.addColorStop(1, 'rgba(37, 99, 235, 0.0)');
+
             monthlyChartInstance = new Chart(ctx, {
                 type: 'line',
                 data: {
@@ -3356,27 +3367,40 @@
                         label: 'Điểm trung bình',
                         data: data,
                         borderColor: '#2563eb',
-                        backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                        backgroundColor: gradient,
                         borderWidth: 3,
                         fill: true,
                         tension: 0.4,
-                        pointBackgroundColor: '#2563eb',
-                        pointBorderColor: '#fff',
+                        pointBackgroundColor: '#ffffff',
+                        pointBorderColor: '#2563eb',
                         pointBorderWidth: 2,
-                        pointRadius: 6,
-                        pointHoverRadius: 8
+                        pointRadius: 5,
+                        pointHoverRadius: 8,
+                        pointHoverBackgroundColor: '#2563eb',
+                        pointHoverBorderColor: '#ffffff',
+                        pointHoverBorderWidth: 2
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
                     plugins: {
                         legend: { display: false },
                         tooltip: {
-                            backgroundColor: 'rgba(0,0,0,0.8)',
+                            backgroundColor: 'rgba(17, 24, 39, 0.9)',
                             padding: 12,
-                            titleFont: { size: 14 },
-                            bodyFont: { size: 13 }
+                            titleFont: { size: 14, family: "'Inter', sans-serif" },
+                            bodyFont: { size: 14, family: "'Inter', sans-serif" },
+                            displayColors: false,
+                            callbacks: {
+                                label: function(context) {
+                                    return `Điểm TB: ${context.parsed.y}/5`;
+                                }
+                            }
                         }
                     },
                     scales: {
@@ -3384,11 +3408,22 @@
                             beginAtZero: false,
                             min: 0,
                             max: 5,
-                            ticks: { stepSize: 1 },
-                            grid: { color: 'rgba(0,0,0,0.05)' }
+                            ticks: { 
+                                stepSize: 1,
+                                font: { family: "'Inter', sans-serif", color: '#6b7280' }
+                            },
+                            grid: { 
+                                color: 'rgba(0,0,0,0.06)',
+                                borderDash: [5, 5]
+                            },
+                            border: { display: false }
                         },
                         x: {
-                            grid: { display: false }
+                            ticks: {
+                                font: { family: "'Inter', sans-serif", color: '#6b7280' }
+                            },
+                            grid: { display: false },
+                            border: { display: false }
                         }
                     }
                 }
@@ -3580,28 +3615,77 @@
 
             let html = '';
             Object.entries(depts).forEach(([deptId, dept]) => {
-                html += `<div style="border:1px solid var(--gray-200);border-radius:12px;padding:16px;margin-bottom:16px;">
-            <div class="flex flex-between"><h3>${dept.name}</h3>
-            <div><button class="btn btn-primary btn-sm" onclick="showAddZoneModal('${deptId}')">➕ Thêm khu vực</button>
-            <button class="btn btn-danger btn-sm" onclick="deleteDept('${deptId}')">🗑️</button></div></div>`;
-
                 const zones = dept.zones || {};
-                if (Object.keys(zones).length > 0) {
-                    html += '<div style="margin-top:12px;">';
-                    Object.entries(zones).forEach(([zoneId, zone]) => {
-                        html += `<div style="background:var(--gray-50);padding:12px;border-radius:8px;margin-top:8px;">
-                    <div class="flex flex-between"><strong>${zone.name}</strong>
-                    <div><button class="btn btn-primary btn-sm" onclick="showEditZoneModal('${deptId}','${zoneId}')">✏️ Sửa</button>
-                    <button class="btn btn-danger btn-sm" onclick="deleteZone('${deptId}','${zoneId}')">🗑️</button></div></div>
-                    <p style="font-size:0.85rem;color:var(--gray-600);margin-top:4px;">Mô tả: ${(zone.items || []).join(', ')}</p>
-                </div>`;
+                const zoneCount = Object.keys(zones).length;
+                
+                html += `
+                <div style="background:white; border:1px solid var(--gray-200); border-radius:12px; margin-bottom:16px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+                    <div style="background:var(--gray-50); border-bottom:1px solid var(--gray-200); padding:14px 20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; cursor:pointer;" onclick="toggleZoneDetail('${deptId}')">
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <h3 style="margin:0; font-size:1.15rem; color:var(--primary); font-weight:700;">🏥 ${dept.name}</h3>
+                            <span style="font-size:0.9rem; font-weight:500; color:var(--gray-600); background:#e5e7eb; padding:2px 8px; border-radius:12px;">${zoneCount} khu vực</span>
+                            <span id="zone-arrow-${deptId}" style="transition:transform 0.3s; color:var(--gray-500); font-size:0.9rem; margin-left:4px;">▼</span>
+                        </div>
+                        <div style="display:flex; gap:8px;">
+                            <button class="btn btn-primary btn-sm" style="display:flex; align-items:center; gap:6px; padding:6px 12px;" onclick="event.stopPropagation(); showAddZoneModal('${deptId}')"><span>➕</span> Thêm khu vực</button>
+                            <button class="btn btn-danger btn-sm" style="display:flex; align-items:center; justify-content:center; width:34px; padding:0;" title="Xóa khoa/phòng" onclick="event.stopPropagation(); deleteDept('${deptId}')">🗑️</button>
+                        </div>
+                    </div>
+                    <div id="zone-detail-${deptId}" style="padding:0 20px; display:none;">`;
+
+                if (zoneCount > 0) {
+                    html += `<table style="width:100%; border-collapse:collapse; margin:4px 0;">
+                                <tbody>`;
+                    Object.entries(zones).forEach(([zoneId, zone], index) => {
+                        const isLast = index === zoneCount - 1;
+                        const itemsList = zone.items || [];
+                        const itemsHtml = itemsList.length > 0 
+                            ? `<span style="color:#4b5563;">${itemsList.join(', ')}</span>`
+                            : `<span style="color:#ef4444;font-style:italic;">Chưa có mô tả chi tiết</span>`;
+
+                        html += `
+                            <tr style="border-bottom:${isLast ? 'none' : '1px solid var(--gray-100)'};">
+                                <td style="padding:16px 0; vertical-align:top; width:32px; text-align:center;">
+                                    <div style="background:#e0e7ff; color:#4f46e5; width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.8rem; margin-top:2px;">📍</div>
+                                </td>
+                                <td style="padding:16px 12px;">
+                                    <div style="font-weight:600; font-size:1rem; color:#111827; margin-bottom:4px;">${zone.name}</div>
+                                    <div style="font-size:0.85rem; color:var(--gray-600); line-height:1.5;">
+                                        <strong style="color:#6b7280; font-weight:600;">Đại diện:</strong> ${itemsHtml}
+                                    </div>
+                                </td>
+                                <td style="padding:16px 0; width:130px; vertical-align:middle; text-align:right;">
+                                    <div style="display:flex; gap:8px; justify-content:flex-end;">
+                                        <button class="btn btn-sm" style="background:#f3f4f6; color:#374151; border:1px solid #d1d5db; padding:6px 12px; display:flex; align-items:center; gap:4px; font-weight:500;" onclick="showEditZoneModal('${deptId}','${zoneId}')">✏️ Sửa</button>
+                                        <button class="btn btn-sm" style="background:#fee2e2; color:#b91c1c; border:1px solid #fca5a5; padding:6px 10px; display:flex; align-items:center; justify-content:center;" title="Xóa khu vực" onclick="deleteZone('${deptId}','${zoneId}')">🗑️</button>
+                                    </div>
+                                </td>
+                            </tr>`;
                     });
-                    html += '</div>';
+                    html += `   </tbody>
+                             </table>`;
+                } else {
+                    html += `<div style="padding:30px 20px; text-align:center; color:var(--gray-500); font-style:italic; font-size:0.95rem;">Chưa có khu vực nào. Hãy bấm "Thêm khu vực" phía trên để tạo mới.</div>`;
                 }
-                html += '</div>';
+                
+                html += `   </div>
+                        </div>`;
             });
 
             document.getElementById('zonesList').innerHTML = html || '<p class="text-center">Chưa có khoa/phòng nào</p>';
+        }
+
+        function toggleZoneDetail(deptId) {
+            const detail = document.getElementById('zone-detail-' + deptId);
+            const arrow = document.getElementById('zone-arrow-' + deptId);
+            if (!detail || !arrow) return;
+            if (detail.style.display === 'none') {
+                detail.style.display = 'block';
+                arrow.style.transform = 'rotate(180deg)';
+            } else {
+                detail.style.display = 'none';
+                arrow.style.transform = 'rotate(0deg)';
+            }
         }
 
         async function loadUsersList() {
