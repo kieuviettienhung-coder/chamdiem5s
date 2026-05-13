@@ -1693,18 +1693,16 @@
                                 placeholder="Họ tên đại diện">
                         </div>
                         <div class="form-group" style="grid-column: 1/-1;">
-                            <label>📷 Hình ảnh minh chứng</label>
+                            <label>📷 Hình ảnh minh chứng (Tối đa 5 ảnh)</label>
                             <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
-                                <input type="file" id="scoreImageFile" accept="image/*" class="form-control"
+                                <input type="file" id="scoreImageFile" accept="image/*" multiple class="form-control"
                                     style="flex:1;min-width:200px;" onchange="previewImage(this)">
                                 <button type="button" class="btn btn-primary btn-sm"
                                     onclick="document.getElementById('scoreImageFile').click()">📷 Chọn ảnh</button>
                             </div>
-                            <div id="imagePreview" style="margin-top:10px;display:none;">
-                                <img id="previewImg"
-                                    style="max-width:200px;max-height:150px;border-radius:8px;border:2px solid var(--gray-200);">
-                                <button type="button" class="btn btn-danger btn-sm" style="margin-left:10px;"
-                                    onclick="clearImage()">🗑️ Xóa</button>
+                            <div id="imagePreviewContainer" style="margin-top:10px;display:none;align-items:flex-end;gap:10px;flex-wrap:wrap;">
+                                <div id="imagePreviewList" style="display:flex;gap:10px;flex-wrap:wrap;"></div>
+                                <button type="button" class="btn btn-danger btn-sm" onclick="clearImage()">🗑️ Xóa tất cả</button>
                             </div>
                             <input type="hidden" id="scoreImageUrl">
                         </div>
@@ -1916,20 +1914,39 @@
 
         // Image upload functions
         function previewImage(input) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    document.getElementById('previewImg').src = e.target.result;
-                    document.getElementById('imagePreview').style.display = 'block';
-                };
-                reader.readAsDataURL(input.files[0]);
+            const previewList = document.getElementById('imagePreviewList');
+            const previewContainer = document.getElementById('imagePreviewContainer');
+            previewList.innerHTML = ''; // Clear previous previews
+
+            if (input.files && input.files.length > 0) {
+                // Giới hạn tối đa 5 file
+                const filesToProcess = Array.from(input.files).slice(0, 5);
+                
+                if (input.files.length > 5) {
+                    showAlert('scoreAlert', '⚠️ Bạn chỉ được chọn tối đa 5 ảnh. Các ảnh thừa đã bị loại bỏ.', 'error');
+                }
+
+                filesToProcess.forEach(file => {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.style.cssText = 'max-width:120px;max-height:100px;border-radius:8px;border:2px solid var(--gray-200);object-fit:cover;';
+                        previewList.appendChild(img);
+                    };
+                    reader.readAsDataURL(file);
+                });
+                previewContainer.style.display = 'flex';
+            } else {
+                previewContainer.style.display = 'none';
             }
         }
 
         function clearImage() {
             document.getElementById('scoreImageFile').value = '';
             document.getElementById('scoreImageUrl').value = '';
-            document.getElementById('imagePreview').style.display = 'none';
+            document.getElementById('imagePreviewList').innerHTML = '';
+            document.getElementById('imagePreviewContainer').style.display = 'none';
         }
 
         async function uploadToCloudinary(file) {
@@ -3022,7 +3039,7 @@
             const month = document.getElementById('scoreMonth').value;
             const evaluator = document.getElementById('scoreEvaluator').value.trim();
             const representative = document.getElementById('scoreRepresentative').value.trim();
-            const imageFile = document.getElementById('scoreImageFile').files[0];
+            const imageFiles = document.getElementById('scoreImageFile').files;
 
             // Chỉ yêu cầu chọn đến khu vực định danh (không cần chọn đại diện)
             if (!deptId || !zoneId || !month || !evaluator) {
@@ -3065,16 +3082,25 @@
                 return;
             }
 
-            // Upload image to Cloudinary if selected
-            let imageUrl = '';
-            if (imageFile) {
+            // Upload images to Cloudinary if selected
+            let imageUrls = [];
+            if (imageFiles && imageFiles.length > 0) {
                 showAlert('scoreAlert', '⏳ Đang upload ảnh...', 'success');
-                imageUrl = await uploadToCloudinary(imageFile);
-                if (!imageUrl) {
-                    showAlert('scoreAlert', '❌ Upload ảnh thất bại, vui lòng thử lại', 'error');
-                    return;
+                const filesToUpload = Array.from(imageFiles).slice(0, 5); // Limit to 5
+                
+                for (const file of filesToUpload) {
+                    const url = await uploadToCloudinary(file);
+                    if (url) {
+                        imageUrls.push(url);
+                    } else {
+                        showAlert('scoreAlert', '❌ Upload ảnh thất bại, vui lòng thử lại', 'error');
+                        return;
+                    }
                 }
             }
+            
+            // Lấy URL đầu tiên làm ảnh đại diện để tương thích ngược với code cũ
+            const imageUrl = imageUrls.length > 0 ? imageUrls[0] : '';
 
             const deptSnap = await db.ref('departments_5s/' + deptId).once('value');
             const zoneSnap = await db.ref('departments_5s/' + deptId + '/zones/' + zoneId).once('value');
@@ -3089,7 +3115,8 @@
                 month,
                 evaluator,
                 representative,
-                imageUrl,
+                imageUrl, // Ảnh đầu tiên (tương thích ngược)
+                imageUrls, // Mảng tất cả các ảnh
                 criteria,
                 total,
                 average: (total / 20).toFixed(2),
@@ -3562,9 +3589,15 @@
             const canDelete = currentUser && (currentUser.role === 'admin' || currentUser.role === 'mod');
             let html = '<table><thead><tr><th>STT</th><th>Tháng</th><th>Khoa/Phòng</th><th>Khu vực</th><th>Mô tả</th><th>Người đánh giá</th><th>Điểm</th><th>Thời gian chấm</th><th>Ảnh</th><th>Ngày tạo</th>' + (canDelete ? '<th>Xóa</th>' : '') + '</tr></thead><tbody>';
             scores.forEach((s, index) => {
-                const imgHtml = s.imageUrl
-                    ? `<a href="${s.imageUrl}" target="_blank"><img src="${s.imageUrl}" style="width:50px;height:50px;object-fit:cover;border-radius:4px;cursor:pointer;"></a>`
-                    : '<span style="color:var(--gray-600);">-</span>';
+                let imgHtml = '<span style="color:var(--gray-600);">-</span>';
+                if (s.imageUrls && s.imageUrls.length > 0) {
+                    imgHtml = `<div style="display:flex;gap:4px;flex-wrap:wrap;">` + 
+                              s.imageUrls.map(url => `<a href="${url}" target="_blank"><img src="${url}" style="width:40px;height:40px;object-fit:cover;border-radius:4px;cursor:pointer;"></a>`).join('') +
+                              `</div>`;
+                } else if (s.imageUrl) {
+                    // Tương thích ngược với dữ liệu cũ chỉ có 1 ảnh
+                    imgHtml = `<a href="${s.imageUrl}" target="_blank"><img src="${s.imageUrl}" style="width:40px;height:40px;object-fit:cover;border-radius:4px;cursor:pointer;"></a>`;
+                }
                 const deleteBtn = canDelete
                     ? `<button onclick="deleteScore('${s.id}')" class="btn btn-danger" style="padding:4px 8px;font-size:12px;">🗑️</button>`
                     : '';
