@@ -974,6 +974,335 @@
             font-style: italic;
         }
 
+        /* ===== SCORING TIMER ===== */
+        .scoring-timer-section {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border: 2px solid #3b82f6;
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 24px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .scoring-timer-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(59,130,246,0.05) 0%, transparent 70%);
+            animation: timerPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes timerPulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+
+        .scoring-timer-section.active {
+            border-color: #10b981;
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+        }
+
+        .scoring-timer-section.active::before {
+            background: radial-gradient(circle, rgba(16,185,129,0.05) 0%, transparent 70%);
+        }
+
+        .btn-start-scoring {
+            padding: 16px 40px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.35);
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-start-scoring:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(37, 99, 235, 0.45);
+        }
+
+        .btn-start-scoring:active {
+            transform: translateY(-1px);
+        }
+
+        .timer-display {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .timer-clock {
+            font-family: 'Inter', monospace;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--gray-800);
+            letter-spacing: 2px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .timer-label {
+            font-size: 0.85rem;
+            color: var(--gray-600);
+            font-weight: 500;
+            margin-top: 6px;
+        }
+
+        .timer-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #10b981;
+            animation: timerBlink 1s ease-in-out infinite;
+        }
+
+        @keyframes timerBlink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .duration-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            color: #1e40af;
+        }
+
+        @media (max-width: 600px) {
+            .scoring-timer-section {
+                padding: 20px 16px;
+            }
+
+            .timer-clock {
+                font-size: 2rem;
+            }
+
+            .btn-start-scoring {
+                padding: 14px 32px;
+                font-size: 1rem;
+                width: 100%;
+            }
+        }
+
+        /* ===== ENHANCED DASHBOARD ===== */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card-new {
+            position: relative;
+            overflow: hidden;
+            border-radius: 16px;
+            padding: 24px 20px;
+            color: white;
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+
+        .stat-card-new:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.15);
+        }
+
+        .stat-card-new .stat-icon {
+            position: absolute;
+            right: -10px;
+            top: -10px;
+            font-size: 5rem;
+            opacity: 0.12;
+            transform: rotate(-15deg);
+        }
+
+        .stat-card-new .stat-value {
+            font-size: 2.4rem;
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+
+        .stat-card-new .stat-label {
+            font-size: 0.82rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            opacity: 0.9;
+        }
+
+        .stat-card-new .stat-subtitle {
+            font-size: 0.75rem;
+            opacity: 0.7;
+            margin-top: 8px;
+        }
+
+        .chart-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .chart-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            padding: 24px;
+            border: 1px solid rgba(0,0,0,0.04);
+        }
+
+        .chart-card-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .chart-card-title h2 {
+            margin: 0;
+            color: var(--gray-800);
+            font-size: 1.15rem;
+            font-weight: 700;
+        }
+
+        .ranking-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .ranking-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--gray-100);
+            transition: background 0.2s;
+        }
+
+        .ranking-item:last-child {
+            border-bottom: none;
+        }
+
+        .ranking-item:hover {
+            background: var(--gray-50);
+            margin: 0 -12px;
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .ranking-pos {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+        }
+
+        .ranking-pos.gold { background: #fef3c7; color: #d97706; }
+        .ranking-pos.silver { background: #e5e7eb; color: #4b5563; }
+        .ranking-pos.bronze { background: #fed7aa; color: #c2410c; }
+        .ranking-pos.normal { background: var(--gray-100); color: var(--gray-600); }
+
+        .ranking-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .ranking-name {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--gray-800);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.6;
+            padding-top: 2px;
+        }
+
+        .ranking-bar-bg {
+            width: 100%;
+            height: 6px;
+            background: var(--gray-200);
+            border-radius: 3px;
+            margin-top: 6px;
+            overflow: hidden;
+        }
+
+        .ranking-bar {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 1s ease;
+        }
+
+        .ranking-score {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--gray-800);
+            flex-shrink: 0;
+            min-width: 45px;
+            text-align: right;
+        }
+
+        @media (max-width: 900px) {
+            .dashboard-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .chart-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .stat-card-new {
+                padding: 16px 14px;
+                border-radius: 12px;
+            }
+
+            .stat-card-new .stat-value {
+                font-size: 1.8rem;
+            }
+
+            .stat-card-new .stat-label {
+                font-size: 0.72rem;
+            }
+
+            .stat-card-new .stat-icon {
+                font-size: 3.5rem;
+            }
+        }
+
         /* ===== SCORING LOCK BANNER ===== */
         .lock-banner {
             display: flex;
@@ -1587,49 +1916,88 @@
 
             <!-- Home Tab -->
             <div id="homeTab" class="tab-content active">
-                <div class="grid grid-3" style="margin-bottom:24px;">
-                    <div class="stats-card" style="background:linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); display:flex; align-items:center; justify-content:space-between; padding:24px; text-align:left; box-shadow:0 10px 20px -5px rgba(37,99,235,0.4); border:none;">
-                        <div>
-                            <p style="text-transform:uppercase; font-size:0.8rem; font-weight:700; letter-spacing:1px; margin-bottom:4px; opacity:0.9;">Khoa/Phòng</p>
-                            <h3 id="statDepts" style="font-size:2.5rem; margin:0; line-height:1;">0</h3>
-                        </div>
-                        <div style="font-size:3rem; opacity:0.3; transform:rotate(-10deg);">🏥</div>
+                <!-- Stats Cards -->
+                <div class="dashboard-grid">
+                    <div class="stat-card-new" style="background:linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); box-shadow:0 10px 30px -5px rgba(37,99,235,0.4);">
+                        <span class="stat-icon">🏥</span>
+                        <div class="stat-label">Khoa/Phòng</div>
+                        <div class="stat-value" id="statDepts">0</div>
+                        <div class="stat-subtitle" id="statDeptsDesc">đơn vị tham gia</div>
                     </div>
-                    <div class="stats-card" style="background:linear-gradient(135deg, #10b981 0%, #059669 100%); display:flex; align-items:center; justify-content:space-between; padding:24px; text-align:left; box-shadow:0 10px 20px -5px rgba(16,185,129,0.4); border:none;">
-                        <div>
-                            <p style="text-transform:uppercase; font-size:0.8rem; font-weight:700; letter-spacing:1px; margin-bottom:4px; opacity:0.9;">Khu vực</p>
-                            <h3 id="statZones" style="font-size:2.5rem; margin:0; line-height:1;">0</h3>
-                        </div>
-                        <div style="font-size:3rem; opacity:0.3; transform:rotate(10deg);">📍</div>
+                    <div class="stat-card-new" style="background:linear-gradient(135deg, #10b981 0%, #059669 100%); box-shadow:0 10px 30px -5px rgba(16,185,129,0.4);">
+                        <span class="stat-icon">📍</span>
+                        <div class="stat-label">Khu vực</div>
+                        <div class="stat-value" id="statZones">0</div>
+                        <div class="stat-subtitle" id="statZonesDesc">khu vực đánh giá</div>
                     </div>
-                    <div class="stats-card" style="background:linear-gradient(135deg, #f59e0b 0%, #d97706 100%); display:flex; align-items:center; justify-content:space-between; padding:24px; text-align:left; box-shadow:0 10px 20px -5px rgba(245,158,11,0.4); border:none;">
-                        <div>
-                            <p style="text-transform:uppercase; font-size:0.8rem; font-weight:700; letter-spacing:1px; margin-bottom:4px; opacity:0.9;">Lượt chấm</p>
-                            <h3 id="statScores" style="font-size:2.5rem; margin:0; line-height:1;">0</h3>
-                        </div>
-                        <div style="font-size:3rem; opacity:0.3; transform:scale(1.1);">📝</div>
+                    <div class="stat-card-new" style="background:linear-gradient(135deg, #f59e0b 0%, #d97706 100%); box-shadow:0 10px 30px -5px rgba(245,158,11,0.4);">
+                        <span class="stat-icon">📝</span>
+                        <div class="stat-label">Lượt chấm</div>
+                        <div class="stat-value" id="statScores">0</div>
+                        <div class="stat-subtitle" id="statScoresDesc">bản ghi điểm</div>
+                    </div>
+                    <div class="stat-card-new" style="background:linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); box-shadow:0 10px 30px -5px rgba(139,92,246,0.4);">
+                        <span class="stat-icon">⭐</span>
+                        <div class="stat-label">Điểm TB</div>
+                        <div class="stat-value" id="statAvg">-</div>
+                        <div class="stat-subtitle" id="statAvgDesc">trung bình toàn viện</div>
                     </div>
                 </div>
 
-                <!-- Biểu đồ điểm theo tháng -->
-                <div class="card" style="padding:24px; box-shadow:0 4px 15px rgba(0,0,0,0.05);">
-                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; margin-bottom:24px;">
-                        <h2 style="margin:0; color:var(--gray-800); font-size:1.3rem;">📈 Biểu đồ Điểm Trung Bình</h2>
-                        <div style="min-width:250px;">
-                            <select id="chartDeptFilter" class="form-control" onchange="filterDashboard()" style="background-color:var(--gray-50); border-color:var(--gray-200); font-size:0.95rem;">
-                                <option value="">-- Tất cả Khoa/Phòng --</option>
-                            </select>
+                <!-- Filter bar -->
+                <div class="chart-card" style="padding:14px 20px; margin-bottom:20px;">
+                    <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+                        <span style="font-weight:600; color:var(--gray-700); font-size:0.9rem;">🔍 Lọc theo:</span>
+                        <select id="chartDeptFilter" class="form-control" onchange="filterDashboard()" style="max-width:280px; padding:10px 12px; font-size:0.9rem; border-color:var(--gray-200);">
+                            <option value="">-- Tất cả Khoa/Phòng --</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Chart Grid: Line Chart + Department Ranking -->
+                <div class="chart-grid">
+                    <div class="chart-card">
+                        <div class="chart-card-title">
+                            <h2>📈 Điểm trung bình theo tháng</h2>
+                        </div>
+                        <div style="position:relative; height:320px;">
+                            <canvas id="monthlyChart"></canvas>
                         </div>
                     </div>
-                    <div style="position:relative; height:320px;">
-                        <canvas id="monthlyChart"></canvas>
+                    <div class="chart-card">
+                        <div class="chart-card-title">
+                            <h2>🏆 Xếp hạng Khoa/Phòng</h2>
+                        </div>
+                        <div id="deptRankingContainer" style="max-height:360px; overflow-y:auto;">
+                            <p class="text-center" style="color:var(--gray-500); padding:40px 0;">Đang tải...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chart Grid: Radar + Bar -->
+                <div class="chart-grid">
+                    <div class="chart-card">
+                        <div class="chart-card-title">
+                            <h2>📊 Phân bố điểm theo nhóm 5S</h2>
+                        </div>
+                        <div style="position:relative; height:320px;">
+                            <canvas id="radarChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <div class="chart-card-title">
+                            <h2>📋 Thống kê xếp loại</h2>
+                        </div>
+                        <div style="position:relative; height:320px;">
+                            <canvas id="classificationChart"></canvas>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Thống kê theo khoa phòng -->
-                <div class="card" style="padding:24px; box-shadow:0 4px 15px rgba(0,0,0,0.05);">
+                <div class="chart-card" style="margin-bottom:20px;">
                     <div style="display:flex; justify-content:space-between; align-items:center; cursor:pointer;" onclick="const c=document.getElementById('main-dept-stats-content'),a=document.getElementById('main-dept-stats-arrow'); if(c.style.display==='none'){c.style.display='block';a.style.transform='rotate(180deg)';}else{c.style.display='none';a.style.transform='rotate(0deg)';}">
-                        <h2 style="margin:0; color:var(--gray-800); font-size:1.3rem;">🏥 Thống kê chi tiết Khoa/Phòng</h2>
+                        <h2 style="margin:0; color:var(--gray-800); font-size:1.15rem; font-weight:700;">🏥 Thống kê chi tiết Khoa/Phòng</h2>
                         <span id="main-dept-stats-arrow" style="transition:transform 0.3s; color:var(--gray-500); font-size:1.1rem;">▼</span>
                     </div>
                     <div id="main-dept-stats-content" style="display:none; margin-top:20px;">
@@ -1639,8 +2007,10 @@
                     </div>
                 </div>
 
-                <div class="card" style="padding:24px; box-shadow:0 4px 15px rgba(0,0,0,0.05);">
-                    <h2 style="margin:0 0 20px 0; color:var(--gray-800); font-size:1.3rem;">📋 Chấm điểm gần đây</h2>
+                <div class="chart-card">
+                    <div class="chart-card-title">
+                        <h2>📋 Chấm điểm gần đây</h2>
+                    </div>
                     <div id="recentScores">
                         <p class="text-center" style="color:var(--gray-500);">Chưa có dữ liệu</p>
                     </div>
@@ -1656,7 +2026,23 @@
                         <div class="lock-banner-text">Đang kiểm tra trạng thái...</div>
                     </div>
                 </div>
-                <div class="card">
+
+                <!-- Scoring Timer -->
+                <div id="scoringTimerSection" class="scoring-timer-section">
+                    <div id="timerBeforeStart">
+                        <p style="margin-bottom:16px; color:var(--gray-600); font-size:0.95rem; position:relative; z-index:1;">⏱️ Bấm nút bên dưới để bắt đầu tính thời gian chấm điểm</p>
+                        <button class="btn-start-scoring" onclick="startScoringTimer()">▶️ Bắt đầu chấm điểm</button>
+                    </div>
+                    <div id="timerRunning" style="display:none;">
+                        <div class="timer-label">⏱️ Thời gian chấm điểm</div>
+                        <div class="timer-display">
+                            <div class="timer-dot"></div>
+                            <span class="timer-clock" id="timerClock">00:00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="scoringFormWrapper" class="card" style="display:none;">
                     <h2 style="margin-bottom:20px;">📝 Chấm điểm 5S</h2>
                     <div id="scoreAlert"></div>
                     <div class="grid grid-2">
@@ -1695,7 +2081,7 @@
                         <div class="form-group" style="grid-column: 1/-1;">
                             <label>📷 Hình ảnh minh chứng (Tối đa 5 ảnh)</label>
                             <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
-                                <input type="file" id="scoreImageFile" accept="image/*" multiple class="form-control"
+                                <input type="file" id="scoreImageFile" accept="image/jpeg,image/png,image/jpg,image/*" multiple class="form-control"
                                     style="flex:1;min-width:200px;" onchange="previewImage(this)">
                                 <button type="button" class="btn btn-primary btn-sm"
                                     onclick="document.getElementById('scoreImageFile').click()">📷 Chọn ảnh</button>
@@ -1713,6 +2099,7 @@
                     <div class="text-center mt-20">
                         <button id="btnSubmitScore" class="btn btn-success" onclick="submitScore()">💾 Lưu kết quả chấm điểm</button>
                         <div id="submitSuccessMsg" class="success-message">✅ Đã lưu kết quả chấm điểm thành công!</div>
+                        <div id="scoreDurationResult" style="display:none; margin-top:12px;"></div>
                     </div>
                 </div>
             </div>
@@ -1912,13 +2299,120 @@
             uploadPreset: '5S_upload'
         };
 
+        // --- SCORING TIMER ---
+        let _scoringStartTime = null;
+        let _scoringTimerInterval = null;
+        let _scoringDurationSeconds = 0;
+
+        function startScoringTimer() {
+            _scoringStartTime = new Date();
+            _scoringDurationSeconds = 0;
+
+            // Show timer, hide start button
+            document.getElementById('timerBeforeStart').style.display = 'none';
+            document.getElementById('timerRunning').style.display = 'block';
+            document.getElementById('scoringTimerSection').classList.add('active');
+
+            // Show scoring form
+            document.getElementById('scoringFormWrapper').style.display = 'block';
+
+            // Update timer every second
+            _scoringTimerInterval = setInterval(() => {
+                _scoringDurationSeconds = Math.floor((new Date() - _scoringStartTime) / 1000);
+                const mins = Math.floor(_scoringDurationSeconds / 60);
+                const secs = _scoringDurationSeconds % 60;
+                document.getElementById('timerClock').textContent =
+                    `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+            }, 1000);
+
+            // Scroll to form
+            setTimeout(() => {
+                document.getElementById('scoringFormWrapper').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 300);
+        }
+
+        function stopScoringTimer() {
+            if (_scoringTimerInterval) {
+                clearInterval(_scoringTimerInterval);
+                _scoringTimerInterval = null;
+            }
+            const duration = _scoringDurationSeconds;
+            return duration;
+        }
+
+        function resetScoringTimer() {
+            stopScoringTimer();
+            _scoringStartTime = null;
+            _scoringDurationSeconds = 0;
+            document.getElementById('timerBeforeStart').style.display = 'block';
+            document.getElementById('timerRunning').style.display = 'none';
+            document.getElementById('scoringTimerSection').classList.remove('active');
+            document.getElementById('timerClock').textContent = '00:00';
+            document.getElementById('scoringFormWrapper').style.display = 'none';
+            document.getElementById('scoreDurationResult').style.display = 'none';
+        }
+
+        function formatDuration(seconds) {
+            if (!seconds || seconds <= 0) return '-';
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            if (mins === 0) return `${secs} giây`;
+            return `${mins} phút ${secs} giây`;
+        }
+
+        // --- IMAGE COMPRESSION & UPLOAD ---
+        window.selectedCompressedFiles = []; // Mảng chứa ảnh đã nén
+
+        async function compressImage(file, maxWidth = 1200, quality = 0.8) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = event => {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.onload = () => {
+                        let width = img.width;
+                        let height = img.height;
+                        
+                        if (width > maxWidth) {
+                            height = Math.round((height * maxWidth) / width);
+                            width = maxWidth;
+                        }
+                        
+                        const canvas = document.createElement('canvas');
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+                        
+                        canvas.toBlob((blob) => {
+                            if (blob) {
+                                const newFile = new File([blob], file.name.replace(/\.[^/.]+$/, "") + ".jpg", {
+                                    type: 'image/jpeg',
+                                    lastModified: Date.now()
+                                });
+                                resolve(newFile);
+                            } else {
+                                resolve(file); // fallback to original if error
+                            }
+                        }, 'image/jpeg', quality);
+                    };
+                    img.onerror = () => resolve(file); // fallback
+                };
+                reader.onerror = () => resolve(file); // fallback
+            });
+        }
+
         // Image upload functions
-        function previewImage(input) {
+        async function previewImage(input) {
             const previewList = document.getElementById('imagePreviewList');
             const previewContainer = document.getElementById('imagePreviewContainer');
             previewList.innerHTML = ''; // Clear previous previews
+            window.selectedCompressedFiles = []; // Reset mảng
 
             if (input.files && input.files.length > 0) {
+                showAlert('scoreAlert', '⏳ Đang xử lý và nén ảnh...', 'success');
+                
                 // Giới hạn tối đa 5 file
                 const filesToProcess = Array.from(input.files).slice(0, 5);
                 
@@ -1926,7 +2420,13 @@
                     showAlert('scoreAlert', '⚠️ Bạn chỉ được chọn tối đa 5 ảnh. Các ảnh thừa đã bị loại bỏ.', 'error');
                 }
 
-                filesToProcess.forEach(file => {
+                // Xử lý nén từng ảnh
+                for (let i = 0; i < filesToProcess.length; i++) {
+                    const originalFile = filesToProcess[i];
+                    // Nén ảnh xuống tối đa 1200px, chất lượng 80%
+                    const compressedFile = await compressImage(originalFile, 1200, 0.8);
+                    window.selectedCompressedFiles.push(compressedFile);
+                    
                     const reader = new FileReader();
                     reader.onload = function (e) {
                         const img = document.createElement('img');
@@ -1934,9 +2434,18 @@
                         img.style.cssText = 'max-width:120px;max-height:100px;border-radius:8px;border:2px solid var(--gray-200);object-fit:cover;';
                         previewList.appendChild(img);
                     };
-                    reader.readAsDataURL(file);
-                });
+                    reader.readAsDataURL(compressedFile);
+                }
+                
                 previewContainer.style.display = 'flex';
+                
+                // Thông báo xong
+                showAlert('scoreAlert', '✅ Đã nén ảnh xong, sẵn sàng gửi!', 'success');
+                setTimeout(() => { 
+                    const alertEl = document.getElementById('scoreAlert');
+                    if (alertEl.innerHTML.includes('Đã nén ảnh xong')) alertEl.style.display = 'none'; 
+                }, 2000);
+                
             } else {
                 previewContainer.style.display = 'none';
             }
@@ -1947,6 +2456,7 @@
             document.getElementById('scoreImageUrl').value = '';
             document.getElementById('imagePreviewList').innerHTML = '';
             document.getElementById('imagePreviewContainer').style.display = 'none';
+            window.selectedCompressedFiles = [];
         }
 
         async function uploadToCloudinary(file) {
@@ -2651,6 +3161,9 @@
             loadChartDeptFilter();
             loadDeptStats();
             renderMonthlyChart();
+            loadDeptRanking();
+            renderRadarChart();
+            renderClassificationChart();
             updateLockBanner();
         }
 
@@ -2663,6 +3176,7 @@
             if (tab === 'zones') loadZonesList();
             if (tab === 'users') loadUsersList();
             if (tab === 'report') loadDepartments();
+            if (tab === 'score') resetScoringTimer();
         }
 
         async function loadDepartments() {
@@ -3039,7 +3553,11 @@
             const month = document.getElementById('scoreMonth').value;
             const evaluator = document.getElementById('scoreEvaluator').value.trim();
             const representative = document.getElementById('scoreRepresentative').value.trim();
-            const imageFiles = document.getElementById('scoreImageFile').files;
+            
+            // Sử dụng mảng ảnh đã nén nếu có, nếu không thì dùng file gốc (phòng hờ)
+            const imageFiles = (window.selectedCompressedFiles && window.selectedCompressedFiles.length > 0) 
+                             ? window.selectedCompressedFiles 
+                             : document.getElementById('scoreImageFile').files;
 
             // Chỉ yêu cầu chọn đến khu vực định danh (không cần chọn đại diện)
             if (!deptId || !zoneId || !month || !evaluator) {
@@ -3111,15 +3629,16 @@
                 departmentId: deptId,
                 zone: zoneSnap.val().name,
                 zoneId: zoneId,
-                items: itemsSnap.val() || [], // Lưu danh sách các đại diện định lượng
+                items: itemsSnap.val() || [],
                 month,
                 evaluator,
                 representative,
-                imageUrl, // Ảnh đầu tiên (tương thích ngược)
-                imageUrls, // Mảng tất cả các ảnh
+                imageUrl,
+                imageUrls,
                 criteria,
                 total,
                 average: (total / 20).toFixed(2),
+                durationSeconds: _scoringStartTime ? Math.floor((new Date() - _scoringStartTime) / 1000) : null,
                 createdAt: new Date().toISOString(),
                 createdBy: currentUser.username
             };
@@ -3146,8 +3665,20 @@
                 document.querySelectorAll('.score-radio input').forEach(r => r.checked = false);
                 document.querySelectorAll('.reason-input').forEach(r => r.value = '');
                 clearImage();
+
+                // Stop timer and show duration
+                const duration = stopScoringTimer();
+                if (duration > 0) {
+                    const durationEl = document.getElementById('scoreDurationResult');
+                    durationEl.innerHTML = `<span class="duration-badge">⏱️ Thời gian chấm: <strong>${formatDuration(duration)}</strong></span>`;
+                    durationEl.style.display = 'block';
+                }
+
                 loadStats();
                 loadRecentScores();
+                loadDeptRanking();
+                renderRadarChart();
+                renderClassificationChart();
             } catch (err) {
                 showAlert('scoreAlert', '❌ Lỗi khi gửi điểm: ' + err.message, 'error');
             } finally {
@@ -3169,9 +3700,29 @@
             let zoneCount = 0;
             Object.values(depts).forEach(d => { zoneCount += Object.keys(d.zones || {}).length; });
 
+            const scores = scoresSnap.val() || {};
+            const scoreCount = Object.keys(scores).length;
+
+            // Calculate average
+            let totalAvg = 0;
+            let avgCount = 0;
+            Object.values(scores).forEach(s => {
+                const avg = parseFloat(s.average);
+                if (!isNaN(avg)) {
+                    totalAvg += avg;
+                    avgCount++;
+                }
+            });
+            const overallAvg = avgCount > 0 ? (totalAvg / avgCount).toFixed(2) : '-';
+            const pct = avgCount > 0 ? Math.round((totalAvg / avgCount) / 5 * 100) : 0;
+
             document.getElementById('statDepts').textContent = Object.keys(depts).length;
             document.getElementById('statZones').textContent = zoneCount;
-            document.getElementById('statScores').textContent = Object.keys(scoresSnap.val() || {}).length;
+            document.getElementById('statScores').textContent = scoreCount;
+            document.getElementById('statAvg').textContent = overallAvg !== '-' ? overallAvg + '/5' : '-';
+            if (overallAvg !== '-') {
+                document.getElementById('statAvgDesc').textContent = pct + '% — ' + (pct >= 80 ? 'Tốt' : pct >= 60 ? 'Trung bình' : 'Cần cải tiến');
+            }
         }
 
         async function loadRecentScores() {
@@ -3185,7 +3736,7 @@
             }
 
             const canDelete = currentUser && (currentUser.role === 'admin' || currentUser.role === 'mod');
-            let html = '<div style="overflow-x:auto;"><table><thead><tr><th>STT</th><th>Tháng</th><th>Khoa/Phòng</th><th>Khu vực</th><th>Mô tả</th><th>Người đánh giá</th><th>Điểm</th><th>Thời gian chấm</th><th>Ảnh</th><th>Ngày tạo</th>' + (canDelete ? '<th>Xóa</th>' : '') + '</tr></thead><tbody>';
+            let html = '<div style="overflow-x:auto;"><table><thead><tr><th>STT</th><th>Tháng</th><th>Khoa/Phòng</th><th>Khu vực</th><th>Mô tả</th><th>Người đánh giá</th><th>Điểm</th><th>Thời gian chấm</th><th>⏱️</th><th>Ảnh</th><th>Ngày tạo</th>' + (canDelete ? '<th>Xóa</th>' : '') + '</tr></thead><tbody>';
             scores.forEach((s, index) => {
                 let imgHtml = '<span style="color:var(--gray-600);">-</span>';
                 if (s.imageUrls && s.imageUrls.length > 0) {
@@ -3201,7 +3752,8 @@
                 const timeStatus = isOnTime(s.createdAt, s.month);
                 const timeStyle = timeStatus.onTime ? 'color:#10b981;' : 'color:#ef4444;';
                 const score100 = (parseFloat(s.average) / 5 * 100).toFixed(0);
-                html += `<tr><td style="text-align:center;font-weight:600;">${index + 1}</td><td>${s.month}</td><td>${s.department}</td><td>${s.zone}</td><td>${s.item || (s.items ? s.items.join(', ') : '-')}</td><td>${s.evaluator}</td><td style="text-align:center;"><strong style="font-size:1.1rem;">${score100}</strong><span style="font-size:0.75rem;color:var(--gray-600);">/100</span><br><span style="font-size:0.8rem;color:var(--gray-600);">TB: ${s.average}/5</span></td><td style="${timeStyle}">${timeStatus.label}</td><td>${imgHtml}</td><td>${new Date(s.createdAt).toLocaleDateString('vi-VN')}</td>${canDelete ? '<td>' + deleteBtn + '</td>' : ''}</tr>`;
+                const durationHtml = s.durationSeconds ? `<span class="duration-badge">${formatDuration(s.durationSeconds)}</span>` : '<span style="color:var(--gray-400);">-</span>';
+                html += `<tr><td style="text-align:center;font-weight:600;">${index + 1}</td><td>${s.month}</td><td>${s.department}</td><td>${s.zone}</td><td>${s.item || (s.items ? s.items.join(', ') : '-')}</td><td>${s.evaluator}</td><td style="text-align:center;"><strong style="font-size:1.1rem;">${score100}</strong><span style="font-size:0.75rem;color:var(--gray-600);">/100</span><br><span style="font-size:0.8rem;color:var(--gray-600);">TB: ${s.average}/5</span></td><td style="${timeStyle}">${timeStatus.label}</td><td>${durationHtml}</td><td>${imgHtml}</td><td>${new Date(s.createdAt).toLocaleDateString('vi-VN')}</td>${canDelete ? '<td>' + deleteBtn + '</td>' : ''}</tr>`;
             });
             html += '</tbody></table></div>';
             document.getElementById('recentScores').innerHTML = html;
@@ -3226,6 +3778,9 @@
             const deptFilter = document.getElementById('chartDeptFilter').value;
             loadDeptStats(deptFilter);
             renderMonthlyChart(deptFilter);
+            loadDeptRanking(deptFilter);
+            renderRadarChart(deptFilter);
+            renderClassificationChart(deptFilter);
         }
 
         async function loadDeptStats(deptFilter = '') {
@@ -3601,7 +4156,7 @@
             }
 
             const canDelete = currentUser && (currentUser.role === 'admin' || currentUser.role === 'mod');
-            let html = '<table><thead><tr><th>STT</th><th>Tháng</th><th>Khoa/Phòng</th><th>Khu vực</th><th>Mô tả</th><th>Người đánh giá</th><th>Điểm</th><th>Thời gian chấm</th><th>Ảnh</th><th>Ngày tạo</th>' + (canDelete ? '<th>Xóa</th>' : '') + '</tr></thead><tbody>';
+            let html = '<table><thead><tr><th>STT</th><th>Tháng</th><th>Khoa/Phòng</th><th>Khu vực</th><th>Mô tả</th><th>Người đánh giá</th><th>Điểm</th><th>Thời gian chấm</th><th>⏱️</th><th>Ảnh</th><th>Ngày tạo</th>' + (canDelete ? '<th>Xóa</th>' : '') + '</tr></thead><tbody>';
             scores.forEach((s, index) => {
                 let imgHtml = '<span style="color:var(--gray-600);">-</span>';
                 if (s.imageUrls && s.imageUrls.length > 0) {
@@ -3618,7 +4173,8 @@
                 const timeStatus = isOnTime(s.createdAt, s.month);
                 const timeStyle = timeStatus.onTime ? 'color:#10b981;' : 'color:#ef4444;';
                 const score100 = (parseFloat(s.average) / 5 * 100).toFixed(0);
-                html += `<tr><td style="text-align:center;font-weight:600;">${index + 1}</td><td>${s.month}</td><td>${s.department}</td><td>${s.zone}</td><td>${s.item || (s.items ? s.items.join(', ') : '-')}</td><td>${s.evaluator}</td><td style="text-align:center;"><strong style="font-size:1.1rem;">${score100}</strong><span style="font-size:0.75rem;color:var(--gray-600);">/100</span><br><span style="font-size:0.8rem;color:var(--gray-600);">TB: ${s.average}/5</span></td><td style="${timeStyle}">${timeStatus.label}</td><td>${imgHtml}</td><td>${new Date(s.createdAt).toLocaleDateString('vi-VN')}</td>${canDelete ? '<td>' + deleteBtn + '</td>' : ''}</tr>`;
+                const durationHtml = s.durationSeconds ? `<span class="duration-badge">${formatDuration(s.durationSeconds)}</span>` : '<span style="color:var(--gray-400);">-</span>';
+                html += `<tr><td style="text-align:center;font-weight:600;">${index + 1}</td><td>${s.month}</td><td>${s.department}</td><td>${s.zone}</td><td>${s.item || (s.items ? s.items.join(', ') : '-')}</td><td>${s.evaluator}</td><td style="text-align:center;"><strong style="font-size:1.1rem;">${score100}</strong><span style="font-size:0.75rem;color:var(--gray-600);">/100</span><br><span style="font-size:0.8rem;color:var(--gray-600);">TB: ${s.average}/5</span></td><td style="${timeStyle}">${timeStatus.label}</td><td>${durationHtml}</td><td>${imgHtml}</td><td>${new Date(s.createdAt).toLocaleDateString('vi-VN')}</td>${canDelete ? '<td>' + deleteBtn + '</td>' : ''}</tr>`;
             });
             html += '</tbody></table>';
             document.getElementById('reportResult').innerHTML = html;
@@ -3656,11 +4212,11 @@
 
             if (scores.length === 0) { alert('Không có dữ liệu để xuất'); return; }
 
-            const data = [['Tháng', 'Khoa/Phòng', 'Khu vực', 'Mô tả', 'Người đánh giá', 'Đại diện nơi ĐG', 'Tổng điểm', 'Điểm TB', 'Thời gian chấm', 'Ngày tạo']];
+            const data = [['Tháng', 'Khoa/Phòng', 'Khu vực', 'Mô tả', 'Người đánh giá', 'Đại diện nơi ĐG', 'Tổng điểm', 'Điểm TB', 'Thời gian chấm', 'Thời lượng (giây)', 'Ngày tạo']];
             scores.forEach(s => {
                 const timeStatus = isOnTime(s.createdAt, s.month);
                 const itemDisplay = s.item || (s.items ? s.items.join(', ') : '-');
-                data.push([s.month, s.department, s.zone, itemDisplay, s.evaluator, s.representative, s.total, s.average, timeStatus.onTime ? 'Đúng hạn' : 'Không đúng hạn', new Date(s.createdAt).toLocaleDateString('vi-VN')]);
+                data.push([s.month, s.department, s.zone, itemDisplay, s.evaluator, s.representative, s.total, s.average, timeStatus.onTime ? 'Đúng hạn' : 'Không đúng hạn', s.durationSeconds || '', new Date(s.createdAt).toLocaleDateString('vi-VN')]);
             });
 
             const ws = XLSX.utils.aoa_to_sheet(data);
@@ -4024,6 +4580,246 @@
                     showAlert('backupAlert', '❌ Lỗi khôi phục: ' + error.message, 'error');
                 }
             }
+        }
+
+        // ===== NEW DASHBOARD: DEPARTMENT RANKING =====
+        async function loadDeptRanking(deptFilter = '') {
+            const scoresSnap = await db.ref('scores_5s').once('value');
+            const deptsSnap = await db.ref('departments_5s').once('value');
+            const depts = deptsSnap.val() || {};
+            let allScores = [];
+            scoresSnap.forEach(s => { allScores.push(s.val()); });
+
+            if (deptFilter) {
+                allScores = allScores.filter(s => s.department === deptFilter);
+            }
+
+            // Build canonical name lookup from departments_5s
+            const canonicalNames = {};
+            Object.entries(depts).forEach(([id, dept]) => {
+                canonicalNames[id] = dept.name;
+            });
+
+            // Aggregate by departmentId (use canonical name for display)
+            const deptMap = {};
+            allScores.forEach(s => {
+                const deptId = s.departmentId || '';
+                // Resolve canonical name: prefer departments_5s, fallback to score's department field
+                const displayName = (deptId && canonicalNames[deptId]) ? canonicalNames[deptId] : s.department;
+                const key = deptId || s.department; // Group by ID if available
+                if (!deptMap[key]) deptMap[key] = { name: displayName, total: 0, count: 0 };
+                deptMap[key].total += parseFloat(s.average) || 0;
+                deptMap[key].count++;
+            });
+
+            // Sort by average descending
+            const ranked = Object.values(deptMap)
+                .sort((a, b) => (b.total / b.count) - (a.total / a.count));
+
+            const container = document.getElementById('deptRankingContainer');
+            if (ranked.length === 0) {
+                container.innerHTML = '<p class="text-center" style="color:var(--gray-500); padding:40px 0;">Chưa có dữ liệu</p>';
+                return;
+            }
+
+            const maxAvg = 5;
+            let html = '<ul class="ranking-list">';
+            ranked.forEach((dept, idx) => {
+                const avg = dept.total / dept.count;
+                const posClass = idx === 0 ? 'gold' : idx === 1 ? 'silver' : idx === 2 ? 'bronze' : 'normal';
+                const medal = idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : (idx + 1);
+                const pct = Math.round((avg / maxAvg) * 100);
+                const barColor = pct >= 80 ? '#10b981' : pct >= 60 ? '#f59e0b' : '#ef4444';
+
+                html += `<li class="ranking-item">
+                    <span class="ranking-pos ${posClass}">${medal}</span>
+                    <div class="ranking-info">
+                        <div class="ranking-name">${dept.name}</div>
+                        <div class="ranking-bar-bg"><div class="ranking-bar" style="width:${pct}%; background:${barColor};"></div></div>
+                    </div>
+                    <span class="ranking-score">${avg.toFixed(1)}<span style="font-size:0.7rem;color:var(--gray-500);">/5</span></span>
+                </li>`;
+            });
+            html += '</ul>';
+            container.innerHTML = html;
+        }
+
+        // ===== NEW DASHBOARD: RADAR CHART (5S Categories) =====
+        let radarChartInstance = null;
+
+        async function renderRadarChart(deptFilter = '') {
+            const scoresSnap = await db.ref('scores_5s').once('value');
+            let allScores = [];
+            scoresSnap.forEach(s => { allScores.push(s.val()); });
+
+            if (deptFilter) {
+                allScores = allScores.filter(s => s.department === deptFilter);
+            }
+
+            if (allScores.length === 0) {
+                if (radarChartInstance) radarChartInstance.destroy();
+                return;
+            }
+
+            // Calculate average per 5S group
+            const groupNames = ['Sàng lọc', 'Sắp xếp', 'Sạch sẽ', 'Săn sóc', 'Sẵn sàng'];
+            const groupRanges = [
+                [1, 4],   // S1: criteria 1-4
+                [5, 9],   // S2: criteria 5-9
+                [10, 13], // S3: criteria 10-13
+                [14, 16], // S4: criteria 14-16
+                [17, 20]  // S5: criteria 17-20
+            ];
+
+            const groupAvgs = groupRanges.map(([from, to]) => {
+                let total = 0, count = 0;
+                allScores.forEach(s => {
+                    if (!s.criteria) return;
+                    s.criteria.forEach(c => {
+                        if (c.id >= from && c.id <= to && c.score > 0) {
+                            total += c.score;
+                            count++;
+                        }
+                    });
+                });
+                return count > 0 ? (total / count).toFixed(2) : 0;
+            });
+
+            if (radarChartInstance) radarChartInstance.destroy();
+
+            const ctx = document.getElementById('radarChart').getContext('2d');
+            radarChartInstance = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: groupNames,
+                    datasets: [{
+                        label: 'Điểm TB',
+                        data: groupAvgs,
+                        backgroundColor: 'rgba(37, 99, 235, 0.15)',
+                        borderColor: '#2563eb',
+                        borderWidth: 2.5,
+                        pointBackgroundColor: '#2563eb',
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 2,
+                        pointRadius: 5,
+                        pointHoverRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(17, 24, 39, 0.9)',
+                            padding: 12,
+                            titleFont: { size: 14, family: "'Inter', sans-serif" },
+                            bodyFont: { size: 14, family: "'Inter', sans-serif" },
+                            callbacks: {
+                                label: (ctx) => `${ctx.label}: ${ctx.parsed.r}/5`
+                            }
+                        }
+                    },
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            min: 0,
+                            max: 5,
+                            ticks: {
+                                stepSize: 1,
+                                font: { size: 11, family: "'Inter', sans-serif" },
+                                backdropColor: 'transparent'
+                            },
+                            pointLabels: {
+                                font: { size: 13, weight: '600', family: "'Inter', sans-serif" },
+                                color: '#374151'
+                            },
+                            grid: {
+                                color: 'rgba(0,0,0,0.08)'
+                            },
+                            angleLines: {
+                                color: 'rgba(0,0,0,0.08)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // ===== NEW DASHBOARD: CLASSIFICATION DOUGHNUT CHART =====
+        let classificationChartInstance = null;
+
+        async function renderClassificationChart(deptFilter = '') {
+            const scoresSnap = await db.ref('scores_5s').once('value');
+            let allScores = [];
+            scoresSnap.forEach(s => { allScores.push(s.val()); });
+
+            if (deptFilter) {
+                allScores = allScores.filter(s => s.department === deptFilter);
+            }
+
+            if (allScores.length === 0) {
+                if (classificationChartInstance) classificationChartInstance.destroy();
+                return;
+            }
+
+            // Count by classification
+            const counts = { 'Xuất sắc': 0, 'Tốt': 0, 'Khá': 0, 'Trung bình': 0, 'Chưa đạt': 0 };
+            allScores.forEach(s => {
+                const pct = Math.round((parseFloat(s.average) / 5) * 100);
+                if (pct >= 95) counts['Xuất sắc']++;
+                else if (pct >= 80) counts['Tốt']++;
+                else if (pct >= 70) counts['Khá']++;
+                else if (pct >= 60) counts['Trung bình']++;
+                else counts['Chưa đạt']++;
+            });
+
+            if (classificationChartInstance) classificationChartInstance.destroy();
+
+            const ctx = document.getElementById('classificationChart').getContext('2d');
+            classificationChartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(counts),
+                    datasets: [{
+                        data: Object.values(counts),
+                        backgroundColor: ['#10b981', '#3b82f6', '#f59e0b', '#f97316', '#ef4444'],
+                        borderColor: '#ffffff',
+                        borderWidth: 3,
+                        hoverBorderWidth: 0,
+                        hoverOffset: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '60%',
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 16,
+                                usePointStyle: true,
+                                pointStyle: 'circle',
+                                font: { size: 12, family: "'Inter', sans-serif", weight: '500' }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(17, 24, 39, 0.9)',
+                            padding: 12,
+                            titleFont: { size: 14, family: "'Inter', sans-serif" },
+                            bodyFont: { size: 14, family: "'Inter', sans-serif" },
+                            callbacks: {
+                                label: (ctx) => {
+                                    const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                                    const pct = total > 0 ? Math.round((ctx.parsed / total) * 100) : 0;
+                                    return `${ctx.label}: ${ctx.parsed} lượt (${pct}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
         }
     </script>
 </body>
