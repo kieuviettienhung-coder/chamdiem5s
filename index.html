@@ -10,7 +10,7 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#667eea">
     <title>Chấm điểm 5S - Bệnh viện Nhi đồng TP Cần Thơ</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap&subset=vietnamese" rel="stylesheet">
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -2451,14 +2451,20 @@
         animation: pulseGlowDot 2s infinite;
     }
     .command-hero-title {
-        font-size: 1.65rem;
-        font-weight: 900;
-        letter-spacing: -0.02em;
-        line-height: 1.2;
+        font-family: 'Be Vietnam Pro', 'Inter', system-ui, -apple-system, sans-serif;
+        font-size: 1.55rem;
+        font-weight: 800;
+        letter-spacing: -0.01em;
+        line-height: 1.5;
+        padding: 4px 0 2px;
         margin: 0 0 6px;
-        background: linear-gradient(90deg, #ffffff 0%, #bae6fd 55%, #c7d2fe 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        color: #ffffff;
+        text-shadow: 0 2px 16px rgba(56, 189, 248, 0.35);
+        overflow: visible;
+    }
+    .command-hero-title .hero-title-accent {
+        color: #38bdf8;
+        text-shadow: 0 0 20px rgba(56, 189, 248, 0.45);
     }
     .command-hero-sub {
         font-size: 0.86rem;
@@ -2674,12 +2680,13 @@
         overflow: hidden;
     }
     .podium-card:hover { transform: translateY(-3px); }
-    .podium-1 { background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); border-color: #fcd34d; box-shadow: 0 6px 14px -3px rgba(245, 158, 11, 0.22); }
-    .podium-2 { background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); border-color: #cbd5e1; }
-    .podium-3 { background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%); border-color: #fdba74; }
+    .podium-1, .rank-1 { background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); border-color: #fcd34d; box-shadow: 0 6px 14px -3px rgba(245, 158, 11, 0.22); }
+    .podium-2, .rank-2 { background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); border-color: #cbd5e1; }
+    .podium-3, .rank-3 { background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%); border-color: #fdba74; }
     .podium-medal { font-size: 1.35rem; line-height: 1; margin-bottom: 4px; }
-    .podium-name { font-size: 0.73rem; font-weight: 800; color: #1e293b; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 2.1em; line-height: 1.15; }
-    .podium-score { font-size: 0.92rem; font-weight: 900; color: #2563eb; margin-top: 4px; }
+    .podium-name { font-size: 0.73rem; font-weight: 800; color: #1e293b; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 2.2em; line-height: 1.3; padding-top: 2px; }
+    .podium-score { font-size: 0.96rem; font-weight: 900; color: #2563eb; margin-top: 4px; }
+    .podium-sub { font-size: 0.67rem; font-weight: 600; color: #64748b; margin-top: 2px; }
 
     /* ===== CYBER DARK MODE THEME (TOGGLED VIA BUTTON) ===== */
     body.cyber-dark {
@@ -2744,11 +2751,198 @@
     body.cyber-dark .criteria-bar-item:hover {
         background: rgba(30, 41, 59, 0.65) !important;
     }
-    body.cyber-dark .podium-1 { background: linear-gradient(135deg, rgba(245,158,11,0.22), rgba(180,83,9,0.15)) !important; border-color: rgba(251,191,36,0.45) !important; }
-    body.cyber-dark .podium-2 { background: linear-gradient(135deg, rgba(148,163,184,0.2), rgba(71,85,105,0.15)) !important; border-color: rgba(148,163,184,0.4) !important; }
-    body.cyber-dark .podium-3 { background: linear-gradient(135deg, rgba(249,115,22,0.2), rgba(194,65,12,0.15)) !important; border-color: rgba(251,146,60,0.4) !important; }
+    body.cyber-dark .podium-1, body.cyber-dark .rank-1 { background: linear-gradient(135deg, rgba(245,158,11,0.22), rgba(180,83,9,0.15)) !important; border-color: rgba(251,191,36,0.45) !important; }
+    body.cyber-dark .podium-2, body.cyber-dark .rank-2 { background: linear-gradient(135deg, rgba(148,163,184,0.2), rgba(71,85,105,0.15)) !important; border-color: rgba(148,163,184,0.4) !important; }
+    body.cyber-dark .podium-3, body.cyber-dark .rank-3 { background: linear-gradient(135deg, rgba(249,115,22,0.2), rgba(194,65,12,0.15)) !important; border-color: rgba(251,146,60,0.4) !important; }
     body.cyber-dark .podium-name { color: #f8fafc !important; }
     body.cyber-dark .podium-score { color: #38bdf8 !important; }
+    body.cyber-dark .podium-sub { color: #94a3b8 !important; }
+
+    /* ===== EXECUTIVE REPORT STUDIO STYLES ===== */
+    .report-hero-header {
+        background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 55%, #1d4ed8 100%);
+        color: #ffffff;
+        border-radius: 20px;
+        padding: 24px 28px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 18px;
+        box-shadow: 0 14px 32px -8px rgba(15, 23, 42, 0.3);
+        border: 1px solid rgba(96, 165, 250, 0.35);
+    }
+    .report-export-group {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+    .btn-export-word {
+        background: linear-gradient(135deg, #2563eb 0%, #4f46e5 100%);
+        color: #ffffff;
+        border: 1px solid rgba(147, 197, 253, 0.45);
+        padding: 11px 18px;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 0.86rem;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 8px 20px -4px rgba(37, 99, 235, 0.5);
+        transition: all 0.22s;
+    }
+    .btn-export-word:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 24px -4px rgba(79, 70, 229, 0.65);
+    }
+    .btn-export-excel {
+        background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+        color: #ffffff;
+        border: 1px solid rgba(110, 231, 183, 0.45);
+        padding: 11px 18px;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 0.86rem;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 8px 20px -4px rgba(16, 185, 129, 0.45);
+        transition: all 0.22s;
+    }
+    .btn-export-excel:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 24px -4px rgba(16, 185, 129, 0.65);
+    }
+    .btn-export-print {
+        background: rgba(255, 255, 255, 0.14);
+        color: #ffffff;
+        border: 1px solid rgba(255, 255, 255, 0.28);
+        padding: 11px 16px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 0.84rem;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        transition: all 0.2s;
+    }
+    .btn-export-print:hover {
+        background: rgba(255, 255, 255, 0.24);
+        transform: translateY(-2px);
+    }
+    .report-kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 14px;
+        margin-bottom: 18px;
+    }
+    .report-kpi-box {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        padding: 16px 18px;
+        box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+        position: relative;
+        overflow: hidden;
+    }
+    .report-kpi-box::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 5px;
+        background: #2563eb;
+    }
+    .report-kpi-box.emerald::before { background: #10b981; }
+    .report-kpi-box.amber::before { background: #f59e0b; }
+    .report-kpi-box.violet::before { background: #7c3aed; }
+    .report-kpi-box.rose::before { background: #ef4444; }
+    .report-exec-paper {
+        background: #ffffff;
+        border: 1px solid #cbd5e1;
+        border-radius: 18px;
+        padding: 26px 28px;
+        margin-bottom: 20px;
+        box-shadow: 0 10px 30px -8px rgba(15, 23, 42, 0.08);
+    }
+    .report-section-title {
+        font-size: 1rem;
+        font-weight: 800;
+        color: #1e3a8a;
+        margin: 18px 0 10px;
+        padding-bottom: 6px;
+        border-bottom: 2px solid #dbeafe;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+    .report-narrative-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 14px;
+        margin-top: 10px;
+    }
+    .report-narrative-card {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        padding: 14px 16px;
+        font-size: 0.86rem;
+        line-height: 1.55;
+        color: #334155;
+    }
+    .report-narrative-card h4 {
+        font-size: 0.9rem;
+        font-weight: 800;
+        margin: 0 0 8px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+    .report-subtabs {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin: 18px 0 14px;
+        border-bottom: 2px solid #e2e8f0;
+        padding-bottom: 10px;
+    }
+    .report-subtab-btn {
+        padding: 9px 16px;
+        border-radius: 10px;
+        border: 1px solid #cbd5e1;
+        background: #f8fafc;
+        color: #475569;
+        font-weight: 700;
+        font-size: 0.84rem;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .report-subtab-btn.active {
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        color: #ffffff;
+        border-color: #1d4ed8;
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+    }
+    body.cyber-dark .report-kpi-box,
+    body.cyber-dark .report-exec-paper,
+    body.cyber-dark .report-narrative-card {
+        background: rgba(15, 23, 42, 0.85) !important;
+        border-color: #334155 !important;
+        color: #e2e8f0 !important;
+    }
+    body.cyber-dark .report-section-title {
+        color: #60a5fa !important;
+        border-bottom-color: #1e293b !important;
+    }
 </style>
 </head>
 
@@ -2817,7 +3011,7 @@
                             <span class="live-pulse-dot"></span>
                             <span>LIVE TELEMETRY • TRUNG TÂM ĐIỀU HÀNH 5S THỜI GIAN THỰC</span>
                         </div>
-                        <h2 class="command-hero-title">HỆ THỐNG PHÂN TÍCH & GIÁM SÁT CHẤT LƯỢNG 5S</h2>
+                        <h2 class="command-hero-title">HỆ THỐNG PHÂN TÍCH &amp; GIÁM SÁT <span class="hero-title-accent">CHẤT LƯỢNG 5S</span></h2>
                         <div class="command-hero-sub">
                             <span id="heroScopeLabel">🌐 Phạm vi: Toàn viện • Tất cả thời gian</span>
                             <span>•</span>
@@ -2825,7 +3019,7 @@
                         </div>
                         <div class="hero-action-row">
                             <button type="button" class="btn-hero-neon" onclick="showTab('score')">⚡ Bắt đầu chấm điểm 5S</button>
-                            <button type="button" class="btn-hero-glass" onclick="showTab('report')">📊 Báo cáo & Xuất Excel</button>
+                            <button type="button" class="btn-hero-glass" onclick="showTab('report')">📊 Báo cáo Word &amp; Excel</button>
                             <button type="button" class="btn-hero-glass" id="btnThemeToggle" onclick="toggleDashboardTheme()">🌙 Giao diện Cyber Dark</button>
                         </div>
                     </div>
@@ -3271,37 +3465,62 @@
 
             <!-- Report Tab -->
             <div id="reportTab" class="tab-content">
-                <div class="card">
-                    <h2 style="margin-bottom:20px;">📊 Báo cáo & Xuất dữ liệu 5S</h2>
-                    <div class="grid grid-2">
-                        <div class="form-group">
-                            <label>Khoa/Phòng</label>
-                            <select id="reportDept" class="form-control" onchange="loadReport()">
-                                <option value="">-- Tất cả --</option>
-                            </select>
+                <div class="report-hero-header">
+                    <div>
+                        <div style="display:inline-flex; align-items:center; gap:8px; background:rgba(56,189,248,0.16); border:1px solid rgba(56,189,248,0.4); color:#7dd3fc; padding:4px 12px; border-radius:999px; font-size:0.74rem; font-weight:800; margin-bottom:8px;">
+                            <span>📑 TRUNG TÂM KẾT XUẤT HỒ SƠ QUẢN LÝ CHẤT LƯỢNG 5S</span>
                         </div>
-                        <div class="form-group">
-                            <label>Từ tháng</label>
-                            <input type="month" id="reportFrom" class="form-control" min="2026-01" max="2030-12" onchange="loadReport()">
+                        <h2 style="margin:0 0 6px; font-size:1.45rem; font-weight:800; color:#ffffff; line-height:1.4;">BÁO CÁO TỔNG HỢP &amp; PHÂN TÍCH CHẤT LƯỢNG 5S</h2>
+                        <p id="reportHeroSub" style="margin:0; font-size:0.86rem; color:#cbd5e1;">Tự động tổng hợp số liệu, xếp hạng Khoa/Phòng, phân tích 5 trụ cột (S1–S5), chỉ ra điểm nghẽn và xuất văn bản chuẩn hành chính Bệnh viện</p>
+                    </div>
+                    <div class="report-export-group">
+                        <button type="button" class="btn-export-word" onclick="exportWordReport()">📄 Xuất Báo cáo Word (.doc)</button>
+                        <button type="button" class="btn-export-excel" onclick="exportExcel()">📊 Xuất Excel Đa Tầng (.xlsx)</button>
+                        <button type="button" class="btn-export-print" onclick="printExecutiveReport()">🖨️ In / Lưu PDF</button>
+                    </div>
+                </div>
+
+                <div class="card" style="padding:20px 22px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:14px; padding-bottom:12px; border-bottom:1px solid #e2e8f0;">
+                        <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+                            <span style="font-size:0.82rem; font-weight:700; color:var(--gray-600); margin-right:4px;">⚡ Chọn nhanh kỳ báo cáo:</span>
+                            <button type="button" class="period-pill" data-rperiod="this_month" onclick="setReportQuickPeriod('this_month', this)">Tháng này</button>
+                            <button type="button" class="period-pill" data-rperiod="last_month" onclick="setReportQuickPeriod('last_month', this)">Tháng trước</button>
+                            <button type="button" class="period-pill" data-rperiod="this_quarter" onclick="setReportQuickPeriod('this_quarter', this)">Quý này</button>
+                            <button type="button" class="period-pill active" data-rperiod="this_year" onclick="setReportQuickPeriod('this_year', this)">Năm nay</button>
+                            <button type="button" class="period-pill" data-rperiod="all" onclick="setReportQuickPeriod('all', this)">Tất cả dữ liệu</button>
                         </div>
-                        <div class="form-group">
-                            <label>Đến tháng</label>
-                            <input type="month" id="reportTo" class="form-control" min="2026-01" max="2030-12" onchange="loadReport()">
-                        </div>
-                        <div class="form-group">
-                            <label>Trạng thái</label>
-                            <select id="reportStatus" class="form-control" onchange="loadReport()">
-                                <option value="all">-- Tất cả --</option>
-                                <option value="reported">✅ Đã báo cáo</option>
-                                <option value="unreported">❌ Chưa báo cáo</option>
-                            </select>
-                        </div>
-                        <div class="form-group" style="display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap;">
-                            <button class="btn btn-primary" onclick="loadReport()">🔍 Xem báo cáo</button>
-                            <button class="btn btn-success" onclick="exportExcel()">📥 Xuất Excel</button>
-                            <button type="button" class="btn" style="background:#f1f5f9; color:#334155; border:1px solid #cbd5e1;" onclick="resetReportFilters()">🔄 Hiện tất cả</button>
+                        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                            <button type="button" class="btn btn-sm btn-primary" onclick="loadReport()">🔍 Cập nhật báo cáo</button>
+                            <button type="button" class="btn btn-sm" style="background:#f1f5f9; color:#334155; border:1px solid #cbd5e1;" onclick="resetReportFilters()">🔄 Đặt lại bộ lọc</button>
                         </div>
                     </div>
+
+                    <div class="grid grid-2" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:12px;">
+                        <div class="form-group" style="margin-bottom:0;">
+                            <label>🏥 Khoa/Phòng</label>
+                            <select id="reportDept" class="form-control" onchange="loadReport()">
+                                <option value="">-- Tất cả Khoa/Phòng (Toàn viện) --</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin-bottom:0;">
+                            <label>📅 Từ tháng</label>
+                            <input type="month" id="reportFrom" class="form-control" min="2026-01" max="2030-12" onchange="loadReport()">
+                        </div>
+                        <div class="form-group" style="margin-bottom:0;">
+                            <label>📅 Đến tháng</label>
+                            <input type="month" id="reportTo" class="form-control" min="2026-01" max="2030-12" onchange="loadReport()">
+                        </div>
+                        <div class="form-group" style="margin-bottom:0;">
+                            <label>📌 Trạng thái báo cáo</label>
+                            <select id="reportStatus" class="form-control" onchange="loadReport()">
+                                <option value="all">-- Tất cả đơn vị --</option>
+                                <option value="reported">✅ Đơn vị đã báo cáo</option>
+                                <option value="unreported">❌ Đơn vị chưa báo cáo</option>
+                            </select>
+                        </div>
+                    </div>
+
                     <div id="reportSummaryBanner" style="display:none;"></div>
                     <div id="reportResult" class="mt-20"></div>
                 </div>
@@ -6456,6 +6675,30 @@
             return { onTime, label: onTime ? '✅ Đúng hạn' : '❌ Không đúng hạn' };
         }
 
+        function classifyScore5S(pct) {
+            if (pct >= 95) return { label: 'Xuất sắc', color: '#059669', bg: '#ecfdf5', border: '#6ee7b7' };
+            if (pct >= 80) return { label: 'Tốt', color: '#2563eb', bg: '#eff6ff', border: '#93c5fd' };
+            if (pct >= 70) return { label: 'Khá', color: '#d97706', bg: '#fffbeb', border: '#fcd34d' };
+            if (pct >= 60) return { label: 'Trung bình', color: '#ea580c', bg: '#fff7ed', border: '#fdba74' };
+            return { label: 'Chưa đạt', color: '#dc2626', bg: '#fef2f2', border: '#fca5a5' };
+        }
+
+        function setReportQuickPeriod(period, btnEl) {
+            document.querySelectorAll('#reportTab [data-rperiod]').forEach(b => b.classList.remove('active'));
+            if (btnEl) btnEl.classList.add('active');
+            const fInp = document.getElementById('reportFrom');
+            const tInp = document.getElementById('reportTo');
+            if (period === 'all') {
+                if (fInp) fInp.value = '';
+                if (tInp) tInp.value = '';
+            } else {
+                const r = getPeriodRange(period);
+                if (fInp) fInp.value = r.from || '';
+                if (tInp) tInp.value = r.to || '';
+            }
+            loadReport();
+        }
+
         function resetReportFilters() {
             const now = new Date();
             const y = Math.min(2030, Math.max(2026, now.getFullYear()));
@@ -6468,72 +6711,47 @@
             if (fInp) fInp.value = `${y}-01`;
             if (tInp) tInp.value = `${y}-${m}`;
             if (sSel) sSel.value = 'all';
+            document.querySelectorAll('#reportTab [data-rperiod]').forEach(b => {
+                b.classList.toggle('active', b.getAttribute('data-rperiod') === 'this_year');
+            });
             loadReport();
         }
 
-        async function loadReport() {
-            const deptId = document.getElementById('reportDept').value;
-            const deptName = document.getElementById('reportDept').selectedOptions[0]?.text || '';
-            const from = document.getElementById('reportFrom').value;
-            const to = document.getElementById('reportTo').value;
-            const statusFilter = document.getElementById('reportStatus').value;
+        function switchReportSubtab(tabId, btnEl) {
+            window._activeReportSubtab = tabId;
+            document.querySelectorAll('.report-subtab-btn').forEach(b => b.classList.remove('active'));
+            if (btnEl) btnEl.classList.add('active');
+            document.querySelectorAll('.report-subpanel').forEach(p => {
+                p.style.display = (p.id === 'report_sub_' + tabId) ? 'block' : 'none';
+            });
+        }
 
-            const snap = await db.ref('scores_5s').once('value');
+        async function computeReportAnalytics() {
+            const deptId = document.getElementById('reportDept')?.value || '';
+            const deptSelect = document.getElementById('reportDept');
+            const deptName = deptId && deptSelect?.selectedOptions?.[0] ? deptSelect.selectedOptions[0].text : '';
+            const from = document.getElementById('reportFrom')?.value || '';
+            const to = document.getElementById('reportTo')?.value || '';
+            const statusFilter = document.getElementById('reportStatus')?.value || 'all';
+
+            const [snap, deptsSnap] = await Promise.all([
+                db.ref('scores_5s').once('value'),
+                db.ref('departments_5s').once('value')
+            ]);
             const rawScores = [];
             snap.forEach(s => { rawScores.push({ id: s.key, ...s.val() }); });
             rawScores.sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
             window._cachedScores = [...rawScores];
 
-            let scores = [...rawScores];
-            if (from) scores = scores.filter(s => (s.month || '') >= from);
-            if (to) scores = scores.filter(s => (s.month || '') <= to);
-
-            const deptsSnap = await db.ref('departments_5s').once('value');
             const allDepts = deptsSnap.val() || {};
             window._cachedDepts = allDepts;
 
-            const reportedDeptIds = new Set();
-            const reportedDeptNames = new Set();
-            scores.forEach(s => {
-                if (s.departmentId) reportedDeptIds.add(s.departmentId);
-                if (s.department) reportedDeptNames.add(normVn(s.department));
-            });
+            let periodScores = [...rawScores];
+            if (from) periodScores = periodScores.filter(s => (s.month || '') >= from);
+            if (to) periodScores = periodScores.filter(s => (s.month || '') <= to);
 
-            const allDeptEntries = Object.entries(allDepts);
-            const isDeptReported = (id, d) => reportedDeptIds.has(id) || reportedDeptNames.has(normVn(d.name));
-            const reportedDepts = allDeptEntries.filter(([id, d]) => isDeptReported(id, d));
-            const unreportedDepts = allDeptEntries.filter(([id, d]) => !isDeptReported(id, d));
-
-            const bannerEl = document.getElementById('reportSummaryBanner');
-            bannerEl.style.cssText = 'display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px;margin-top:16px;';
-            bannerEl.innerHTML = `
-                <div style="flex:1;min-width:220px;background:linear-gradient(135deg,#10b981,#059669);color:white;padding:16px 20px;border-radius:14px;">
-                    <div style="font-size:0.85rem;opacity:0.9;">✅ Đã báo cáo (${from || 'Đầu'} → ${to || 'Nay'})</div>
-                    <div style="font-size:1.6rem;font-weight:800;">${reportedDepts.length}/${allDeptEntries.length}</div>
-                    <div style="font-size:0.8rem;opacity:0.85;margin-top:4px;">${reportedDepts.map(([, d]) => d.name).join(', ') || 'Chưa có'}</div>
-                </div>
-                <div style="flex:1;min-width:220px;background:linear-gradient(135deg,#ef4444,#dc2626);color:white;padding:16px 20px;border-radius:14px;">
-                    <div style="font-size:0.85rem;opacity:0.9;">❌ Chưa báo cáo (${from || 'Đầu'} → ${to || 'Nay'})</div>
-                    <div style="font-size:1.6rem;font-weight:800;">${unreportedDepts.length}/${allDeptEntries.length}</div>
-                    <div style="font-size:0.8rem;opacity:0.85;margin-top:4px;">${unreportedDepts.map(([, d]) => d.name).join(', ') || 'Tất cả đã báo cáo'}</div>
-                </div>
-            `;
-
-            if (statusFilter === 'unreported') {
-                if (unreportedDepts.length === 0) {
-                    document.getElementById('reportResult').innerHTML = '<p class="text-center" style="color:#10b981;font-weight:600;">🎉 Tất cả khoa/phòng đã nộp báo cáo!</p>';
-                } else {
-                    let html = '<h3 style="margin-bottom:12px;color:#ef4444;">📋 Danh sách Khoa/Phòng chưa báo cáo (' + unreportedDepts.length + ')</h3>';
-                    html += '<table><thead><tr><th>STT</th><th>Khoa/Phòng</th><th>Số khu vực</th><th>Trạng thái</th></tr></thead><tbody>';
-                    unreportedDepts.forEach(([, dept], idx) => {
-                        const zoneCount = Object.keys(dept.zones || {}).length;
-                        html += `<tr><td style="text-align:center;font-weight:600;">${idx + 1}</td><td>${dept.name}</td><td style="text-align:center;">${zoneCount}</td><td style="color:#ef4444;font-weight:600;">❌ Chưa báo cáo</td></tr>`;
-                    });
-                    html += '</tbody></table>';
-                    document.getElementById('reportResult').innerHTML = html;
-                }
-                return;
-            }
+            let usedFallbackPeriod = false;
+            let fallbackMsg = '';
 
             const filterByDeptFn = (list) => {
                 if (!deptId) return list;
@@ -6545,57 +6763,607 @@
                 });
             };
 
-            scores = filterByDeptFn(scores);
-            let usedReportFallback = false;
-            let fallbackMsg = '';
-
-            if (scores.length === 0 && rawScores.length > 0) {
-                usedReportFallback = true;
+            let scores = filterByDeptFn(periodScores);
+            if (scores.length === 0 && rawScores.length > 0 && statusFilter !== 'unreported') {
+                usedFallbackPeriod = true;
                 const deptAllTime = filterByDeptFn(rawScores);
                 if (deptAllTime.length > 0) {
                     scores = deptAllTime;
-                    fallbackMsg = `Khoa/Phòng <strong>${deptName}</strong> chưa có bản ghi trong kỳ <strong>${from || '...'} → ${to || '...'}</strong>. Đang tự động hiển thị <strong>${scores.length} phiếu lũy kế</strong> của đơn vị này.`;
+                    periodScores = [...rawScores];
+                    fallbackMsg = `Khoa/Phòng <strong>${deptName}</strong> chưa có bản ghi trong kỳ <strong>${from || 'Đầu'} → ${to || 'Nay'}</strong>. Hệ thống đang tổng hợp trên <strong>${scores.length} phiếu lũy kế</strong> của đơn vị.`;
                 } else {
                     scores = [...rawScores];
-                    fallbackMsg = `Không có bản ghi khớp chính xác bộ lọc hiện tại. Đang tự động hiển thị <strong>${scores.length} phiếu chấm điểm toàn viện</strong>.`;
+                    periodScores = [...rawScores];
+                    fallbackMsg = `Không có bản ghi khớp chính xác khoảng tháng đã chọn. Hệ thống đang tổng hợp trên <strong>${scores.length} phiếu chấm điểm toàn viện</strong>.`;
                 }
             }
 
             scores.sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
 
+            // Reported vs Unreported Departments in periodScores
+            const reportedDeptIds = new Set();
+            const reportedDeptNames = new Set();
+            periodScores.forEach(s => {
+                if (s.departmentId) reportedDeptIds.add(s.departmentId);
+                if (s.department) reportedDeptNames.add(normVn(s.department));
+            });
+
+            const allDeptEntries = Object.entries(allDepts);
+            const isDeptReported = (id, d) => reportedDeptIds.has(id) || reportedDeptNames.has(normVn(d.name));
+            const reportedDepts = allDeptEntries.filter(([id, d]) => isDeptReported(id, d));
+            const unreportedDepts = allDeptEntries.filter(([id, d]) => !isDeptReported(id, d));
+
+            // Total zones in scope
+            let totalZonesInScope = 0;
+            allDeptEntries.forEach(([id, d]) => {
+                if (!deptId || id === deptId || normVn(d.name) === normVn(deptName)) {
+                    totalZonesInScope += Object.keys(d.zones || {}).length;
+                }
+            });
+
+            const scoredZoneSet = new Set();
+            let totalAvgSum = 0;
+            let validAvgCnt = 0;
+            let onTimeCount = 0;
+            let durationSum = 0;
+            let durationCnt = 0;
+            const gradeCounts = { 'Xuất sắc': 0, 'Tốt': 0, 'Khá': 0, 'Trung bình': 0, 'Chưa đạt': 0 };
+
+            scores.forEach(s => {
+                if (s.zoneId || s.zone) scoredZoneSet.add(`${s.departmentId || s.department}_${s.zoneId || s.zone}`);
+                const avg = parseFloat(s.average);
+                if (!isNaN(avg)) {
+                    totalAvgSum += avg;
+                    validAvgCnt++;
+                    const pct = Math.round((avg / 5) * 100);
+                    const g = classifyScore5S(pct).label;
+                    gradeCounts[g] = (gradeCounts[g] || 0) + 1;
+                }
+                if (isOnTime(s.createdAt, s.month).onTime) onTimeCount++;
+                if (s.durationSeconds && s.durationSeconds > 0) {
+                    durationSum += Number(s.durationSeconds);
+                    durationCnt++;
+                }
+            });
+
+            const overallAvg5 = validAvgCnt > 0 ? +(totalAvgSum / validAvgCnt).toFixed(2) : 0;
+            const overallScore100 = validAvgCnt > 0 ? +(overallAvg5 * 20).toFixed(1) : 0;
+            const overallGradeObj = classifyScore5S(overallScore100);
+            const onTimePct = scores.length > 0 ? Math.round((onTimeCount / scores.length) * 100) : 0;
+            const avgDurationSec = durationCnt > 0 ? Math.round(durationSum / durationCnt) : 0;
+            const deptCovPct = allDeptEntries.length > 0 ? Math.round((reportedDepts.length / allDeptEntries.length) * 100) : 0;
+            const zoneCovPct = totalZonesInScope > 0 ? Math.min(100, Math.round((scoredZoneSet.size / totalZonesInScope) * 100)) : 0;
+
+            // 5S Pillar Breakdown (S1-S5)
+            const pillarDefs = [
+                { code: 'S1', name: 'S1 • Sàng lọc (Seiri)', shortName: 'Sàng lọc', from: 1, to: 4, maxScore: 20, focus: 'Phân loại, loại bỏ vật dụng không cần thiết tại khu vực làm việc' },
+                { code: 'S2', name: 'S2 • Sắp xếp (Seiton)', shortName: 'Sắp xếp', from: 5, to: 9, maxScore: 25, focus: 'Bố trí khoa học, nhãn nhận diện, vạch kẻ, dễ tìm - dễ thấy - dễ lấy' },
+                { code: 'S3', name: 'S3 • Sạch sẽ (Seiso)', shortName: 'Sạch sẽ', from: 10, to: 13, maxScore: 20, focus: 'Vệ sinh bề mặt, thiết bị, môi trường khoa phòng sạch đẹp, an toàn' },
+                { code: 'S4', name: 'S4 • Săn sóc (Seiketsu)', shortName: 'Săn sóc', from: 14, to: 16, maxScore: 15, focus: 'Chuẩn hóa quy định 5S, bảng phân công trực quan, duy trì thường xuyên' },
+                { code: 'S5', name: 'S5 • Sẵn sàng (Shitsuke)', shortName: 'Sẵn sàng', from: 17, to: 20, maxScore: 20, focus: 'Ý thức tự giác, văn hóa 5S bền vững và cải tiến liên tục của nhân viên' }
+            ];
+
+            const pillarStats = pillarDefs.map(p => {
+                let sum = 0, cnt = 0, deducted = 0;
+                scores.forEach(s => {
+                    (s.criteria || []).forEach(c => {
+                        if (c.id >= p.from && c.id <= p.to && c.score > 0) {
+                            sum += Number(c.score);
+                            cnt++;
+                            if (Number(c.score) < 5) deducted++;
+                        }
+                    });
+                });
+                const avg5 = cnt > 0 ? +(sum / cnt).toFixed(2) : 0;
+                const pct100 = cnt > 0 ? +(avg5 * 20).toFixed(1) : 0;
+                const gradeObj = classifyScore5S(pct100);
+                return { ...p, avg5, pct100, evalCount: cnt, deductedCount: deducted, gradeObj };
+            });
+
+            const sortedPillars = [...pillarStats].filter(p => p.evalCount > 0).sort((a, b) => b.avg5 - a.avg5);
+            const bestPillar = sortedPillars[0] || pillarStats[0];
+            const weakestPillar = sortedPillars[sortedPillars.length - 1] || pillarStats[0];
+
+            // 20 Criteria Breakdown & Field Deduction Reasons
+            const criteriaMap = {};
+            for (let i = 1; i <= 20; i++) {
+                const info = getCriteriaTextById(i);
+                const pCode = i <= 4 ? 'S1' : i <= 9 ? 'S2' : i <= 13 ? 'S3' : i <= 16 ? 'S4' : 'S5';
+                criteriaMap[i] = {
+                    id: i,
+                    groupCode: pCode,
+                    groupName: info.group,
+                    text: info.text,
+                    sum: 0,
+                    cnt: 0,
+                    perfectCount: 0,
+                    deductedCount: 0,
+                    reasonsFreq: {}
+                };
+            }
+
+            scores.forEach(s => {
+                (s.criteria || []).forEach(c => {
+                    if (c.id >= 1 && c.id <= 20 && c.score > 0) {
+                        const item = criteriaMap[c.id];
+                        const sc = Number(c.score);
+                        item.sum += sc;
+                        item.cnt++;
+                        if (sc === 5) item.perfectCount++;
+                        else item.deductedCount++;
+                        const rText = (c.reason || '').trim();
+                        if (rText) {
+                            const key = `${rText} (${s.department} - ${s.zone})`;
+                            item.reasonsFreq[rText] = (item.reasonsFreq[rText] || 0) + 1;
+                            if (!item._sampleNotes) item._sampleNotes = [];
+                            if (item._sampleNotes.length < 4 && !item._sampleNotes.includes(key)) {
+                                item._sampleNotes.push(key);
+                            }
+                        }
+                    }
+                });
+            });
+
+            const criteriaStats = Object.values(criteriaMap).map(c => {
+                const avg5 = c.cnt > 0 ? +(c.sum / c.cnt).toFixed(2) : 0;
+                const pct100 = c.cnt > 0 ? +(avg5 * 20).toFixed(1) : 0;
+                const deductedRate = c.cnt > 0 ? Math.round((c.deductedCount / c.cnt) * 100) : 0;
+                const topReasons = Object.entries(c.reasonsFreq)
+                    .sort((a, b) => b[1] - a[1])
+                    .slice(0, 4)
+                    .map(([txt, n]) => n > 1 ? `${txt} (${n} lần)` : txt);
+                const priority = avg5 < 4.0 || deductedRate >= 35
+                    ? { label: 'Ưu tiên khắc phục cao', color: '#dc2626', bg: '#fef2f2' }
+                    : avg5 < 4.4 || deductedRate >= 20
+                        ? { label: 'Cần lưu ý cải thiện', color: '#d97706', bg: '#fffbeb' }
+                        : { label: 'Duy trì tốt', color: '#059669', bg: '#ecfdf5' };
+                return {
+                    ...c,
+                    avg5,
+                    pct100,
+                    deductedRate,
+                    topReasonsText: topReasons.length > 0 ? topReasons.join('; ') : (c.deductedCount > 0 ? 'Trừ điểm nhưng chưa ghi chú chi tiết' : 'Đạt chuẩn tốt (100% điểm tối đa)'),
+                    sampleNotesText: (c._sampleNotes || []).join('; '),
+                    priority
+                };
+            });
+
+            const weakestCriteria = [...criteriaStats]
+                .filter(c => c.cnt > 0)
+                .sort((a, b) => (a.avg5 - b.avg5) || (b.deductedCount - a.deductedCount))
+                .slice(0, 5);
+
+            // Department Ranking & Compliance Table
+            const deptRows = [];
+            allDeptEntries.forEach(([dId, dObj]) => {
+                if (deptId && dId !== deptId && normVn(dObj.name) !== normVn(deptName)) return;
+                const totalZ = Object.keys(dObj.zones || {}).length;
+                const dScores = periodScores.filter(s => {
+                    if (s.departmentId === dId) return true;
+                    return normVn(s.department) === normVn(dObj.name);
+                });
+                const zSet = new Set();
+                let sumAvg = 0, cntAvg = 0, onTime = 0;
+                const sSums = [0, 0, 0, 0, 0];
+                const sCnts = [0, 0, 0, 0, 0];
+                const reasonsSet = new Set();
+
+                dScores.forEach(s => {
+                    if (s.zoneId || s.zone) zSet.add(s.zoneId || s.zone);
+                    const a = parseFloat(s.average);
+                    if (!isNaN(a)) { sumAvg += a; cntAvg++; }
+                    if (isOnTime(s.createdAt, s.month).onTime) onTime++;
+                    (s.criteria || []).forEach(c => {
+                        if (c.id >= 1 && c.id <= 20 && c.score > 0) {
+                            const pIdx = c.id <= 4 ? 0 : c.id <= 9 ? 1 : c.id <= 13 ? 2 : c.id <= 16 ? 3 : 4;
+                            sSums[pIdx] += Number(c.score);
+                            sCnts[pIdx]++;
+                            if (c.reason && c.reason.trim() && reasonsSet.size < 3) {
+                                reasonsSet.add(c.reason.trim());
+                            }
+                        }
+                    });
+                });
+
+                const avg5 = cntAvg > 0 ? +(sumAvg / cntAvg).toFixed(2) : 0;
+                const score100 = cntAvg > 0 ? +(avg5 * 20).toFixed(1) : 0;
+                const gradeObj = cntAvg > 0 ? classifyScore5S(score100) : { label: 'Chưa báo cáo', color: '#dc2626', bg: '#fef2f2', border: '#fca5a5' };
+                const zCov = totalZ > 0 ? Math.min(100, Math.round((zSet.size / totalZ) * 100)) : 0;
+                const onTimeP = dScores.length > 0 ? Math.round((onTime / dScores.length) * 100) : 0;
+                const sAvgs = sSums.map((sm, idx) => sCnts[idx] > 0 ? +(sm / sCnts[idx]).toFixed(2) : 0);
+
+                deptRows.push({
+                    id: dId,
+                    name: dObj.name,
+                    totalZones: totalZ,
+                    scoredZones: zSet.size,
+                    zoneCovPct: zCov,
+                    scoreCount: dScores.length,
+                    s1: sAvgs[0],
+                    s2: sAvgs[1],
+                    s3: sAvgs[2],
+                    s4: sAvgs[3],
+                    s5: sAvgs[4],
+                    avg5,
+                    score100,
+                    onTimeCount: onTime,
+                    onTimePct: onTimeP,
+                    gradeObj,
+                    reported: dScores.length > 0,
+                    notes: Array.from(reasonsSet).join('; ')
+                });
+            });
+
+            deptRows.sort((a, b) => {
+                if (a.reported !== b.reported) return a.reported ? -1 : 1;
+                return (b.avg5 - a.avg5) || (b.scoreCount - a.scoreCount);
+            });
+
+            const rankedReportedDepts = deptRows.filter(d => d.reported);
+            const top3Depts = rankedReportedDepts.slice(0, 3);
+            const bottomDepts = rankedReportedDepts.length > 3 ? [...rankedReportedDepts].reverse().slice(0, 3) : [];
+
+            const periodLabel = (from || to)
+                ? `Từ tháng ${from || 'đầu'} đến tháng ${to || 'hiện tại'}`
+                : 'Toàn bộ thời gian (Lũy kế)';
+            const scopeLabel = deptId ? `Đơn vị: ${deptName}` : `Toàn Bệnh viện (${allDeptEntries.length} Khoa/Phòng)`;
+
+            // Smart Executive Narrative Generation
+            const top3Names = top3Depts.map((d, idx) => `${idx + 1}. ${d.name} (${d.score100}đ/100 - TB ${d.avg5}/5)`).join('; ');
+            const weakCritSummary = weakestCriteria.slice(0, 3).map(c => `Tiêu chí #${c.id} "${c.text}" (TB ${c.avg5}/5, trừ điểm ${c.deductedCount} lượt${c.topReasonsText && !c.topReasonsText.startsWith('Đạt') ? ': ' + c.topReasonsText : ''})`).join('; ');
+
+            const narrative = {
+                general: `Trong kỳ báo cáo (${periodLabel}), phạm vi ${scopeLabel} ghi nhận <strong>${reportedDepts.length}/${allDeptEntries.length} Khoa/Phòng</strong> tham gia báo cáo (đạt tỷ lệ <strong>${deptCovPct}%</strong>), thực hiện tổng cộng <strong>${scores.length} phiếu đánh giá</strong> tại <strong>${scoredZoneSet.size}/${totalZonesInScope} khu vực</strong> (độ phủ khu vực đạt <strong>${zoneCovPct}%</strong>). Điểm trung bình 5S đạt <strong>${overallAvg5}/5.00</strong> (tương đương <strong>${overallScore100}/100 điểm</strong>, xếp loại <strong>${overallGradeObj.label}</strong>). Tỷ lệ nộp báo cáo đúng hạn đạt <strong>${onTimePct}%</strong> (${onTimeCount}/${scores.length} phiếu)${avgDurationSec > 0 ? `, thời gian chấm trung bình đạt <strong>${formatDuration(avgDurationSec)}/phiếu</strong>` : ''}.`,
+                strengths: top3Depts.length > 0
+                    ? `Các đơn vị dẫn đầu phong trào 5S trong kỳ gồm: <strong>${top3Names}</strong>. Xét theo 5 trụ cột, <strong>${bestPillar.name}</strong> đạt kết quả cao nhất với <strong>${bestPillar.avg5}/5.00 (${bestPillar.pct100}đ/100)</strong>. Toàn viện có <strong>${gradeCounts['Xuất sắc'] + gradeCounts['Tốt']}/${scores.length} phiếu</strong> (${scores.length > 0 ? Math.round(((gradeCounts['Xuất sắc'] + gradeCounts['Tốt']) / scores.length) * 100) : 0}%) đạt mức Tốt và Xuất sắc.`
+                    : `Chưa có dữ liệu xếp hạng đơn vị trong kỳ này.`,
+                bottlenecks: `Trụ cột cần tập trung cải thiện nhất là <strong>${weakestPillar.name}</strong> (đạt <strong>${weakestPillar.avg5}/5.00 - ${weakestPillar.pct100}đ/100</strong>, phát sinh <strong>${weakestPillar.deductedCount} lượt trừ điểm</strong>). Các tiêu chí có tần suất trừ điểm cao nhất gồm: ${weakCritSummary || 'Không có'}.${unreportedDepts.length > 0 ? ` Hiện còn <strong>${unreportedDepts.length} Khoa/Phòng</strong> chưa hoàn thành báo cáo trong kỳ: <em>${unreportedDepts.map(([, d]) => d.name).join(', ')}</em>.` : ' Toàn bộ 100% Khoa/Phòng đã hoàn thành nghĩa vụ báo cáo trong kỳ.'}`,
+                recommendations: [
+                    `<strong>Đối với Hội đồng 5S & Phòng Quản lý Chất lượng:</strong> Tăng cường giám sát chéo đột xuất tại các khu vực có điểm dưới 80đ/100; nhắc nhở và đôn đốc ${unreportedDepts.length > 0 ? `${unreportedDepts.length} đơn vị chưa nộp báo cáo` : 'các đơn vị duy trì tỷ lệ chấm đúng hạn từ ngày 25–30 hàng tháng'}.`,
+                    `<strong>Trọng tâm khắc phục chuyên môn (${weakestPillar.code}):</strong> Tập trung chấn chỉnh nhóm tiêu chí thuộc <em>${weakestPillar.name}</em> (${weakestPillar.focus}), đặc biệt là Tiêu chí #${weakestCriteria[0]?.id || 1} và #${weakestCriteria[1]?.id || 2}.`,
+                    `<strong>Chuẩn hóa trực quan & Duy trì (S2 - S4):</strong> Rà soát lại hệ thống nhãn nhận diện, vạch kẻ giới hạn, danh mục định lượng vật tư và bảng phân công trách nhiệm 5S tại từng buồng bệnh, phòng hành chính và kho vật tư.`,
+                    `<strong>Nhân rộng mô hình điểm:</strong> Biểu dương và chia sẻ hình ảnh thực hành tốt của ${top3Depts[0]?.name || 'các đơn vị dẫn đầu'} làm mô hình mẫu trong giao ban toàn viện.`
+                ]
+            };
+
+            return {
+                deptId, deptName, from, to, statusFilter, periodLabel, scopeLabel,
+                usedFallbackPeriod, fallbackMsg,
+                allDeptEntries, reportedDepts, unreportedDepts, deptCovPct,
+                totalZonesInScope, scoredZonesCount: scoredZoneSet.size, zoneCovPct,
+                scores, totalScores: scores.length,
+                overallAvg5, overallScore100, overallGradeObj,
+                onTimeCount, onTimePct, avgDurationSec,
+                gradeCounts, pillarStats, bestPillar, weakestPillar,
+                criteriaStats, weakestCriteria,
+                deptRows, top3Depts, bottomDepts, narrative
+            };
+        }
+
+        async function loadReport() {
+            const reportData = await computeReportAnalytics();
+            window._lastReportAnalytics = reportData;
+
+            const {
+                from, to, statusFilter, periodLabel, scopeLabel,
+                usedFallbackPeriod, fallbackMsg,
+                allDeptEntries, reportedDepts, unreportedDepts, deptCovPct,
+                totalZonesInScope, scoredZonesCount, zoneCovPct,
+                scores, totalScores,
+                overallAvg5, overallScore100, overallGradeObj,
+                onTimeCount, onTimePct, avgDurationSec,
+                gradeCounts, pillarStats, criteriaStats, weakestCriteria,
+                deptRows, narrative
+            } = reportData;
+
+            const heroSub = document.getElementById('reportHeroSub');
+            if (heroSub) {
+                heroSub.innerHTML = `📅 Kỳ báo cáo: <strong>${periodLabel}</strong> • 🏥 Phạm vi: <strong>${scopeLabel}</strong> • 📝 Tổng hợp: <strong>${totalScores} phiếu chấm</strong>`;
+            }
+
+            // Hide legacy banner & render modern KPI cards + Executive Studio inside #reportResult
+            const bannerEl = document.getElementById('reportSummaryBanner');
+            if (bannerEl) bannerEl.style.display = 'none';
+
+            const canDelete = currentUser && (currentUser.role === 'admin' || currentUser.role === 'mod');
+            const activeSubtab = statusFilter === 'unreported' ? 'unreported' : (window._activeReportSubtab || 'executive');
+
             let html = '';
-            if (usedReportFallback) {
-                html += `<div style="background:#fffbeb;border:1px solid #fde68a;color:#92400e;padding:10px 14px;border-radius:10px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;font-size:0.84rem;">
+
+            if (usedFallbackPeriod) {
+                html += `<div style="background:#fffbeb;border:1px solid #fde68a;color:#92400e;padding:12px 16px;border-radius:12px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;font-size:0.85rem;">
                     <span>ℹ️ ${fallbackMsg}</span>
-                    <button type="button" class="btn btn-sm" style="background:#fef3c7;color:#b45309;border:1px solid #f59e0b;padding:4px 10px;font-size:0.78rem;font-weight:700;" onclick="resetReportFilters()">🔄 Đặt lại bộ lọc cả năm</button>
+                    <button type="button" class="btn btn-sm" style="background:#fef3c7;color:#b45309;border:1px solid #f59e0b;padding:5px 12px;font-size:0.78rem;font-weight:700;" onclick="setReportQuickPeriod('all')">🔄 Xem toàn bộ dữ liệu</button>
                 </div>`;
             }
 
-            const canDelete = currentUser && (currentUser.role === 'admin' || currentUser.role === 'mod');
-            html += '<div style="overflow-x:auto;"><table><thead><tr><th>STT</th><th>Tháng</th><th>Khoa/Phòng</th><th>Khu vực</th><th>Mô tả</th><th>Người đánh giá</th><th>Điểm</th><th>Thời gian chấm</th><th>⏱️</th><th>Ảnh</th><th>Ngày tạo</th><th>Thao tác</th></tr></thead><tbody>';
-            scores.forEach((s, index) => {
-                const imgHtml = renderScoreThumbnails(s);
-                const deleteBtn = canDelete ? `<button type="button" onclick="event.stopPropagation(); deleteScore('${s.id}')" class="btn btn-danger btn-sm" style="padding:4px 8px;font-size:12px;">🗑️</button>` : '';
-                const timeStatus = isOnTime(s.createdAt, s.month);
-                const timeStyle = timeStatus.onTime ? 'color:#10b981;font-weight:600;' : 'color:#ef4444;font-weight:600;';
-                const score100 = (parseFloat(s.average) / 5 * 100).toFixed(0);
-                const durationHtml = s.durationSeconds ? `<span class="duration-badge">${formatDuration(s.durationSeconds)}</span>` : '<span style="color:var(--gray-400);">-</span>';
-                html += `<tr style="cursor:pointer;" onclick="showScoreDetailModal('${s.id}')" title="Bấm để xem chi tiết 20 tiêu chí">
-                    <td data-label="STT" style="text-align:center;font-weight:600;">${index + 1}</td>
-                    <td data-label="Tháng">${s.month}</td>
-                    <td data-label="Khoa/Phòng" style="font-weight:600;">${s.department}</td>
-                    <td data-label="Khu vực">${s.zone}</td>
-                    <td data-label="Mô tả">${s.item || (s.items ? s.items.join(', ') : '-')}</td>
-                    <td data-label="Người chấm">${s.evaluator}</td>
-                    <td data-label="Điểm 5S" style="text-align:center;"><strong style="font-size:1.05rem;color:var(--primary);">${score100}</strong><span style="font-size:0.75rem;color:var(--gray-600);">/100</span><br><span style="font-size:0.78rem;color:var(--gray-600);">TB: ${s.average}/5</span></td>
-                    <td data-label="Đúng hạn" style="${timeStyle}">${timeStatus.label}</td>
-                    <td data-label="Thời lượng">${durationHtml}</td>
-                    <td data-label="Hình ảnh" onclick="event.stopPropagation();">${imgHtml}</td>
-                    <td data-label="Ngày tạo">${s.createdAt ? new Date(s.createdAt).toLocaleDateString('vi-VN') : '-'}</td>
-                    <td data-label="Thao tác" onclick="event.stopPropagation();"><div style="display:flex;gap:6px;align-items:center;"><button type="button" onclick="showScoreDetailModal('${s.id}')" class="btn btn-sm" style="background:#eff6ff;color:#2563eb;border:1px solid #bfdbfe;padding:4px 8px;font-size:12px;">👁️ Chi tiết</button>${deleteBtn}</div></td>
-                </tr>`;
-            });
-            html += '</tbody></table></div>';
+            // 4 Executive KPI Summary Boxes
+            html += `<div class="report-kpi-grid">
+                <div class="report-kpi-box emerald">
+                    <div style="font-size:0.76rem; font-weight:700; color:#64748b; text-transform:uppercase;">🏥 Tỷ lệ Khoa/Phòng Báo cáo</div>
+                    <div style="font-size:1.75rem; font-weight:900; color:#059669; margin:4px 0;">${reportedDepts.length}/${allDeptEntries.length} <span style="font-size:0.95rem; font-weight:700;">(${deptCovPct}%)</span></div>
+                    <div style="font-size:0.78rem; color:#475569;">✅ ${reportedDepts.length} đã nộp • ❌ ${unreportedDepts.length} chưa nộp</div>
+                </div>
+                <div class="report-kpi-box">
+                    <div style="font-size:0.76rem; font-weight:700; color:#64748b; text-transform:uppercase;">📍 Độ phủ Khu vực &amp; Số phiếu</div>
+                    <div style="font-size:1.75rem; font-weight:900; color:#2563eb; margin:4px 0;">${totalScores} <span style="font-size:0.95rem; font-weight:700;">phiếu</span></div>
+                    <div style="font-size:0.78rem; color:#475569;">Đánh giá tại <strong>${scoredZonesCount}/${totalZonesInScope}</strong> khu vực (${zoneCovPct}%)</div>
+                </div>
+                <div class="report-kpi-box violet">
+                    <div style="font-size:0.76rem; font-weight:700; color:#64748b; text-transform:uppercase;">⭐ Điểm Chất lượng 5S TB</div>
+                    <div style="font-size:1.75rem; font-weight:900; color:#7c3aed; margin:4px 0;">${overallScore100}<span style="font-size:0.95rem; font-weight:700;">/100đ</span> <span style="font-size:0.85rem; color:#64748b;">(${overallAvg5}/5)</span></div>
+                    <div style="font-size:0.78rem;"><span style="background:${overallGradeObj.bg}; color:${overallGradeObj.color}; border:1px solid ${overallGradeObj.border}; padding:2px 8px; border-radius:999px; font-weight:700;">Xếp loại: ${overallGradeObj.label}</span></div>
+                </div>
+                <div class="report-kpi-box amber">
+                    <div style="font-size:0.76rem; font-weight:700; color:#64748b; text-transform:uppercase;">⏱️ Kỷ luật Đúng hạn &amp; Thời lượng</div>
+                    <div style="font-size:1.75rem; font-weight:900; color:#d97706; margin:4px 0;">${onTimePct}% <span style="font-size:0.9rem; font-weight:700;">đúng hạn</span></div>
+                    <div style="font-size:0.78rem; color:#475569;">${onTimeCount}/${totalScores} phiếu đúng hạn • TB: <strong>${avgDurationSec > 0 ? formatDuration(avgDurationSec) : '-'}</strong></div>
+                </div>
+            </div>`;
+
+            // Sub-navigation tabs inside Report Studio
+            html += `<div class="report-subtabs">
+                <button type="button" class="report-subtab-btn ${activeSubtab === 'executive' ? 'active' : ''}" onclick="switchReportSubtab('executive', this)">📑 Bản Báo cáo Tổng hợp (Executive View)</button>
+                <button type="button" class="report-subtab-btn ${activeSubtab === 'depts' ? 'active' : ''}" onclick="switchReportSubtab('depts', this)">🏥 Bảng Tổng hợp &amp; Xếp hạng Khoa/Phòng (${deptRows.length})</button>
+                <button type="button" class="report-subtab-btn ${activeSubtab === 'criteria' ? 'active' : ''}" onclick="switchReportSubtab('criteria', this)">🔍 Phân tích 20 Tiêu chí &amp; Lỗi trừ điểm</button>
+                <button type="button" class="report-subtab-btn ${activeSubtab === 'sheets' ? 'active' : ''}" onclick="switchReportSubtab('sheets', this)">📋 Danh sách Phiếu chấm (${totalScores})</button>
+                <button type="button" class="report-subtab-btn ${activeSubtab === 'unreported' ? 'active' : ''}" onclick="switchReportSubtab('unreported', this)">❌ Đơn vị Chưa báo cáo (${unreportedDepts.length})</button>
+            </div>`;
+
+            // Helper to render Pillar table
+            const pillarTableHtml = `
+                <div style="overflow-x:auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Trụ cột 5S</th>
+                                <th>Nội dung trọng tâm</th>
+                                <th style="text-align:center;">Điểm TB (/5)</th>
+                                <th style="text-align:center;">Điểm quy đổi (/100)</th>
+                                <th style="text-align:center;">Số lượt trừ điểm</th>
+                                <th style="text-align:center;">Xếp loại</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${pillarStats.map(p => `
+                                <tr>
+                                    <td style="font-weight:800; color:#1e3a8a; white-space:nowrap;">${p.name}</td>
+                                    <td style="font-size:0.84rem; color:#475569;">${p.focus}</td>
+                                    <td style="text-align:center; font-weight:800; font-size:0.98rem; color:#2563eb;">${p.avg5.toFixed(2)}/5</td>
+                                    <td style="text-align:center; font-weight:800;">${p.pct100}%</td>
+                                    <td style="text-align:center; color:${p.deductedCount > 0 ? '#dc2626' : '#059669'}; font-weight:700;">${p.deductedCount} lượt</td>
+                                    <td style="text-align:center;"><span style="background:${p.gradeObj.bg}; color:${p.gradeObj.color}; border:1px solid ${p.gradeObj.border}; padding:3px 10px; border-radius:999px; font-size:0.78rem; font-weight:700;">${p.gradeObj.label}</span></td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>`;
+
+            // Helper to render Department Ranking & Compliance table
+            const renderDeptSummaryTable = (rows) => `
+                <div style="overflow-x:auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="text-align:center;">Hạng</th>
+                                <th>Khoa/Phòng</th>
+                                <th style="text-align:center;">Độ phủ KV</th>
+                                <th style="text-align:center;">Số phiếu</th>
+                                <th style="text-align:center;">S1</th>
+                                <th style="text-align:center;">S2</th>
+                                <th style="text-align:center;">S3</th>
+                                <th style="text-align:center;">S4</th>
+                                <th style="text-align:center;">S5</th>
+                                <th style="text-align:center;">Điểm TB (/5)</th>
+                                <th style="text-align:center;">Hệ 100</th>
+                                <th style="text-align:center;">Đúng hạn</th>
+                                <th style="text-align:center;">Xếp loại</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${rows.map((d, idx) => `
+                                <tr>
+                                    <td style="text-align:center; font-weight:800;">${d.reported ? (idx === 0 ? '🥇 1' : idx === 1 ? '🥈 2' : idx === 2 ? '🥉 3' : idx + 1) : '-'}</td>
+                                    <td style="font-weight:700;">${d.name}</td>
+                                    <td style="text-align:center;">${d.scoredZones}/${d.totalZones} (${d.zoneCovPct}%)</td>
+                                    <td style="text-align:center; font-weight:700;">${d.scoreCount}</td>
+                                    <td style="text-align:center;">${d.reported ? d.s1.toFixed(2) : '-'}</td>
+                                    <td style="text-align:center;">${d.reported ? d.s2.toFixed(2) : '-'}</td>
+                                    <td style="text-align:center;">${d.reported ? d.s3.toFixed(2) : '-'}</td>
+                                    <td style="text-align:center;">${d.reported ? d.s4.toFixed(2) : '-'}</td>
+                                    <td style="text-align:center;">${d.reported ? d.s5.toFixed(2) : '-'}</td>
+                                    <td style="text-align:center; font-weight:800; color:#2563eb;">${d.reported ? d.avg5.toFixed(2) : '-'}</td>
+                                    <td style="text-align:center; font-weight:800;">${d.reported ? d.score100 + 'đ' : '-'}</td>
+                                    <td style="text-align:center; color:${d.onTimePct >= 80 ? '#059669' : '#d97706'}; font-weight:600;">${d.reported ? d.onTimePct + '%' : '-'}</td>
+                                    <td style="text-align:center;"><span style="background:${d.gradeObj.bg}; color:${d.gradeObj.color}; border:1px solid ${d.gradeObj.border}; padding:3px 9px; border-radius:999px; font-size:0.76rem; font-weight:700; white-space:nowrap;">${d.gradeObj.label}</span></td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>`;
+
+            // Helper to render 20 Criteria table
+            const renderCriteriaTable20 = (rows) => `
+                <div style="overflow-x:auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="text-align:center;">Mã TC</th>
+                                <th>Nhóm 5S</th>
+                                <th>Nội dung Tiêu chí</th>
+                                <th style="text-align:center;">Điểm TB (/5)</th>
+                                <th style="text-align:center;">Tỷ lệ chuẩn</th>
+                                <th style="text-align:center;">Lượt trừ điểm</th>
+                                <th>Ghi nhận lỗi / Lý do trừ điểm thực tế</th>
+                                <th style="text-align:center;">Mức ưu tiên</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${rows.map(c => `
+                                <tr>
+                                    <td style="text-align:center; font-weight:800;">#${c.id}</td>
+                                    <td style="font-weight:700; white-space:nowrap; color:#1e3a8a;">${c.groupCode}</td>
+                                    <td style="font-weight:600;">${c.text}</td>
+                                    <td style="text-align:center; font-weight:800; color:${c.avg5 >= 4.4 ? '#059669' : c.avg5 >= 4.0 ? '#2563eb' : '#dc2626'};">${c.avg5.toFixed(2)}</td>
+                                    <td style="text-align:center; font-weight:700;">${c.pct100}%</td>
+                                    <td style="text-align:center; color:${c.deductedCount > 0 ? '#dc2626' : '#059669'}; font-weight:700;">${c.deductedCount}/${c.cnt} (${c.deductedRate}%)</td>
+                                    <td style="font-size:0.82rem; color:#475569;">${c.topReasonsText}</td>
+                                    <td style="text-align:center;"><span style="background:${c.priority.bg}; color:${c.priority.color}; padding:3px 9px; border-radius:999px; font-size:0.75rem; font-weight:700; white-space:nowrap;">${c.priority.label}</span></td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>`;
+
+            // Helper to render Detailed Score Sheets table
+            let scoreSheetsTableHtml = '<div style="overflow-x:auto;"><table><thead><tr><th>STT</th><th>Tháng</th><th>Khoa/Phòng</th><th>Khu vực</th><th>Mô tả</th><th>Người đánh giá</th><th>Điểm</th><th>Thời gian chấm</th><th>⏱️</th><th>Ảnh</th><th>Ngày tạo</th><th>Thao tác</th></tr></thead><tbody>';
+            if (scores.length === 0) {
+                scoreSheetsTableHtml += '<tr><td colspan="12" style="text-align:center; padding:24px; color:var(--gray-500);">Chưa có phiếu chấm điểm nào trong kỳ đã chọn</td></tr>';
+            } else {
+                scores.forEach((s, index) => {
+                    const imgHtml = renderScoreThumbnails(s);
+                    const deleteBtn = canDelete ? `<button type="button" onclick="event.stopPropagation(); deleteScore('${s.id}')" class="btn btn-danger btn-sm" style="padding:4px 8px;font-size:12px;">🗑️</button>` : '';
+                    const timeStatus = isOnTime(s.createdAt, s.month);
+                    const timeStyle = timeStatus.onTime ? 'color:#10b981;font-weight:600;' : 'color:#ef4444;font-weight:600;';
+                    const score100 = (parseFloat(s.average) / 5 * 100).toFixed(0);
+                    const durationHtml = s.durationSeconds ? `<span class="duration-badge">${formatDuration(s.durationSeconds)}</span>` : '<span style="color:var(--gray-400);">-</span>';
+                    scoreSheetsTableHtml += `<tr style="cursor:pointer;" onclick="showScoreDetailModal('${s.id}')" title="Bấm để xem chi tiết 20 tiêu chí">
+                        <td data-label="STT" style="text-align:center;font-weight:600;">${index + 1}</td>
+                        <td data-label="Tháng">${s.month}</td>
+                        <td data-label="Khoa/Phòng" style="font-weight:600;">${s.department}</td>
+                        <td data-label="Khu vực">${s.zone}</td>
+                        <td data-label="Mô tả">${s.item || (s.items ? s.items.join(', ') : '-')}</td>
+                        <td data-label="Người chấm">${s.evaluator}</td>
+                        <td data-label="Điểm 5S" style="text-align:center;"><strong style="font-size:1.05rem;color:var(--primary);">${score100}</strong><span style="font-size:0.75rem;color:var(--gray-600);">/100</span><br><span style="font-size:0.78rem;color:var(--gray-600);">TB: ${s.average}/5</span></td>
+                        <td data-label="Đúng hạn" style="${timeStyle}">${timeStatus.label}</td>
+                        <td data-label="Thời lượng">${durationHtml}</td>
+                        <td data-label="Hình ảnh" onclick="event.stopPropagation();">${imgHtml}</td>
+                        <td data-label="Ngày tạo">${s.createdAt ? new Date(s.createdAt).toLocaleDateString('vi-VN') : '-'}</td>
+                        <td data-label="Thao tác" onclick="event.stopPropagation();"><div style="display:flex;gap:6px;align-items:center;"><button type="button" onclick="showScoreDetailModal('${s.id}')" class="btn btn-sm" style="background:#eff6ff;color:#2563eb;border:1px solid #bfdbfe;padding:4px 8px;font-size:12px;">👁️ Chi tiết</button>${deleteBtn}</div></td>
+                    </tr>`;
+                });
+            }
+            scoreSheetsTableHtml += '</tbody></table></div>';
+
+            // Helper to render Unreported Departments table
+            let unreportedHtml = '';
+            if (unreportedDepts.length === 0) {
+                unreportedHtml = '<div style="background:#ecfdf5; border:1px solid #6ee7b7; color:#065f46; padding:20px; border-radius:14px; text-align:center; font-weight:700;">🎉 Xuất sắc! Tất cả 100% Khoa/Phòng đã hoàn thành nộp báo cáo 5S trong kỳ này!</div>';
+            } else {
+                unreportedHtml = `<div style="background:#fef2f2; border:1px solid #fecaca; color:#991b1b; padding:12px 16px; border-radius:12px; margin-bottom:12px; font-size:0.88rem; font-weight:600;">
+                    ⚠️ Có <strong>${unreportedDepts.length}/${allDeptEntries.length} Khoa/Phòng</strong> chưa ghi nhận phiếu chấm điểm 5S trong kỳ (${periodLabel}):
+                </div>
+                <table><thead><tr><th style="width:70px; text-align:center;">STT</th><th>Khoa/Phòng</th><th style="text-align:center;">Số khu vực quản lý</th><th style="text-align:center;">Trạng thái trong kỳ</th></tr></thead><tbody>`;
+                unreportedDepts.forEach(([, dept], idx) => {
+                    const zoneCount = Object.keys(dept.zones || {}).length;
+                    unreportedHtml += `<tr><td style="text-align:center;font-weight:700;">${idx + 1}</td><td style="font-weight:700;">${dept.name}</td><td style="text-align:center;">${zoneCount} khu vực</td><td style="text-align:center; color:#dc2626;font-weight:700;">❌ Chưa nộp báo cáo</td></tr>`;
+                });
+                unreportedHtml += '</tbody></table>';
+            }
+
+            // SUBPANEL 1: EXECUTIVE FULL REPORT PREVIEW
+            html += `<div id="report_sub_executive" class="report-subpanel" style="display:${activeSubtab === 'executive' ? 'block' : 'none'};">
+                <div class="report-exec-paper">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px; padding-bottom:16px; border-bottom:2px double #cbd5e1; margin-bottom:18px;">
+                        <div>
+                            <div style="font-size:0.78rem; font-weight:700; color:#475569; text-transform:uppercase;">SỞ Y TẾ TP CẦN THƠ</div>
+                            <div style="font-size:0.92rem; font-weight:900; color:#0f172a; text-transform:uppercase;">BỆNH VIỆN NHI ĐỒNG TP CẦN THƠ</div>
+                            <div style="font-size:0.78rem; font-weight:600; color:#2563eb;">HỘI ĐỒNG QUẢN LÝ CHẤT LƯỢNG &amp; 5S</div>
+                        </div>
+                        <div style="text-align:right;">
+                            <div style="font-size:0.82rem; font-weight:800; color:#0f172a;">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div>
+                            <div style="font-size:0.8rem; font-weight:700; color:#334155;">Độc lập - Tự do - Hạnh phúc</div>
+                            <div style="font-size:0.76rem; color:#64748b; font-style:italic; margin-top:2px;">Cần Thơ, ngày ${new Date().getDate()} tháng ${new Date().getMonth() + 1} năm ${new Date().getFullYear()}</div>
+                        </div>
+                    </div>
+
+                    <div style="text-align:center; margin-bottom:20px;">
+                        <h3 style="font-size:1.3rem; font-weight:900; color:#1e3a8a; margin:0 0 6px; text-transform:uppercase;">BÁO CÁO TỔNG HỢP CÔNG TÁC ĐÁNH GIÁ CHẤT LƯỢNG 5S</h3>
+                        <div style="font-size:0.88rem; color:#475569; font-weight:600;">Kỳ báo cáo: <strong style="color:#0f172a;">${periodLabel}</strong> &nbsp;|&nbsp; Phạm vi: <strong style="color:#0f172a;">${scopeLabel}</strong></div>
+                    </div>
+
+                    <div class="report-section-title">
+                        <span>I. NHẬN ĐỊNH &amp; PHÂN TÍCH ĐIỀU HÀNH TỰ ĐỘNG (EXECUTIVE SUMMARY)</span>
+                        <span style="font-size:0.76rem; color:#64748b; font-weight:600;">Tự động phân tích từ ${totalScores} phiếu chấm thực tế</span>
+                    </div>
+                    <div class="report-narrative-grid">
+                        <div class="report-narrative-card">
+                            <h4 style="color:#1d4ed8;">📊 1. Đánh giá chung &amp; Độ phủ báo cáo</h4>
+                            <div>${narrative.general}</div>
+                        </div>
+                        <div class="report-narrative-card">
+                            <h4 style="color:#059669;">🌟 2. Điểm sáng &amp; Đơn vị điển hình</h4>
+                            <div>${narrative.strengths}</div>
+                        </div>
+                        <div class="report-narrative-card">
+                            <h4 style="color:#dc2626;">⚠️ 3. Tồn tại &amp; Điểm nghẽn cần khắc phục</h4>
+                            <div>${narrative.bottlenecks}</div>
+                        </div>
+                        <div class="report-narrative-card">
+                            <h4 style="color:#7c3aed;">💡 4. Kiến nghị &amp; Giải pháp trọng tâm kỳ tới</h4>
+                            <ul style="padding-left:16px; margin:0;">
+                                ${narrative.recommendations.map(r => `<li style="margin-bottom:4px;">${r}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="report-section-title">
+                        <span>II. KẾT QUẢ PHÂN TÍCH THEO 5 TRỤ CỘT 5S (S1 → S5)</span>
+                    </div>
+                    ${pillarTableHtml}
+
+                    <div class="report-section-title">
+                        <span>III. TOP 5 TIÊU CHÍ HAY BỊ TRỪ ĐIỂM CẦN CHẤN CHỈNH TRỌNG ĐIỂM</span>
+                    </div>
+                    ${renderCriteriaTable20(weakestCriteria)}
+
+                    <div class="report-section-title">
+                        <span>IV. BẢNG TỔNG HỢP &amp; XẾP HẠNG KHOA/PHÒNG TRONG KỲ</span>
+                    </div>
+                    ${renderDeptSummaryTable(deptRows)}
+                </div>
+            </div>`;
+
+            // SUBPANEL 2: DEPARTMENT RANKING
+            html += `<div id="report_sub_depts" class="report-subpanel" style="display:${activeSubtab === 'depts' ? 'block' : 'none'};">
+                <div class="report-exec-paper">
+                    <div class="report-section-title" style="margin-top:0;">
+                        <span>🏥 BẢNG TỔNG HỢP ĐIỂM 5S &amp; TIẾN ĐỘ BÁO CÁO CỦA CÁC KHOA/PHÒNG</span>
+                    </div>
+                    ${renderDeptSummaryTable(deptRows)}
+                </div>
+            </div>`;
+
+            // SUBPANEL 3: 20 CRITERIA ANALYSIS
+            html += `<div id="report_sub_criteria" class="report-subpanel" style="display:${activeSubtab === 'criteria' ? 'block' : 'none'};">
+                <div class="report-exec-paper">
+                    <div class="report-section-title" style="margin-top:0;">
+                        <span>🔍 PHÂN TÍCH CHI TIẾT 20 TIÊU CHÍ 5S &amp; TỔNG HỢP LÝ DO TRỪ ĐIỂM</span>
+                    </div>
+                    ${renderCriteriaTable20(criteriaStats)}
+                </div>
+            </div>`;
+
+            // SUBPANEL 4: DETAILED SCORE SHEETS
+            html += `<div id="report_sub_sheets" class="report-subpanel" style="display:${activeSubtab === 'sheets' ? 'block' : 'none'};">
+                <div class="report-exec-paper">
+                    <div class="report-section-title" style="margin-top:0;">
+                        <span>📋 DANH SÁCH CHI TIẾT CÁC PHIẾU CHẤM ĐIỂM 5S (${totalScores} PHIẾU)</span>
+                    </div>
+                    ${scoreSheetsTableHtml}
+                </div>
+            </div>`;
+
+            // SUBPANEL 5: UNREPORTED DEPARTMENTS
+            html += `<div id="report_sub_unreported" class="report-subpanel" style="display:${activeSubtab === 'unreported' ? 'block' : 'none'};">
+                <div class="report-exec-paper">
+                    <div class="report-section-title" style="margin-top:0;">
+                        <span>❌ DANH SÁCH KHOA/PHÒNG CHƯA NỘP BÁO CÁO TRONG KỲ (${unreportedDepts.length} ĐƠN VỊ)</span>
+                    </div>
+                    ${unreportedHtml}
+                </div>
+            </div>`;
+
             document.getElementById('reportResult').innerHTML = html;
         }
 
@@ -6612,31 +7380,528 @@
             } catch (err) { alert('Lỗi khi xóa: ' + err.message); }
         }
 
+        // ===== BUILD FORMAL HOSPITAL HTML DOCUMENT FOR WORD (.DOC) & PRINT =====
+        function buildExecutiveDocumentHtml(reportData) {
+            const {
+                periodLabel, scopeLabel,
+                allDeptEntries, reportedDepts, unreportedDepts, deptCovPct,
+                totalZonesInScope, scoredZonesCount, zoneCovPct,
+                scores, totalScores,
+                overallAvg5, overallScore100, overallGradeObj,
+                onTimeCount, onTimePct, avgDurationSec,
+                gradeCounts, pillarStats, criteriaStats, weakestCriteria,
+                deptRows, narrative
+            } = reportData;
+
+            const now = new Date();
+            const dayStr = String(now.getDate()).padStart(2, '0');
+            const monthStr = String(now.getMonth() + 1).padStart(2, '0');
+            const yearStr = now.getFullYear();
+            const exporterName = currentUser?.fullname || currentUser?.username || 'Hội đồng Quản lý Chất lượng 5S';
+
+            return `<html xmlns:o="urn:schemas-microsoft-com:office:office"
+                  xmlns:w="urn:schemas-microsoft-com:office:word"
+                  xmlns="http://www.w3.org/TR/REC-html40">
+            <head>
+                <meta charset="utf-8">
+                <title>Báo cáo Tổng hợp Chất lượng 5S - Bệnh viện Nhi đồng TP Cần Thơ</title>
+                <!--[if gte mso 9]>
+                <xml>
+                    <w:WordDocument>
+                        <w:View>Print</w:View>
+                        <w:Zoom>100</w:Zoom>
+                        <w:DoNotOptimizeForBrowser/>
+                    </w:WordDocument>
+                </xml>
+                <![endif]-->
+                <style>
+                    @page Section1 {
+                        size: 595.3pt 841.9pt;
+                        margin: 1.8cm 1.6cm 1.8cm 2.2cm;
+                        mso-header-margin: 35.4pt;
+                        mso-footer-margin: 35.4pt;
+                    }
+                    div.Section1 { page: Section1; }
+                    body {
+                        font-family: "Times New Roman", Times, serif;
+                        font-size: 12.5pt;
+                        line-height: 1.45;
+                        color: #111827;
+                    }
+                    table {
+                        border-collapse: collapse;
+                        width: 100%;
+                        margin: 8pt 0 12pt 0;
+                    }
+                    th, td {
+                        border: 1pt solid #475569;
+                        padding: 5pt 6pt;
+                        font-size: 11pt;
+                        vertical-align: middle;
+                    }
+                    th {
+                        background-color: #1e3a8a;
+                        color: #ffffff;
+                        font-weight: bold;
+                        text-align: center;
+                    }
+                    .header-table, .header-table td, .sig-table, .sig-table td {
+                        border: none !important;
+                        padding: 2pt 4pt;
+                    }
+                    .report-main-title {
+                        font-size: 16pt;
+                        font-weight: bold;
+                        color: #1e3a8a;
+                        text-align: center;
+                        margin: 14pt 0 4pt 0;
+                        text-transform: uppercase;
+                    }
+                    .report-sub-title {
+                        font-size: 12pt;
+                        text-align: center;
+                        margin-bottom: 14pt;
+                        color: #334155;
+                    }
+                    .sec-heading {
+                        font-size: 13pt;
+                        font-weight: bold;
+                        color: #1e3a8a;
+                        margin: 14pt 0 6pt 0;
+                        padding-bottom: 3pt;
+                        border-bottom: 1.5pt solid #1e3a8a;
+                        text-transform: uppercase;
+                    }
+                    .kpi-table th {
+                        background-color: #eff6ff;
+                        color: #1e3a8a;
+                    }
+                    .para {
+                        text-align: justify;
+                        margin: 5pt 0;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="Section1">
+                    <table class="header-table">
+                        <tr>
+                            <td style="width:46%; text-align:center; vertical-align:top;">
+                                <div style="font-size:11.5pt;">SỞ Y TẾ THÀNH PHỐ CẦN THƠ</div>
+                                <div style="font-size:12pt; font-weight:bold;">BỆNH VIỆN NHI ĐỒNG TP CẦN THƠ</div>
+                                <div style="font-size:11pt; font-weight:bold; color:#1e3a8a;">HỘI ĐỒNG QUẢN LÝ CHẤT LƯỢNG - 5S</div>
+                                <hr style="width:35%; border:0.5pt solid #334155; margin:4pt auto;">
+                            </td>
+                            <td style="width:54%; text-align:center; vertical-align:top;">
+                                <div style="font-size:12pt; font-weight:bold;">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div>
+                                <div style="font-size:12pt; font-weight:bold;">Độc lập - Tự do - Hạnh phúc</div>
+                                <hr style="width:42%; border:0.5pt solid #334155; margin:4pt auto;">
+                                <div style="font-size:11.5pt; font-style:italic; margin-top:4pt;">Cần Thơ, ngày ${dayStr} tháng ${monthStr} năm ${yearStr}</div>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <div class="report-main-title">BÁO CÁO TỔNG HỢP CÔNG TÁC ĐÁNH GIÁ CHẤT LƯỢNG 5S</div>
+                    <div class="report-sub-title">
+                        <strong>Kỳ báo cáo:</strong> ${periodLabel} &nbsp;|&nbsp; <strong>Phạm vi:</strong> ${scopeLabel}<br>
+                        <em>(Trích xuất tự động từ Hệ thống Quản lý &amp; Giám sát Chất lượng 5S - Bệnh viện Nhi đồng TP Cần Thơ)</em>
+                    </div>
+
+                    <div class="sec-heading">I. TỔNG QUAN KẾT QUẢ THỰC HIỆN (CHỈ SỐ KPI ĐIỀU HÀNH)</div>
+                    <table class="kpi-table">
+                        <thead>
+                            <tr>
+                                <th style="width:36%;">Chỉ số đo lường chất lượng 5S</th>
+                                <th style="width:24%;">Kết quả đạt được</th>
+                                <th style="width:40%;">Đánh giá &amp; Ghi chú</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>1. Tỷ lệ Khoa/Phòng tham gia báo cáo</strong></td>
+                                <td style="text-align:center; font-weight:bold;">${reportedDepts.length} / ${allDeptEntries.length} (${deptCovPct}%)</td>
+                                <td>${reportedDepts.length} khoa đã báo cáo; ${unreportedDepts.length} khoa chưa báo cáo</td>
+                            </tr>
+                            <tr>
+                                <td><strong>2. Độ phủ Khu vực được chấm điểm</strong></td>
+                                <td style="text-align:center; font-weight:bold;">${scoredZonesCount} / ${totalZonesInScope} (${zoneCovPct}%)</td>
+                                <td>Tổng số lượt đánh giá: <strong>${totalScores} phiếu</strong></td>
+                            </tr>
+                            <tr>
+                                <td><strong>3. Điểm Chất lượng 5S Trung bình</strong></td>
+                                <td style="text-align:center; font-weight:bold; color:#1e3a8a;">${overallScore100} / 100 điểm (${overallAvg5}/5)</td>
+                                <td>Xếp loại chung: <strong>${overallGradeObj.label}</strong></td>
+                            </tr>
+                            <tr>
+                                <td><strong>4. Kỷ luật nộp báo cáo đúng hạn</strong></td>
+                                <td style="text-align:center; font-weight:bold;">${onTimeCount} / ${totalScores} (${onTimePct}%)</td>
+                                <td>Thời gian chấm trung bình: <strong>${avgDurationSec > 0 ? formatDuration(avgDurationSec) : 'Không ghi nhận'}</strong></td>
+                            </tr>
+                            <tr>
+                                <td><strong>5. Cơ cấu xếp loại các phiếu chấm</strong></td>
+                                <td colspan="2">
+                                    Xuất sắc (≥95đ): <strong>${gradeCounts['Xuất sắc']}</strong> phiếu &nbsp;|&nbsp;
+                                    Tốt (80–94đ): <strong>${gradeCounts['Tốt']}</strong> phiếu &nbsp;|&nbsp;
+                                    Khá (70–79đ): <strong>${gradeCounts['Khá']}</strong> phiếu &nbsp;|&nbsp;
+                                    Trung bình/Chưa đạt (&lt;70đ): <strong>${gradeCounts['Trung bình'] + gradeCounts['Chưa đạt']}</strong> phiếu
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p class="para"><strong>1.1. Đánh giá chung:</strong> ${narrative.general}</p>
+                    <p class="para"><strong>1.2. Điểm sáng nổi bật:</strong> ${narrative.strengths}</p>
+                    <p class="para"><strong>1.3. Tồn tại &amp; Điểm nghẽn:</strong> ${narrative.bottlenecks}</p>
+
+                    <div class="sec-heading">II. PHÂN TÍCH KẾT QUẢ THEO 5 TRỤ CỘT 5S (S1 → S5)</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width:22%;">Trụ cột 5S</th>
+                                <th style="width:36%;">Nội dung trọng tâm</th>
+                                <th style="width:12%;">Điểm TB (/5)</th>
+                                <th style="width:14%;">Quy đổi (/100)</th>
+                                <th style="width:16%;">Xếp loại</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${pillarStats.map(p => `
+                                <tr>
+                                    <td><strong>${p.name}</strong></td>
+                                    <td>${p.focus}</td>
+                                    <td style="text-align:center; font-weight:bold;">${p.avg5.toFixed(2)}</td>
+                                    <td style="text-align:center; font-weight:bold;">${p.pct100}đ</td>
+                                    <td style="text-align:center; font-weight:bold;">${p.gradeObj.label} (${p.deductedCount} lỗi)</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+
+                    <div class="sec-heading">III. BẢNG TỔNG HỢP &amp; XẾP HẠNG CÁC KHOA/PHÒNG TRONG KỲ</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width:6%;">Hạng</th>
+                                <th style="width:24%;">Khoa/Phòng</th>
+                                <th style="width:11%;">Độ phủ KV</th>
+                                <th style="width:8%;">Số phiếu</th>
+                                <th style="width:6%;">S1</th>
+                                <th style="width:6%;">S2</th>
+                                <th style="width:6%;">S3</th>
+                                <th style="width:6%;">S4</th>
+                                <th style="width:6%;">S5</th>
+                                <th style="width:10%;">Điểm (/100)</th>
+                                <th style="width:11%;">Xếp loại</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${deptRows.map((d, idx) => `
+                                <tr>
+                                    <td style="text-align:center; font-weight:bold;">${d.reported ? (idx + 1) : '-'}</td>
+                                    <td><strong>${d.name}</strong></td>
+                                    <td style="text-align:center;">${d.scoredZones}/${d.totalZones} (${d.zoneCovPct}%)</td>
+                                    <td style="text-align:center;">${d.scoreCount}</td>
+                                    <td style="text-align:center;">${d.reported ? d.s1.toFixed(2) : '-'}</td>
+                                    <td style="text-align:center;">${d.reported ? d.s2.toFixed(2) : '-'}</td>
+                                    <td style="text-align:center;">${d.reported ? d.s3.toFixed(2) : '-'}</td>
+                                    <td style="text-align:center;">${d.reported ? d.s4.toFixed(2) : '-'}</td>
+                                    <td style="text-align:center;">${d.reported ? d.s5.toFixed(2) : '-'}</td>
+                                    <td style="text-align:center; font-weight:bold;">${d.reported ? `${d.score100}đ (${d.avg5})` : '-'}</td>
+                                    <td style="text-align:center; font-weight:bold;">${d.gradeObj.label}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+
+                    <div class="sec-heading">IV. PHÂN TÍCH 20 TIÊU CHÍ ĐÁNH GIÁ &amp; LỖI TRỪ ĐIỂM THỰC TẾ</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width:7%;">Mã</th>
+                                <th style="width:8%;">Nhóm</th>
+                                <th style="width:35%;">Nội dung Tiêu chí 5S</th>
+                                <th style="width:10%;">Điểm TB</th>
+                                <th style="width:12%;">Lượt trừ điểm</th>
+                                <th style="width:28%;">Ghi nhận lỗi thực tế tại Khoa/Phòng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${criteriaStats.map(c => `
+                                <tr>
+                                    <td style="text-align:center; font-weight:bold;">#${c.id}</td>
+                                    <td style="text-align:center; font-weight:bold;">${c.groupCode}</td>
+                                    <td>${c.text}</td>
+                                    <td style="text-align:center; font-weight:bold;">${c.avg5.toFixed(2)}/5</td>
+                                    <td style="text-align:center;">${c.deductedCount}/${c.cnt} (${c.deductedRate}%)</td>
+                                    <td>${c.topReasonsText}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+
+                    <div class="sec-heading">V. KIẾN NGHỊ &amp; GIẢI PHÁP CẢI TIẾN CHẤT LƯỢNG 5S KỲ TIẾP THEO</div>
+                    <ol style="margin:6pt 0 12pt 18pt; padding:0;">
+                        ${narrative.recommendations.map(r => `<li style="margin-bottom:5pt; text-align:justify;">${r}</li>`).join('')}
+                    </ol>
+
+                    <div class="sec-heading">VI. PHỤ LỤC DANH SÁCH PHIẾU CHẤM ĐIỂM TRONG KỲ (${totalScores} PHIẾU)</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width:6%;">STT</th>
+                                <th style="width:10%;">Tháng</th>
+                                <th style="width:22%;">Khoa/Phòng</th>
+                                <th style="width:20%;">Khu vực</th>
+                                <th style="width:14%;">Người đánh giá</th>
+                                <th style="width:10%;">Điểm (/100)</th>
+                                <th style="width:10%;">Đúng hạn</th>
+                                <th style="width:8%;">Ngày chấm</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${scores.map((s, idx) => {
+                                const t = isOnTime(s.createdAt, s.month);
+                                const s100 = (parseFloat(s.average) * 20).toFixed(0);
+                                return `<tr>
+                                    <td style="text-align:center;">${idx + 1}</td>
+                                    <td style="text-align:center;">${s.month || '-'}</td>
+                                    <td><strong>${s.department || '-'}</strong></td>
+                                    <td>${s.zone || '-'}</td>
+                                    <td>${s.evaluator || '-'}</td>
+                                    <td style="text-align:center; font-weight:bold;">${s100}đ (${s.average}/5)</td>
+                                    <td style="text-align:center;">${t.onTime ? 'Đúng hạn' : 'Trễ hạn'}</td>
+                                    <td style="text-align:center;">${s.createdAt ? new Date(s.createdAt).toLocaleDateString('vi-VN') : '-'}</td>
+                                </tr>`;
+                            }).join('')}
+                        </tbody>
+                    </table>
+
+                    <table class="sig-table" style="margin-top:24pt;">
+                        <tr>
+                            <td style="width:33%; text-align:center; vertical-align:top;">
+                                <strong>NGƯỜI LẬP BÁO CÁO</strong><br>
+                                <em>(Ký và ghi rõ họ tên)</em>
+                                <div style="height:60pt;"></div>
+                                <strong>${exporterName}</strong>
+                            </td>
+                            <td style="width:33%; text-align:center; vertical-align:top;">
+                                <strong>PHÒNG QUẢN LÝ CHẤT LƯỢNG</strong><br>
+                                <em>(Ký và ghi rõ họ tên)</em>
+                                <div style="height:60pt;"></div>
+                            </td>
+                            <td style="width:34%; text-align:center; vertical-align:top;">
+                                <strong>BAN GIÁM ĐỐC PHÊ DUYỆT</strong><br>
+                                <em>(Ký tên và đóng dấu)</em>
+                                <div style="height:60pt;"></div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </body>
+            </html>`;
+        }
+
+        async function exportWordReport() {
+            const reportData = window._lastReportAnalytics || await computeReportAnalytics();
+            const docHtml = buildExecutiveDocumentHtml(reportData);
+            const blob = new Blob(['\ufeff', docHtml], { type: 'application/msword;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            const fTag = reportData.from || 'Dau';
+            const tTag = reportData.to || 'Nay';
+            a.href = url;
+            a.download = `Bao_cao_Tong_hop_5S_BV_Nhi_Dong_CT_${fTag}_${tTag}.doc`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        async function printExecutiveReport() {
+            const reportData = window._lastReportAnalytics || await computeReportAnalytics();
+            const docHtml = buildExecutiveDocumentHtml(reportData);
+            const w = window.open('', '_blank');
+            if (!w) {
+                alert('Vui lòng cho phép mở cửa sổ bật lên (Pop-up) để in báo cáo!');
+                return;
+            }
+            w.document.open();
+            w.document.write(docHtml);
+            w.document.close();
+            setTimeout(() => {
+                w.focus();
+                w.print();
+            }, 400);
+        }
+
         async function exportExcel() {
-            const deptId = document.getElementById('reportDept').value;
-            const from = document.getElementById('reportFrom').value;
-            const to = document.getElementById('reportTo').value;
+            const reportData = window._lastReportAnalytics || await computeReportAnalytics();
+            const {
+                from, to, periodLabel, scopeLabel,
+                allDeptEntries, reportedDepts, unreportedDepts, deptCovPct,
+                totalZonesInScope, scoredZonesCount, zoneCovPct,
+                scores, totalScores,
+                overallAvg5, overallScore100, overallGradeObj,
+                onTimeCount, onTimePct, avgDurationSec,
+                gradeCounts, pillarStats, criteriaStats, deptRows, narrative
+            } = reportData;
 
-            const snap = await db.ref('scores_5s').once('value');
-            let scores = [];
-            snap.forEach(s => { scores.push({ id: s.key, ...s.val() }); });
+            if (totalScores === 0 && deptRows.length === 0) {
+                alert('Không có dữ liệu để xuất Excel');
+                return;
+            }
 
-            if (deptId) scores = scores.filter(s => s.departmentId === deptId);
-            if (from) scores = scores.filter(s => s.month >= from);
-            if (to) scores = scores.filter(s => s.month <= to);
-            if (scores.length === 0) { alert('Không có dữ liệu để xuất'); return; }
+            const wb = XLSX.utils.book_new();
 
-            const data = [['Tháng', 'Khoa/Phòng', 'Khu vực', 'Mô tả', 'Người đánh giá', 'Đại diện nơi ĐG', 'Tổng điểm (/100)', 'Điểm TB (/5)', 'Thời gian chấm', 'Thời lượng (giây)', 'Ngày tạo']];
-            scores.forEach(s => {
+            // SHEET 1: TỔNG QUAN ĐIỀU HÀNH 5S
+            const s1Data = [
+                ['BỆNH VIỆN NHI ĐỒNG TP CẦN THƠ - HỘI ĐỒNG QUẢN LÝ CHẤT LƯỢNG 5S'],
+                ['BÁO CÁO TỔNG HỢP & PHÂN TÍCH CHẤT LƯỢNG 5S'],
+                ['Kỳ báo cáo:', periodLabel, 'Phạm vi:', scopeLabel, 'Ngày xuất:', new Date().toLocaleDateString('vi-VN')],
+                [],
+                ['I. CÁC CHỈ SỐ ĐO LƯỜNG TỔNG HỢP (KPI ĐIỀU HÀNH)'],
+                ['TT', 'Chỉ số đánh giá', 'Giá trị đạt được', 'Tỷ lệ / Quy đổi', 'Ghi chú chi tiết'],
+                [1, 'Số Khoa/Phòng tham gia báo cáo', `${reportedDepts.length}/${allDeptEntries.length}`, `${deptCovPct}%`, `Đã nộp: ${reportedDepts.length} khoa | Chưa nộp: ${unreportedDepts.length} khoa`],
+                [2, 'Độ phủ Khu vực được đánh giá', `${scoredZonesCount}/${totalZonesInScope}`, `${zoneCovPct}%`, `Tổng số phiếu chấm: ${totalScores} phiếu`],
+                [3, 'Điểm Chất lượng 5S Trung bình', `${overallAvg5} / 5.00`, `${overallScore100} / 100 điểm`, `Xếp loại toàn viện: ${overallGradeObj.label}`],
+                [4, 'Kỷ luật chấm điểm đúng hạn', `${onTimeCount}/${totalScores}`, `${onTimePct}%`, `Thời lượng chấm TB: ${avgDurationSec > 0 ? formatDuration(avgDurationSec) : '-'}`],
+                [5, 'Phân bố xếp loại phiếu chấm', `Xuất sắc: ${gradeCounts['Xuất sắc']} | Tốt: ${gradeCounts['Tốt']}`, `Khá: ${gradeCounts['Khá']} | TB-Yếu: ${gradeCounts['Trung bình'] + gradeCounts['Chưa đạt']}`, 'Phân loại theo thang 100 điểm'],
+                [],
+                ['II. KẾT QUẢ PHÂN TÍCH THEO 5 TRỤ CỘT 5S (S1 -> S5)'],
+                ['Mã S', 'Tên Trụ cột 5S', 'Nội dung trọng tâm', 'Điểm TB (/5)', 'Điểm quy đổi (/100)', 'Số lượt trừ điểm', 'Xếp loại'],
+                ...pillarStats.map(p => [p.code, p.name, p.focus, p.avg5, p.pct100, p.deductedCount, p.gradeObj.label]),
+                [],
+                ['III. NHẬN ĐỊNH TỔNG HỢP & ĐỀ XUẤT CẢI TIẾN'],
+                ['Hạng mục', 'Nội dung phân tích tự động'],
+                ['1. Đánh giá chung', narrative.general.replace(/<[^>]+>/g, '')],
+                ['2. Điểm sáng nổi bật', narrative.strengths.replace(/<[^>]+>/g, '')],
+                ['3. Tồn tại & Điểm nghẽn', narrative.bottlenecks.replace(/<[^>]+>/g, '')],
+                ...narrative.recommendations.map((r, i) => [`4.${i + 1}. Kiến nghị`, r.replace(/<[^>]+>/g, '')])
+            ];
+            const ws1 = XLSX.utils.aoa_to_sheet(s1Data);
+            ws1['!cols'] = [{ wch: 16 }, { wch: 34 }, { wch: 45 }, { wch: 18 }, { wch: 20 }, { wch: 18 }, { wch: 18 }];
+            XLSX.utils.book_append_sheet(wb, ws1, '1_Tong_Quan_5S');
+
+            // SHEET 2: BẢNG XẾP HẠNG & TUÂN THỦ KHOA/PHÒNG
+            const s2Data = [
+                ['BẢNG TỔNG HỢP & XẾP HẠNG CHẤT LƯỢNG 5S CÁC KHOA/PHÒNG'],
+                ['Kỳ báo cáo:', periodLabel, 'Phạm vi:', scopeLabel],
+                [],
+                ['Hạng', 'Khoa/Phòng', 'Khu vực đã chấm', 'Tổng Khu vực', 'Tỷ lệ phủ KV (%)', 'Số phiếu chấm', 'Điểm S1', 'Điểm S2', 'Điểm S3', 'Điểm S4', 'Điểm S5', 'Điểm TB (/5)', 'Điểm Hệ 100 (/100)', 'Số phiếu đúng hạn', 'Tỷ lệ đúng hạn (%)', 'Xếp loại 5S', 'Trạng thái báo cáo', 'Ghi chú lỗi trừ điểm'],
+                ...deptRows.map((d, idx) => [
+                    d.reported ? idx + 1 : '-',
+                    d.name,
+                    d.scoredZones,
+                    d.totalZones,
+                    d.zoneCovPct,
+                    d.scoreCount,
+                    d.reported ? d.s1 : '',
+                    d.reported ? d.s2 : '',
+                    d.reported ? d.s3 : '',
+                    d.reported ? d.s4 : '',
+                    d.reported ? d.s5 : '',
+                    d.reported ? d.avg5 : '',
+                    d.reported ? d.score100 : '',
+                    d.onTimeCount,
+                    d.reported ? d.onTimePct : '',
+                    d.gradeObj.label,
+                    d.reported ? 'Đã báo cáo' : 'Chưa báo cáo',
+                    d.notes || ''
+                ])
+            ];
+            const ws2 = XLSX.utils.aoa_to_sheet(s2Data);
+            ws2['!cols'] = [
+                { wch: 7 }, { wch: 30 }, { wch: 15 }, { wch: 13 }, { wch: 15 }, { wch: 13 },
+                { wch: 10 }, { wch: 10 }, { wch: 10 }, { wch: 10 }, { wch: 10 },
+                { wch: 13 }, { wch: 16 }, { wch: 16 }, { wch: 16 }, { wch: 15 }, { wch: 16 }, { wch: 38 }
+            ];
+            XLSX.utils.book_append_sheet(wb, ws2, '2_Xep_Hang_Khoa_Phong');
+
+            // SHEET 3: CHI TIẾT TỪNG PHIẾU CHẤM ĐIỂM (KÈM 20 TIÊU CHÍ)
+            const tcHeaders = [];
+            for (let i = 1; i <= 20; i++) tcHeaders.push(`TC${i}`);
+            const s3Data = [
+                ['DANH SÁCH CHI TIẾT PHIẾU CHẤM ĐIỂM 5S'],
+                ['Kỳ báo cáo:', periodLabel, 'Tổng số phiếu:', totalScores],
+                [],
+                ['STT', 'Tháng', 'Khoa/Phòng', 'Khu vực', 'Mô tả chi tiết khu vực', 'Người đánh giá', 'Đại diện Khoa/Phòng', ...tcHeaders, 'Tổng điểm (/100)', 'Điểm TB (/5)', 'Xếp loại 5S', 'Trạng thái đúng hạn', 'Thời lượng chấm (giây)', 'Thời lượng hiển thị', 'Lý do trừ điểm ghi nhận', 'Ngày chấm', 'Số ảnh minh chứng', 'Link ảnh minh chứng']
+            ];
+            scores.forEach((s, idx) => {
                 const timeStatus = isOnTime(s.createdAt, s.month);
                 const itemDisplay = s.item || (s.items ? s.items.join(', ') : '-');
-                data.push([s.month, s.department, s.zone, itemDisplay, s.evaluator, s.representative, s.total, s.average, timeStatus.onTime ? 'Đúng hạn' : 'Không đúng hạn', s.durationSeconds || '', new Date(s.createdAt).toLocaleDateString('vi-VN')]);
+                const tcVals = new Array(20).fill('');
+                const reasons = [];
+                (s.criteria || []).forEach(c => {
+                    if (c.id >= 1 && c.id <= 20) {
+                        tcVals[c.id - 1] = c.score;
+                        if (c.reason && c.reason.trim()) {
+                            reasons.push(`TC#${c.id}: ${c.reason.trim()}`);
+                        }
+                    }
+                });
+                const pct = Math.round((parseFloat(s.average) / 5) * 100);
+                const gradeLabel = classifyScore5S(pct).label;
+                const urls = Array.isArray(s.imageUrls) && s.imageUrls.length > 0 ? s.imageUrls : (s.imageUrl ? [s.imageUrl] : []);
+                s3Data.push([
+                    idx + 1,
+                    s.month || '',
+                    s.department || '',
+                    s.zone || '',
+                    itemDisplay,
+                    s.evaluator || '',
+                    s.representative || '',
+                    ...tcVals,
+                    s.total || pct,
+                    parseFloat(s.average) || 0,
+                    gradeLabel,
+                    timeStatus.onTime ? 'Đúng hạn' : 'Không đúng hạn',
+                    s.durationSeconds || '',
+                    s.durationSeconds ? formatDuration(s.durationSeconds) : '-',
+                    reasons.join('; '),
+                    s.createdAt ? new Date(s.createdAt).toLocaleString('vi-VN') : '',
+                    urls.length,
+                    urls.join(' | ')
+                ]);
             });
+            const ws3 = XLSX.utils.aoa_to_sheet(s3Data);
+            ws3['!cols'] = [
+                { wch: 6 }, { wch: 10 }, { wch: 28 }, { wch: 24 }, { wch: 32 }, { wch: 20 }, { wch: 20 },
+                ...new Array(20).fill({ wch: 6 }),
+                { wch: 15 }, { wch: 13 }, { wch: 14 }, { wch: 16 }, { wch: 18 }, { wch: 16 }, { wch: 40 }, { wch: 18 }, { wch: 14 }, { wch: 45 }
+            ];
+            XLSX.utils.book_append_sheet(wb, ws3, '3_Chi_Tiet_Phieu_Cham');
 
-            const ws = XLSX.utils.aoa_to_sheet(data);
-            const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, 'Báo cáo 5S');
-            XLSX.writeFile(wb, `Bao_cao_5S_${from || 'all'}_${to || 'all'}.xlsx`);
+            // SHEET 4: PHÂN TÍCH CHUYÊN SÂU 20 TIÊU CHÍ 5S
+            const s4Data = [
+                ['PHÂN TÍCH CHUYÊN SÂU 20 TIÊU CHÍ ĐÁNH GIÁ 5S & ĐIỂM NGHẼN'],
+                ['Kỳ báo cáo:', periodLabel, 'Phạm vi:', scopeLabel],
+                [],
+                ['Mã TC', 'Nhóm 5S', 'Tên Nhóm 5S', 'Nội dung Tiêu chí', 'Số lượt chấm', 'Điểm TB (/5)', 'Tỷ lệ đạt chuẩn (%)', 'Số lượt đạt 5đ', 'Số lượt bị trừ điểm (<5đ)', 'Tỷ lệ bị trừ điểm (%)', 'Mức độ ưu tiên khắc phục', 'Tổng hợp các lỗi / lý do trừ điểm thực tế'],
+                ...criteriaStats.map(c => [
+                    `TC #${c.id}`,
+                    c.groupCode,
+                    c.groupName,
+                    c.text,
+                    c.cnt,
+                    c.avg5,
+                    c.pct100,
+                    c.perfectCount,
+                    c.deductedCount,
+                    c.deductedRate,
+                    c.priority.label,
+                    c.topReasonsText
+                ])
+            ];
+            const ws4 = XLSX.utils.aoa_to_sheet(s4Data);
+            ws4['!cols'] = [
+                { wch: 9 }, { wch: 9 }, { wch: 22 }, { wch: 48 }, { wch: 13 }, { wch: 13 },
+                { wch: 16 }, { wch: 14 }, { wch: 20 }, { wch: 18 }, { wch: 24 }, { wch: 48 }
+            ];
+            XLSX.utils.book_append_sheet(wb, ws4, '4_Phan_Tich_20_Tieu_Chi');
+
+            const fTag = from || 'Dau';
+            const tTag = to || 'Nay';
+            XLSX.writeFile(wb, `Bao_cao_5S_BV_Nhi_Dong_CT_${fTag}_${tTag}.xlsx`);
         }
 
         async function loadZonesList() {
