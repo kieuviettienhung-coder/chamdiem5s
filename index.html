@@ -2661,9 +2661,9 @@
                             <h2 style="margin:0; color:var(--gray-800); font-size:1.12rem; font-weight:700;">🏥 Thống kê chi tiết từng Khoa/Phòng & Khu vực</h2>
                             <p style="margin:2px 0 0; font-size:0.78rem; color:var(--gray-500);">Bấm để mở rộng danh sách khu vực, mô tả định danh và điểm trung bình từng vị trí</p>
                         </div>
-                        <span id="main-dept-stats-arrow" style="transition:transform 0.3s; color:var(--gray-500); font-size:1.1rem; transform:rotate(180deg);">▼</span>
+                        <span id="main-dept-stats-arrow" style="transition:transform 0.3s; color:var(--gray-500); font-size:1.1rem; transform:rotate(0deg);">▼</span>
                     </div>
-                    <div id="main-dept-stats-content" style="display:block; margin-top:16px;">
+                    <div id="main-dept-stats-content" style="display:none; margin-top:16px;">
                         <div style="display:flex; gap:10px; margin-bottom:14px; flex-wrap:wrap;">
                             <input type="text" id="deptStatsSearchInput" class="form-control" style="max-width:320px; padding:8px 12px; font-size:0.88rem;" placeholder="🔍 Tìm tên Khoa/Phòng hoặc Khu vực..." oninput="loadDeptStats()">
                             <button type="button" class="btn btn-sm" style="background:#f1f5f9; color:var(--gray-700);" onclick="toggleAllDeptDetails(true)">📂 Mở rộng tất cả</button>
@@ -2675,29 +2675,43 @@
                     </div>
                 </div>
 
-                <!-- Row 5: Recent Scores Table with Search & Detail Modal -->
+                <!-- Row 5: Recent Scores Table with Search & Detail Modal (Collapsed by default) -->
                 <div class="chart-card" id="recentScoresCard">
-                    <div class="chart-card-title" style="margin-bottom:14px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; cursor:pointer;" onclick="const c=document.getElementById('recent-scores-content'),a=document.getElementById('recent-scores-arrow'); if(c.style.display==='none'){c.style.display='block';a.style.transform='rotate(180deg)';}else{c.style.display='none';a.style.transform='rotate(0deg)';}">
                         <div>
                             <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-                                <h2 style="margin:0;">📋 Danh sách Phiếu chấm điểm</h2>
+                                <h2 style="margin:0; color:var(--gray-800); font-size:1.12rem; font-weight:700;">📋 Danh sách Phiếu chấm điểm</h2>
                                 <span id="recentScoreCountBadge" class="badge" style="background:#eff6ff; color:#1d4ed8; border:1px solid #bfdbfe; font-size:0.78rem;">Đang tải...</span>
                             </div>
-                            <p style="font-size:0.78rem; color:var(--gray-500); margin-top:3px;">Hiển thị đồng bộ theo bộ lọc <strong>Kỳ dữ liệu • Khoa/Phòng • Khu vực</strong> phía trên — Bấm vào dòng hoặc <strong>👁️ Chi tiết</strong> để xem phiếu 20 tiêu chí</p>
+                            <p style="margin:2px 0 0; font-size:0.78rem; color:var(--gray-500);">Bấm để mở rộng bộ lọc và danh sách phiếu chấm — Bấm vào từng dòng hoặc <strong>👁️ Chi tiết</strong> để xem bảng 20 tiêu chí & ảnh phóng to</p>
                         </div>
-                        <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
-                            <input type="text" id="recentSearchInput" class="form-control" style="width:220px; padding:7px 12px; font-size:0.84rem;" placeholder="🔍 Tìm khoa, khu vực, người chấm..." oninput="loadRecentScores(true)">
-                            <select id="recentLimitSelect" class="filter-select" style="min-width:115px; padding:7px 10px; font-size:0.84rem;" onchange="loadRecentScores(true)">
+                        <span id="recent-scores-arrow" style="transition:transform 0.3s; color:var(--gray-500); font-size:1.1rem; transform:rotate(0deg);">▼</span>
+                    </div>
+                    <div id="recent-scores-content" style="display:none; margin-top:16px;">
+                        <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:14px; padding-bottom:12px; border-bottom:1px solid var(--gray-100);">
+                            <input type="text" id="recentSearchInput" class="form-control" style="width:205px; padding:7px 11px; font-size:0.83rem;" placeholder="🔍 Tìm khoa, khu vực, người chấm..." oninput="loadRecentScores(true)">
+                            <select id="recentScopeSelect" class="filter-select" style="min-width:145px; padding:7px 9px; font-size:0.83rem;" onchange="loadRecentScores(true)" title="Phạm vi hiển thị danh sách phiếu">
+                                <option value="all" selected>🌐 Toàn viện (Độc lập)</option>
+                                <option value="filtered">🎯 Theo bộ lọc Dashboard</option>
+                            </select>
+                            <select id="recentDeptSelect" class="filter-select" style="min-width:160px; max-width:220px; padding:7px 9px; font-size:0.83rem;" onchange="loadRecentScores(true)" title="Lọc theo Khoa/Phòng trong bảng phiếu">
+                                <option value="">🏥 Tất cả Khoa/Phòng</option>
+                            </select>
+                            <select id="recentMonthSelect" class="filter-select" style="min-width:125px; padding:7px 9px; font-size:0.83rem;" onchange="loadRecentScores(true)" title="Lọc theo Tháng chấm trong bảng phiếu">
+                                <option value="">📅 Tất cả tháng</option>
+                            </select>
+                            <select id="recentLimitSelect" class="filter-select" style="min-width:105px; padding:7px 9px; font-size:0.83rem;" onchange="loadRecentScores(true)">
                                 <option value="10">Hiện 10 phiếu</option>
                                 <option value="20" selected>Hiện 20 phiếu</option>
                                 <option value="50">Hiện 50 phiếu</option>
                                 <option value="9999">Hiện tất cả</option>
                             </select>
+                            <button type="button" class="btn btn-sm" style="background:#f8fafc; color:#475569; border:1px solid #cbd5e1; padding:7px 10px; border-radius:8px; font-size:0.81rem;" onclick="resetRecentScoresFilters()" title="Xóa bộ lọc bảng phiếu để hiện toàn bộ">✖ Xóa lọc</button>
                             <button type="button" class="btn btn-sm" style="background:#eff6ff; color:#2563eb; border:1px solid #bfdbfe; padding:7px 11px; border-radius:8px; font-size:0.82rem;" onclick="refreshDashboardData(true)" title="Đồng bộ lại danh sách phiếu chấm từ máy chủ">🔄 Tải lại</button>
                         </div>
-                    </div>
-                    <div id="recentScores">
-                        <p class="text-center" style="color:var(--gray-500); padding:28px 0;">⏳ Đang tải danh sách phiếu chấm điểm...</p>
+                        <div id="recentScores">
+                            <p class="text-center" style="color:var(--gray-500); padding:28px 0;">⏳ Đang tải danh sách phiếu chấm điểm...</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -4110,10 +4124,21 @@
             if (zoneSel) zoneSel.innerHTML = '<option value="">-- Tất cả Khu vực --</option>';
             const rSearch = document.getElementById('rankingSearchInput');
             if (rSearch) rSearch.value = '';
+            resetRecentScoresFilters();
+            filterDashboard(true);
+        }
+
+        function resetRecentScoresFilters() {
             const recSearch = document.getElementById('recentSearchInput');
             if (recSearch) recSearch.value = '';
+            const recScope = document.getElementById('recentScopeSelect');
+            if (recScope) recScope.value = 'all';
+            const recDept = document.getElementById('recentDeptSelect');
+            if (recDept) recDept.value = '';
+            const recMonth = document.getElementById('recentMonthSelect');
+            if (recMonth) recMonth.value = '';
             window._recentPage = 1;
-            filterDashboard(true);
+            loadRecentScores(true);
         }
 
         function selectDeptFromDashboard(deptNameOrId) {
@@ -4937,7 +4962,7 @@
                 let totalItems = 0;
                 Object.values(zones).forEach(z => { totalItems += (z.items || []).length; });
 
-                const isOpen = window._openDeptDetailIds.has(deptId) || entries.length === 1 || !!searchKey;
+                const isOpen = window._openDeptDetailIds.has(deptId) || !!searchKey;
 
                 html += `<div class="dept-stats-card" style="background:white;border:1px solid var(--gray-200);border-radius:12px;margin-bottom:12px;overflow:hidden;">
                     <div class="dept-header" style="background:var(--gray-50);border-bottom:1px solid var(--gray-200);padding:12px 16px;cursor:pointer;" onclick="toggleDeptDetail('${deptId}')">
@@ -5022,6 +5047,35 @@
             loadRecentScores(false);
         }
 
+        function syncRecentScoreFilterDropdowns(allCached) {
+            const deptSel = document.getElementById('recentDeptSelect');
+            if (deptSel) {
+                const prevDept = deptSel.value;
+                const depts = window._cachedDepts || {};
+                const names = new Set();
+                Object.values(depts).forEach(d => { if (d && d.name) names.add(d.name.trim()); });
+                allCached.forEach(s => { if (s && s.department) names.add(s.department.trim()); });
+                const sortedDepts = Array.from(names).sort((a, b) => a.localeCompare(b, 'vi'));
+                if (deptSel.options.length !== sortedDepts.length + 1) {
+                    deptSel.innerHTML = '<option value="">🏥 Tất cả Khoa/Phòng</option>' +
+                        sortedDepts.map(n => `<option value="${n.replace(/"/g, '&quot;')}">${n}</option>`).join('');
+                    if (prevDept) deptSel.value = prevDept;
+                }
+            }
+            const monthSel = document.getElementById('recentMonthSelect');
+            if (monthSel) {
+                const prevMonth = monthSel.value;
+                const months = new Set();
+                allCached.forEach(s => { if (s && s.month) months.add(s.month.trim()); });
+                const sortedMonths = Array.from(months).sort().reverse();
+                if (monthSel.options.length !== sortedMonths.length + 1) {
+                    monthSel.innerHTML = '<option value="">📅 Tất cả tháng</option>' +
+                        sortedMonths.map(m => `<option value="${m}">📅 Tháng ${m}</option>`).join('');
+                    if (prevMonth) monthSel.value = prevMonth;
+                }
+            }
+        }
+
         async function loadRecentScores(resetPage = false) {
             if (resetPage) window._recentPage = 1;
             const container = document.getElementById('recentScores');
@@ -5048,12 +5102,23 @@
             }
 
             const allCached = Array.isArray(window._cachedScores) ? window._cachedScores : [];
+            syncRecentScoreFilterDropdowns(allCached);
+
+            const scope = document.getElementById('recentScopeSelect')?.value || 'all';
+            const recDept = document.getElementById('recentDeptSelect')?.value || '';
+            const recMonth = document.getElementById('recentMonthSelect')?.value || '';
             const qRaw = (document.getElementById('recentSearchInput')?.value || '').trim();
             const q = normVn(qRaw);
 
-            const applySearch = (list) => {
-                if (!q) return list;
-                return list.filter(s =>
+            let scores = scope === 'all' ? [...allCached] : getFilteredScores();
+            if (recDept) {
+                scores = scores.filter(s => matchScoreDept(s, recDept));
+            }
+            if (recMonth) {
+                scores = scores.filter(s => (s.month || '') === recMonth);
+            }
+            if (q) {
+                scores = scores.filter(s =>
                     normVn(s.department).includes(q) ||
                     normVn(s.zone).includes(q) ||
                     normVn(s.evaluator).includes(q) ||
@@ -5062,35 +5127,20 @@
                     normVn(s.item).includes(q) ||
                     (Array.isArray(s.items) ? normVn(s.items.join(' ')).includes(q) : false)
                 );
-            };
+            }
 
-            // Follow the top Dashboard filter (Kỳ dữ liệu • Khoa/Phòng • Khu vực)
-            let scores = applySearch(getFilteredScores());
+            // Sort newest first
             scores.sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || '') || (b.month || '').localeCompare(a.month || ''));
 
-            let usedFallback = false;
-            let fallbackMessage = '';
+            let usedFallbackAll = false;
             let supplementalScores = [];
             const strictMatchedCount = scores.length;
 
-            const deptFilter = document.getElementById('chartDeptFilter')?.value || '';
-            const zoneFilter = document.getElementById('chartZoneFilter')?.value || '';
-            const activeFilterText = document.getElementById('activeFilterBadge')?.textContent || 'Bộ lọc hiện tại';
-
-            // Smart fallback when strict filter returns 0 records so the table never disappears
+            // Never let the table vanish or collapse to 1 row when hospital has hundreds of records!
             if (scores.length === 0 && allCached.length > 0) {
-                usedFallback = true;
-                const deptCumulative = deptFilter ? applySearch(getFilteredScores({ ignorePeriod: true, ignoreZone: true })) : [];
-                if (deptCumulative.length > 0) {
-                    scores = deptCumulative.sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || '') || (b.month || '').localeCompare(a.month || ''));
-                    fallbackMessage = `Chưa có bản ghi khớp chính xác với <strong>${activeFilterText}</strong>. Đang tự động hiển thị <strong>${scores.length} phiếu lũy kế của ${deptFilter}</strong>.`;
-                } else {
-                    scores = [...allCached].sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || '') || (b.month || '').localeCompare(a.month || ''));
-                    const reason = qRaw ? `từ khóa "${qRaw}" trong ${activeFilterText}` : activeFilterText;
-                    fallbackMessage = `Chưa có bản ghi khớp chính xác với <strong>${reason}</strong>. Đang tự động hiển thị <strong>${scores.length} phiếu chấm điểm toàn viện</strong>.`;
-                }
-            } else if (scores.length > 0 && scores.length < 5 && !deptFilter && !zoneFilter && !q && allCached.length > scores.length) {
-                // E.g. "Tháng này" early in the month has only 1 score across the hospital: show that score + latest hospital scores below
+                usedFallbackAll = true;
+                scores = [...allCached].sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || '') || (b.month || '').localeCompare(a.month || ''));
+            } else if (scores.length > 0 && scores.length < 5 && allCached.length > scores.length && !q) {
                 const matchedIds = new Set(scores.map(s => s.id));
                 supplementalScores = allCached
                     .filter(s => !matchedIds.has(s.id))
@@ -5101,8 +5151,8 @@
             const totalMatched = scores.length;
             const countBadge = document.getElementById('recentScoreCountBadge');
             if (countBadge) {
-                countBadge.textContent = usedFallback
-                    ? `0 kỳ này • Hiện ${totalMatched} phiếu lũy kế`
+                countBadge.textContent = usedFallbackAll
+                    ? `0 khớp lọc • Hiện ${allCached.length} phiếu toàn viện`
                     : (totalMatched === allCached.length ? `${totalMatched} phiếu` : `${totalMatched} / ${allCached.length} phiếu`);
             }
 
@@ -5114,10 +5164,13 @@
             const pageScores = scores.slice(startIdx, startIdx + limit);
 
             let html = '';
-            if (usedFallback) {
+            if (usedFallbackAll) {
+                const reasonText = qRaw
+                    ? `từ khóa "${qRaw}"`
+                    : (recDept || recMonth ? `bộ lọc bảng (${recDept || 'Tất cả khoa'} • ${recMonth || 'Tất cả tháng'})` : (document.getElementById('activeFilterBadge')?.textContent || 'Bộ lọc hiện tại'));
                 html += `<div style="background:#fffbeb;border:1px solid #fde68a;color:#92400e;padding:10px 14px;border-radius:10px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;font-size:0.84rem;">
-                    <span>ℹ️ ${fallbackMessage}</span>
-                    <button type="button" class="btn btn-sm" style="background:#fef3c7;color:#b45309;border:1px solid #f59e0b;padding:4px 10px;font-size:0.78rem;font-weight:700;" onclick="resetDashboardFilters()">🔄 Đặt lại bộ lọc</button>
+                    <span>ℹ️ Không có bản ghi khớp chính xác với <strong>${reasonText}</strong>. Hệ thống đang tự động hiển thị danh sách <strong>${allCached.length} phiếu chấm điểm toàn viện</strong> để bạn tra cứu.</span>
+                    <button type="button" class="btn btn-sm" style="background:#fef3c7;color:#b45309;border:1px solid #f59e0b;padding:4px 10px;font-size:0.78rem;font-weight:700;" onclick="resetRecentScoresFilters()">🔄 Hiện mặc định toàn viện</button>
                 </div>`;
             }
 
@@ -5159,7 +5212,7 @@
 
             if (supplementalScores.length > 0 && currentPage === 1) {
                 html += `<tr><td colspan="11" style="background:#eff6ff;color:#1d4ed8;font-size:0.8rem;font-weight:700;padding:8px 14px;text-align:left;border-top:2px solid #bfdbfe;border-bottom:1px solid #bfdbfe;">
-                    📌 Kỳ lọc hiện tại (${activeFilterText}) có ${strictMatchedCount} phiếu ở trên. Dưới đây là các phiếu chấm điểm gần nhất toàn viện để tiện đối chiếu:
+                    📌 Kỳ lọc hiện tại có ${strictMatchedCount} phiếu ở trên. Dưới đây là các phiếu chấm điểm gần nhất toàn viện (${allCached.length} phiếu) để tiện đối chiếu:
                 </td></tr>`;
                 supplementalScores.forEach((s, idx) => {
                     html += renderScoreRow(s, pageScores.length + idx + 1, true);
