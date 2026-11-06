@@ -2297,6 +2297,75 @@
             background: #f8fafc;
         }
     }
+
+    /* Fixed & Upgraded Recent Scores Table (Desktop + Mobile Card View) */
+    #recentScores table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    #recentScores th {
+        background: #f8fafc;
+        color: var(--gray-700);
+        font-weight: 700;
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+        padding: 11px 10px;
+        border-bottom: 2px solid #e2e8f0;
+        white-space: nowrap;
+    }
+    #recentScores td {
+        padding: 10px;
+        border-bottom: 1px solid #f1f5f9;
+        vertical-align: middle;
+        font-size: 0.85rem;
+    }
+    #recentScores tbody tr:hover {
+        background: #f8fafc;
+    }
+    @media (max-width: 600px) {
+        #recentScores table,
+        #recentScores tbody,
+        #recentScores tr {
+            display: block !important;
+            width: 100% !important;
+        }
+        #recentScores thead {
+            display: none !important;
+        }
+        #recentScores tr {
+            background: #ffffff !important;
+            border: 1.5px solid #e2e8f0 !important;
+            border-radius: 14px !important;
+            padding: 12px 14px !important;
+            margin-bottom: 12px !important;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04) !important;
+        }
+        #recentScores td {
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            gap: 10px !important;
+            padding: 6px 0 !important;
+            border: none !important;
+            border-bottom: 1px dashed #f1f5f9 !important;
+            text-align: right !important;
+        }
+        #recentScores td:last-child {
+            border-bottom: none !important;
+            padding-top: 10px !important;
+            justify-content: flex-end !important;
+        }
+        #recentScores td::before {
+            content: attr(data-label) !important;
+            font-weight: 700 !important;
+            font-size: 0.78rem !important;
+            color: var(--gray-500) !important;
+            text-align: left !important;
+            margin-right: auto !important;
+            flex-shrink: 0 !important;
+        }
+    }
 </style>
 </head>
 
@@ -2607,24 +2676,32 @@
                 </div>
 
                 <!-- Row 5: Recent Scores Table with Search & Detail Modal -->
-                <div class="chart-card">
+                <div class="chart-card" id="recentScoresCard">
                     <div class="chart-card-title" style="margin-bottom:14px;">
                         <div>
-                            <h2>📋 Danh sách Phiếu chấm điểm</h2>
-                            <p style="font-size:0.78rem; color:var(--gray-500); margin-top:2px;">Bấm nút <strong>👁️ Chi tiết</strong> để xem bảng 20 tiêu chí, lý do trừ điểm và ảnh phóng to</p>
+                            <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                                <h2 style="margin:0;">📋 Danh sách Phiếu chấm điểm</h2>
+                                <span id="recentScoreCountBadge" class="badge" style="background:#eff6ff; color:#1d4ed8; border:1px solid #bfdbfe; font-size:0.78rem;">Đang tải...</span>
+                            </div>
+                            <p style="font-size:0.78rem; color:var(--gray-500); margin-top:3px;">Bấm nút <strong>👁️ Chi tiết</strong> để xem bảng 20 tiêu chí, lý do trừ điểm và ảnh phóng to</p>
                         </div>
                         <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
-                            <input type="text" id="recentSearchInput" class="form-control" style="width:220px; padding:7px 12px; font-size:0.85rem;" placeholder="🔍 Tìm khoa, khu vực, người chấm..." oninput="loadRecentScores()">
-                            <select id="recentLimitSelect" class="filter-select" style="min-width:120px; padding:7px 10px; font-size:0.85rem;" onchange="loadRecentScores()">
-                                <option value="8">Hiện 8 phiếu</option>
-                                <option value="20">Hiện 20 phiếu</option>
-                                <option value="50">Hiện 50 phiếu</option>
-                                <option value="9999">Tất cả</option>
+                            <input type="text" id="recentSearchInput" class="form-control" style="width:210px; padding:7px 12px; font-size:0.84rem;" placeholder="🔍 Tìm khoa, khu vực, người chấm..." oninput="window._recentPage=1; loadRecentScores()">
+                            <select id="recentScopeSelect" class="filter-select" style="min-width:145px; padding:7px 10px; font-size:0.84rem;" onchange="window._recentPage=1; loadRecentScores()" title="Phạm vi hiển thị danh sách phiếu">
+                                <option value="filtered">🎯 Theo bộ lọc Dashboard</option>
+                                <option value="all">🌐 Tất cả phiếu toàn viện</option>
                             </select>
+                            <select id="recentLimitSelect" class="filter-select" style="min-width:115px; padding:7px 10px; font-size:0.84rem;" onchange="window._recentPage=1; loadRecentScores()">
+                                <option value="10">Hiện 10 phiếu</option>
+                                <option value="20" selected>Hiện 20 phiếu</option>
+                                <option value="50">Hiện 50 phiếu</option>
+                                <option value="9999">Hiện tất cả</option>
+                            </select>
+                            <button type="button" class="btn btn-sm" style="background:#eff6ff; color:#2563eb; border:1px solid #bfdbfe; padding:7px 11px; border-radius:8px; font-size:0.82rem;" onclick="refreshDashboardData(true)" title="Đồng bộ lại danh sách phiếu chấm từ máy chủ">🔄 Tải lại</button>
                         </div>
                     </div>
                     <div id="recentScores">
-                        <p class="text-center" style="color:var(--gray-500);">Chưa có dữ liệu</p>
+                        <p class="text-center" style="color:var(--gray-500); padding:28px 0;">⏳ Đang tải danh sách phiếu chấm điểm...</p>
                     </div>
                 </div>
             </div>
@@ -3863,38 +3940,86 @@
 
         function matchScoreDept(score, deptFilter) {
             if (!deptFilter) return true;
-            if (score.departmentId === deptFilter || score.department === deptFilter) return true;
-            const deptObj = window._cachedDepts[deptFilter];
-            if (deptObj && score.department && score.department.trim().toUpperCase() === deptObj.name.trim().toUpperCase()) return true;
+            const normFilter = deptFilter.trim().toUpperCase();
+            if (score.departmentId && score.departmentId.trim().toUpperCase() === normFilter) return true;
+            if (score.department && score.department.trim().toUpperCase() === normFilter) return true;
+            const depts = window._cachedDepts || {};
+            const deptObj = depts[deptFilter] || Object.values(depts).find(d => (d.name || '').trim().toUpperCase() === normFilter);
+            if (deptObj && score.department && score.department.trim().toUpperCase() === (deptObj.name || '').trim().toUpperCase()) return true;
+            for (const [id, d] of Object.entries(depts)) {
+                if ((d.name || '').trim().toUpperCase() === normFilter && score.departmentId === id) return true;
+            }
             return false;
         }
 
         function getFilteredScores(options = {}) {
             const deptFilter = options.ignoreDept ? '' : (document.getElementById('chartDeptFilter')?.value || '');
             const zoneFilter = options.ignoreZone ? '' : (document.getElementById('chartZoneFilter')?.value || '');
+            const normZone = zoneFilter ? zoneFilter.trim().toUpperCase() : '';
             const range = options.ignorePeriod ? { from: '', to: '' } : getPeriodRange(window._dashPeriod);
+            const list = Array.isArray(window._cachedScores) ? window._cachedScores : [];
 
-            return window._cachedScores.filter(s => {
+            return list.filter(s => {
                 if (range.from && (s.month || '') < range.from) return false;
                 if (range.to && (s.month || '') > range.to) return false;
                 if (deptFilter && !matchScoreDept(s, deptFilter)) return false;
-                if (zoneFilter && s.zoneId !== zoneFilter && s.zone !== zoneFilter) return false;
+                if (normZone) {
+                    const sZoneId = (s.zoneId || '').trim().toUpperCase();
+                    const sZoneName = (s.zone || '').trim().toUpperCase();
+                    if (sZoneId !== normZone && sZoneName !== normZone) return false;
+                }
                 return true;
             });
         }
 
-        async function refreshDashboardData(forceFetch = true) {
-            if (forceFetch || window._cachedScores.length === 0 || Object.keys(window._cachedDepts).length === 0) {
-                const [deptsSnap, scoresSnap] = await Promise.all([
-                    db.ref('departments_5s').once('value'),
-                    db.ref('scores_5s').once('value')
-                ]);
-                window._cachedDepts = deptsSnap.val() || {};
+        function initRealtimeScoresListener() {
+            if (window._scoresRealtimeAttached) return;
+            window._scoresRealtimeAttached = true;
+            db.ref('scores_5s').on('value', (scoresSnap) => {
                 const arr = [];
                 scoresSnap.forEach(s => { arr.push({ id: s.key, ...s.val() }); });
                 arr.sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
                 window._cachedScores = arr;
-                await loadChartDeptFilter();
+                const homeTab = document.getElementById('homeTab');
+                if (homeTab && homeTab.classList.contains('active')) {
+                    filterDashboard();
+                } else {
+                    loadRecentScores(false);
+                }
+            });
+        }
+
+        async function refreshDashboardData(forceFetch = true) {
+            initRealtimeScoresListener();
+            const needFetch = forceFetch || !Array.isArray(window._cachedScores) || window._cachedScores.length === 0 || Object.keys(window._cachedDepts || {}).length === 0;
+            if (needFetch) {
+                if (!Array.isArray(window._cachedScores) || window._cachedScores.length === 0) {
+                    const rc = document.getElementById('recentScores');
+                    if (rc) rc.innerHTML = '<div class="text-center" style="padding:28px 0;color:var(--primary);font-weight:600;">⏳ Đang tải danh sách phiếu chấm điểm...</div>';
+                }
+                if (!window._dashFetchPromise) {
+                    window._dashFetchPromise = (async () => {
+                        try {
+                            const [deptsSnap, scoresSnap] = await Promise.all([
+                                db.ref('departments_5s').once('value'),
+                                db.ref('scores_5s').once('value')
+                            ]);
+                            window._cachedDepts = deptsSnap.val() || {};
+                            const arr = [];
+                            scoresSnap.forEach(s => { arr.push({ id: s.key, ...s.val() }); });
+                            arr.sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
+                            window._cachedScores = arr;
+                            await loadChartDeptFilter();
+                        } finally {
+                            window._dashFetchPromise = null;
+                        }
+                    })();
+                }
+                try {
+                    await window._dashFetchPromise;
+                } catch (err) {
+                    console.error('Error fetching dashboard data:', err);
+                }
             }
             filterDashboard();
         }
@@ -3938,10 +4063,17 @@
             });
             const customBox = document.getElementById('customMonthRangeBox');
             if (customBox) customBox.style.display = 'none';
-            document.getElementById('chartDeptFilter').value = '';
-            document.getElementById('chartZoneFilter').innerHTML = '<option value="">-- Tất cả Khu vực --</option>';
+            const deptSel = document.getElementById('chartDeptFilter');
+            if (deptSel) deptSel.value = '';
+            const zoneSel = document.getElementById('chartZoneFilter');
+            if (zoneSel) zoneSel.innerHTML = '<option value="">-- Tất cả Khu vực --</option>';
             const rSearch = document.getElementById('rankingSearchInput');
             if (rSearch) rSearch.value = '';
+            const recSearch = document.getElementById('recentSearchInput');
+            if (recSearch) recSearch.value = '';
+            const recScope = document.getElementById('recentScopeSelect');
+            if (recScope) recScope.value = 'filtered';
+            window._recentPage = 1;
             filterDashboard();
         }
 
@@ -3985,26 +4117,40 @@
                 badge.textContent = `${dText}${zText} • ${range.label}`;
             }
 
-            loadStats(deptFilter);
-            renderSmartInsights();
-            renderMonthlyChart(deptFilter);
-            loadDeptRanking(deptFilter);
-            renderRadarChart(deptFilter);
-            renderClassificationChart(deptFilter);
-            renderCriteria20Breakdown();
-            renderDeptCompletionProgress();
-            loadDeptStats(deptFilter);
-            loadRecentScores();
+            const safeRun = (fn) => {
+                try {
+                    const res = fn();
+                    if (res && typeof res.catch === 'function') {
+                        res.catch(e => console.error('Dashboard async widget error:', e));
+                    }
+                } catch (e) {
+                    console.error('Dashboard widget error:', e);
+                }
+            };
+
+            // Render score list first & isolate all widgets so no error can block recentScores
+            safeRun(() => loadRecentScores(true));
+            safeRun(() => loadStats(deptFilter));
+            safeRun(() => renderSmartInsights());
+            safeRun(() => renderMonthlyChart(deptFilter));
+            safeRun(() => loadDeptRanking(deptFilter));
+            safeRun(() => renderRadarChart(deptFilter));
+            safeRun(() => renderClassificationChart(deptFilter));
+            safeRun(() => renderCriteria20Breakdown());
+            safeRun(() => renderDeptCompletionProgress());
+            safeRun(() => loadDeptStats(deptFilter));
         }
 
         // ===== 4 SMART KPI CARDS WITH TRENDS =====
         async function loadStats(deptFilter = '') {
-            if (Object.keys(window._cachedDepts).length === 0 && window._cachedScores.length === 0) {
+            if (Object.keys(window._cachedDepts || {}).length === 0 || (window._cachedScores || []).length === 0) {
                 const [dSnap, sSnap] = await Promise.all([db.ref('departments_5s').once('value'), db.ref('scores_5s').once('value')]);
                 window._cachedDepts = dSnap.val() || {};
                 const arr = [];
                 sSnap.forEach(s => { arr.push({ id: s.key, ...s.val() }); });
+                arr.sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
                 window._cachedScores = arr;
+                loadRecentScores(false);
             }
 
             const depts = window._cachedDepts;
@@ -4234,8 +4380,13 @@
                 ? getFilteredScores()
                 : getFilteredScores({ ignorePeriod: true });
 
-            if (scores.length === 0) {
-                if (monthlyChartInstance) monthlyChartInstance.destroy();
+            const canvas = document.getElementById('monthlyChart');
+            if (monthlyChartInstance) { monthlyChartInstance.destroy(); monthlyChartInstance = null; }
+            if (canvas && typeof Chart !== 'undefined' && Chart.getChart) {
+                const ex = Chart.getChart(canvas);
+                if (ex) ex.destroy();
+            }
+            if (scores.length === 0 || !canvas) {
                 return;
             }
 
@@ -4255,9 +4406,6 @@
             const avgData = sortedMonths.map(m => +(monthMap[m].total / monthMap[m].count).toFixed(2));
             const countData = sortedMonths.map(m => monthMap[m].count);
 
-            if (monthlyChartInstance) monthlyChartInstance.destroy();
-            const canvas = document.getElementById('monthlyChart');
-            if (!canvas) return;
             const ctx = canvas.getContext('2d');
             const gradient = ctx.createLinearGradient(0, 0, 0, 320);
             gradient.addColorStop(0, 'rgba(37, 99, 235, 0.35)');
@@ -4431,8 +4579,13 @@
         async function renderRadarChart() {
             const allScores = getFilteredScores();
             const miniContainer = document.getElementById('s5MiniCardsContainer');
-            if (allScores.length === 0) {
-                if (radarChartInstance) radarChartInstance.destroy();
+            const canvas = document.getElementById('radarChart');
+            if (radarChartInstance) { radarChartInstance.destroy(); radarChartInstance = null; }
+            if (canvas && typeof Chart !== 'undefined' && Chart.getChart) {
+                const ex = Chart.getChart(canvas);
+                if (ex) ex.destroy();
+            }
+            if (allScores.length === 0 || !canvas) {
                 if (miniContainer) miniContainer.innerHTML = '';
                 return;
             }
@@ -4463,8 +4616,7 @@
                 `).join('');
             }
 
-            if (radarChartInstance) radarChartInstance.destroy();
-            const ctx = document.getElementById('radarChart').getContext('2d');
+            const ctx = canvas.getContext('2d');
             radarChartInstance = new Chart(ctx, {
                 type: 'radar',
                 data: {
@@ -4503,8 +4655,13 @@
         async function renderClassificationChart() {
             const allScores = getFilteredScores();
             const pillsEl = document.getElementById('classificationSummaryPills');
-            if (allScores.length === 0) {
-                if (classificationChartInstance) classificationChartInstance.destroy();
+            const canvas = document.getElementById('classificationChart');
+            if (classificationChartInstance) { classificationChartInstance.destroy(); classificationChartInstance = null; }
+            if (canvas && typeof Chart !== 'undefined' && Chart.getChart) {
+                const ex = Chart.getChart(canvas);
+                if (ex) ex.destroy();
+            }
+            if (allScores.length === 0 || !canvas) {
                 if (pillsEl) pillsEl.innerHTML = '<span style="color:var(--gray-400);font-size:0.82rem;">Chưa có dữ liệu</span>';
                 return;
             }
@@ -4530,8 +4687,7 @@
                 }).join('');
             }
 
-            if (classificationChartInstance) classificationChartInstance.destroy();
-            const ctx = document.getElementById('classificationChart').getContext('2d');
+            const ctx = canvas.getContext('2d');
             classificationChartInstance = new Chart(ctx, {
                 type: 'doughnut',
                 data: {
@@ -4769,51 +4925,119 @@
                 `</div>`;
         }
 
-        async function loadRecentScores() {
-            let scores = getFilteredScores();
-            const q = (document.getElementById('recentSearchInput')?.value || '').trim().toLowerCase();
-            const limit = parseInt(document.getElementById('recentLimitSelect')?.value || '8', 10);
+        function changeRecentScoresPage(delta) {
+            window._recentPage = Math.max(1, (window._recentPage || 1) + delta);
+            loadRecentScores(false);
+        }
 
+        async function loadRecentScores(resetPage = true) {
+            if (resetPage) window._recentPage = 1;
+            const container = document.getElementById('recentScores');
+            if (!container) return;
+
+            // Ensure scores are loaded if _cachedScores is empty
+            if (!Array.isArray(window._cachedScores) || window._cachedScores.length === 0) {
+                container.innerHTML = '<div class="text-center" style="padding:28px 0;color:var(--primary);font-weight:600;">⏳ Đang tải danh sách phiếu chấm điểm...</div>';
+                try {
+                    if (window._dashFetchPromise) {
+                        await window._dashFetchPromise;
+                    } else {
+                        const snap = await db.ref('scores_5s').once('value');
+                        const arr = [];
+                        snap.forEach(s => { arr.push({ id: s.key, ...s.val() }); });
+                        arr.sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
+                        window._cachedScores = arr;
+                    }
+                } catch (err) {
+                    console.error('Error loading recent scores:', err);
+                }
+            }
+
+            const allCached = Array.isArray(window._cachedScores) ? window._cachedScores : [];
+            const scope = document.getElementById('recentScopeSelect')?.value || 'filtered';
+            let scores = scope === 'all' ? [...allCached] : getFilteredScores();
+            let usedFallbackAll = false;
+
+            // Smart fallback: if Dashboard filter produces 0 records while system has scores, show notice + latest scores so table never vanishes
+            if (scope === 'filtered' && scores.length === 0 && allCached.length > 0) {
+                usedFallbackAll = true;
+                scores = [...allCached];
+            }
+
+            const q = (document.getElementById('recentSearchInput')?.value || '').trim().toLowerCase();
             if (q) {
                 scores = scores.filter(s =>
                     (s.department || '').toLowerCase().includes(q) ||
                     (s.zone || '').toLowerCase().includes(q) ||
                     (s.evaluator || '').toLowerCase().includes(q) ||
-                    (s.month || '').toLowerCase().includes(q)
+                    (s.representative || '').toLowerCase().includes(q) ||
+                    (s.month || '').toLowerCase().includes(q) ||
+                    (s.item || '').toLowerCase().includes(q) ||
+                    (Array.isArray(s.items) ? s.items.join(' ').toLowerCase().includes(q) : false)
                 );
             }
 
-            scores = scores.slice(0, limit);
-            const container = document.getElementById('recentScores');
-            if (!container) return;
+            // Sort newest first
+            scores.sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || '') || (b.month || '').localeCompare(a.month || ''));
 
-            if (scores.length === 0) {
-                container.innerHTML = '<p class="text-center" style="color:var(--gray-500); padding:24px 0;">Không có bản ghi chấm điểm nào phù hợp</p>';
+            const totalMatched = scores.length;
+            const countBadge = document.getElementById('recentScoreCountBadge');
+            if (countBadge) {
+                countBadge.textContent = usedFallbackAll
+                    ? `0 khớp lọc / ${allCached.length} toàn viện`
+                    : (totalMatched === allCached.length ? `${totalMatched} phiếu` : `${totalMatched} / ${allCached.length} phiếu`);
+            }
+
+            const limit = parseInt(document.getElementById('recentLimitSelect')?.value || '20', 10);
+            const totalPages = Math.max(1, Math.ceil(totalMatched / limit));
+            if (!window._recentPage || window._recentPage > totalPages) window._recentPage = 1;
+            const currentPage = window._recentPage;
+            const startIdx = (currentPage - 1) * limit;
+            const pageScores = scores.slice(startIdx, startIdx + limit);
+
+            if (pageScores.length === 0) {
+                container.innerHTML = `<div class="text-center" style="color:var(--gray-500); padding:28px 16px;">
+                    <div style="font-size:1.5rem;margin-bottom:6px;">📭</div>
+                    <div style="font-weight:600;color:var(--gray-700);">Không tìm thấy bản ghi chấm điểm nào phù hợp${q ? ` với từ khóa "${q}"` : ''}</div>
+                    ${q ? `<button class="btn btn-sm" style="margin-top:10px;background:#eff6ff;color:#2563eb;border:1px solid #bfdbfe;" onclick="document.getElementById('recentSearchInput').value='';loadRecentScores(true);">🔄 Xóa từ khóa tìm kiếm</button>` : ''}
+                </div>`;
                 return;
             }
 
+            let html = '';
+            if (usedFallbackAll) {
+                const activeFilterText = document.getElementById('activeFilterBadge')?.textContent || 'Bộ lọc hiện tại';
+                html += `<div style="background:#fffbeb;border:1px solid #fde68a;color:#92400e;padding:10px 14px;border-radius:10px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;font-size:0.84rem;">
+                    <span>⚠️ <strong>${activeFilterText}</strong> hiện chưa có phiếu chấm điểm. Đang tự động hiển thị danh sách phiếu chấm mới nhất toàn viện (<strong>${allCached.length} phiếu</strong>).</span>
+                    <button class="btn btn-sm" style="background:#fef3c7;color:#b45309;border:1px solid #f59e0b;padding:4px 10px;font-size:0.78rem;font-weight:700;" onclick="resetDashboardFilters()">🔄 Đặt lại bộ lọc Toàn viện</button>
+                </div>`;
+            }
+
             const canDelete = currentUser && (currentUser.role === 'admin' || currentUser.role === 'mod');
-            let html = '<div style="overflow-x:auto;"><table><thead><tr><th>STT</th><th>Tháng</th><th>Khoa/Phòng</th><th>Khu vực</th><th>Người chấm</th><th>Điểm 5S</th><th>Đúng hạn</th><th>⏱️</th><th>Ảnh</th><th>Ngày tạo</th><th>Thao tác</th></tr></thead><tbody>';
-            scores.forEach((s, index) => {
+            html += '<div style="overflow-x:auto;"><table><thead><tr><th>STT</th><th>Tháng</th><th>Khoa/Phòng</th><th>Khu vực</th><th>Người chấm</th><th>Điểm 5S</th><th>Đúng hạn</th><th>⏱️</th><th>Ảnh</th><th>Ngày tạo</th><th>Thao tác</th></tr></thead><tbody>';
+            pageScores.forEach((s, index) => {
+                const stt = startIdx + index + 1;
                 const imgHtml = renderScoreThumbnails(s);
                 const timeStatus = isOnTime(s.createdAt, s.month);
                 const timeStyle = timeStatus.onTime ? 'color:#10b981;font-weight:600;' : 'color:#ef4444;font-weight:600;';
-                const score100 = (parseFloat(s.average) / 5 * 100).toFixed(0);
+                const avgVal = parseFloat(s.average) || 0;
+                const score100 = (avgVal / 5 * 100).toFixed(0);
                 const durationHtml = s.durationSeconds ? `<span class="duration-badge">${formatDuration(s.durationSeconds)}</span>` : '<span style="color:var(--gray-400);">-</span>';
-                const deleteBtn = canDelete ? `<button onclick="deleteScore('${s.id}')" class="btn btn-danger btn-sm" style="padding:5px 8px;font-size:12px;" title="Xóa phiếu">🗑️</button>` : '';
+                const deleteBtn = canDelete ? `<button onclick="event.stopPropagation(); deleteScore('${s.id}')" class="btn btn-danger btn-sm" style="padding:5px 8px;font-size:12px;" title="Xóa phiếu">🗑️</button>` : '';
+                const subItems = s.item || (Array.isArray(s.items) ? s.items.join(', ') : '');
 
-                html += `<tr>
-                    <td style="text-align:center;font-weight:700;">${index + 1}</td>
-                    <td><span class="badge" style="background:#f1f5f9;color:var(--gray-700);">${s.month}</span></td>
-                    <td style="font-weight:600;color:var(--gray-900);">${s.department}</td>
-                    <td>${s.zone}<div style="font-size:0.75rem;color:var(--gray-500);">${s.item || (s.items ? s.items.join(', ') : '')}</div></td>
-                    <td>${s.evaluator}</td>
-                    <td style="text-align:center;"><strong style="font-size:1.05rem;color:var(--primary);">${score100}</strong><span style="font-size:0.75rem;color:var(--gray-500);">/100</span><br><span style="font-size:0.76rem;color:var(--gray-500);">TB: ${s.average}/5</span></td>
-                    <td style="${timeStyle};font-size:0.82rem;">${timeStatus.label}</td>
-                    <td>${durationHtml}</td>
-                    <td>${imgHtml}</td>
-                    <td style="font-size:0.84rem;">${s.createdAt ? new Date(s.createdAt).toLocaleDateString('vi-VN') : '-'}</td>
-                    <td>
+                html += `<tr style="cursor:pointer;" onclick="showScoreDetailModal('${s.id}')" title="Bấm để xem chi tiết 20 tiêu chí">
+                    <td data-label="STT" style="text-align:center;font-weight:700;">${stt}</td>
+                    <td data-label="Tháng"><span class="badge" style="background:#f1f5f9;color:var(--gray-700);">${s.month || '-'}</span></td>
+                    <td data-label="Khoa/Phòng" style="font-weight:600;color:var(--gray-900);">${s.department || '-'}</td>
+                    <td data-label="Khu vực"><div>${s.zone || '-'}${subItems ? `<div style="font-size:0.75rem;color:var(--gray-500);">${subItems}</div>` : ''}</div></td>
+                    <td data-label="Người chấm">${s.evaluator || '-'}</td>
+                    <td data-label="Điểm 5S" style="text-align:center;"><div><strong style="font-size:1.05rem;color:var(--primary);">${score100}</strong><span style="font-size:0.75rem;color:var(--gray-500);">/100</span><br><span style="font-size:0.76rem;color:var(--gray-500);">TB: ${s.average || '-'}/5</span></div></td>
+                    <td data-label="Đúng hạn" style="${timeStyle};font-size:0.82rem;">${timeStatus.label}</td>
+                    <td data-label="Thời lượng">${durationHtml}</td>
+                    <td data-label="Hình ảnh" onclick="event.stopPropagation();">${imgHtml}</td>
+                    <td data-label="Ngày tạo" style="font-size:0.84rem;">${s.createdAt ? new Date(s.createdAt).toLocaleDateString('vi-VN') : '-'}</td>
+                    <td data-label="Thao tác" onclick="event.stopPropagation();">
                         <div style="display:flex;gap:6px;align-items:center;">
                             <button onclick="showScoreDetailModal('${s.id}')" class="btn btn-sm" style="background:#eff6ff;color:#2563eb;border:1px solid #bfdbfe;padding:5px 10px;font-size:0.78rem;">👁️ Chi tiết</button>
                             ${deleteBtn}
@@ -4822,11 +5046,29 @@
                 </tr>`;
             });
             html += '</tbody></table></div>';
+
+            if (totalPages > 1) {
+                html += `<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-top:12px;padding-top:10px;border-top:1px solid var(--gray-200);font-size:0.84rem;color:var(--gray-600);">
+                    <div>Hiển thị <strong>${startIdx + 1}–${Math.min(startIdx + limit, totalMatched)}</strong> trong tổng số <strong>${totalMatched}</strong> phiếu chấm điểm</div>
+                    <div style="display:flex;gap:6px;align-items:center;">
+                        <button class="btn btn-sm" style="background:#f8fafc;color:var(--gray-700);border:1px solid #cbd5e1;padding:5px 12px;" ${currentPage <= 1 ? 'disabled style="opacity:0.4;cursor:not-allowed;background:#f8fafc;color:var(--gray-500);border:1px solid #e2e8f0;padding:5px 12px;"' : ''} onclick="changeRecentScoresPage(-1)">◀ Trước</button>
+                        <span style="font-weight:700;color:var(--primary);padding:0 8px;">Trang ${currentPage} / ${totalPages}</span>
+                        <button class="btn btn-sm" style="background:#f8fafc;color:var(--gray-700);border:1px solid #cbd5e1;padding:5px 12px;" ${currentPage >= totalPages ? 'disabled style="opacity:0.4;cursor:not-allowed;background:#f8fafc;color:var(--gray-500);border:1px solid #e2e8f0;padding:5px 12px;"' : ''} onclick="changeRecentScoresPage(1)">Sau ▶</button>
+                    </div>
+                </div>`;
+            }
+
             container.innerHTML = html;
         }
 
-        function showScoreDetailModal(scoreId) {
-            const s = window._cachedScores.find(x => x.id === scoreId);
+        async function showScoreDetailModal(scoreId) {
+            let s = (window._cachedScores || []).find(x => x.id === scoreId);
+            if (!s) {
+                try {
+                    const snap = await db.ref('scores_5s/' + scoreId).once('value');
+                    if (snap.exists()) s = { id: snap.key, ...snap.val() };
+                } catch (e) { console.error(e); }
+            }
             if (!s) return;
             const score100 = Math.round((parseFloat(s.average) / 5) * 100);
             const cls = SCORE_CLASSIFICATION.find(c => score100 >= c.min && score100 <= c.max) || SCORE_CLASSIFICATION[4];
