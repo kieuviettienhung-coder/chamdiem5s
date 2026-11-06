@@ -2366,6 +2366,389 @@
             flex-shrink: 0 !important;
         }
     }
+
+    /* ===== NEXT-GEN FUTURISTIC COMMAND CENTER & BENTO DASHBOARD ===== */
+    @keyframes pulseGlowDot {
+        0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+        50% { transform: scale(1.12); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+    }
+    @keyframes floatAurora {
+        0%, 100% { transform: translate(0, 0) scale(1); }
+        50% { transform: translate(18px, -12px) scale(1.08); }
+    }
+    @keyframes shimmerBar {
+        0% { background-position: -200% 0; }
+        100% { background-position: 200% 0; }
+    }
+
+    .command-hero {
+        position: relative;
+        overflow: hidden;
+        border-radius: 24px;
+        padding: 26px 28px;
+        margin-bottom: 20px;
+        background: linear-gradient(135deg, #060b19 0%, #0f172a 38%, #1e1b4b 74%, #1d4ed8 100%);
+        color: #ffffff;
+        border: 1px solid rgba(99, 102, 241, 0.35);
+        box-shadow: 0 20px 45px -12px rgba(15, 23, 42, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        flex-wrap: wrap;
+    }
+    .command-hero::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image:
+            linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+        background-size: 28px 28px;
+        mask-image: radial-gradient(ellipse at center, black 40%, transparent 85%);
+        -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 85%);
+        pointer-events: none;
+    }
+    .command-hero::after {
+        content: '';
+        position: absolute;
+        width: 340px;
+        height: 340px;
+        right: -80px;
+        top: -110px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(56, 189, 248, 0.28) 0%, rgba(99, 102, 241, 0.12) 50%, transparent 70%);
+        filter: blur(20px);
+        animation: floatAurora 8s ease-in-out infinite;
+        pointer-events: none;
+    }
+    .command-hero-left {
+        position: relative;
+        z-index: 2;
+        flex: 1;
+        min-width: 280px;
+    }
+    .hero-live-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 5px 13px;
+        border-radius: 999px;
+        background: rgba(16, 185, 129, 0.14);
+        border: 1px solid rgba(16, 185, 129, 0.4);
+        color: #6ee7b7;
+        font-size: 0.74rem;
+        font-weight: 800;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+    }
+    .live-pulse-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #10b981;
+        animation: pulseGlowDot 2s infinite;
+    }
+    .command-hero-title {
+        font-size: 1.65rem;
+        font-weight: 900;
+        letter-spacing: -0.02em;
+        line-height: 1.2;
+        margin: 0 0 6px;
+        background: linear-gradient(90deg, #ffffff 0%, #bae6fd 55%, #c7d2fe 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    .command-hero-sub {
+        font-size: 0.86rem;
+        color: #cbd5e1;
+        margin: 0 0 16px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+    .hero-action-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+    .btn-hero-neon {
+        padding: 9px 18px;
+        border-radius: 12px;
+        border: 1px solid rgba(56, 189, 248, 0.5);
+        background: linear-gradient(135deg, #2563eb 0%, #4f46e5 55%, #0ea5e9 100%);
+        color: #fff;
+        font-weight: 700;
+        font-size: 0.84rem;
+        cursor: pointer;
+        box-shadow: 0 8px 20px -4px rgba(37, 99, 235, 0.6);
+        transition: all 0.25s;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+    }
+    .btn-hero-neon:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 26px -4px rgba(56, 189, 248, 0.75);
+    }
+    .btn-hero-glass {
+        padding: 9px 15px;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.09);
+        backdrop-filter: blur(10px);
+        color: #f8fafc;
+        font-weight: 600;
+        font-size: 0.82rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+    .btn-hero-glass:hover {
+        background: rgba(255, 255, 255, 0.18);
+        border-color: rgba(255, 255, 255, 0.4);
+        transform: translateY(-2px);
+    }
+
+    /* Telemetry Gauge Pod on Right of Hero */
+    .command-hero-right {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        background: rgba(15, 23, 42, 0.58);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        padding: 16px 22px;
+        border-radius: 20px;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 12px 28px rgba(0, 0, 0, 0.28);
+    }
+    .hero-gauge-wrap {
+        position: relative;
+        width: 86px;
+        height: 86px;
+        flex-shrink: 0;
+    }
+    .hero-gauge-svg {
+        width: 86px;
+        height: 86px;
+        transform: rotate(-90deg);
+    }
+    .hero-gauge-bg {
+        fill: none;
+        stroke: rgba(255, 255, 255, 0.12);
+        stroke-width: 8;
+    }
+    .hero-gauge-fg {
+        fill: none;
+        stroke: #10b981;
+        stroke-width: 8;
+        stroke-linecap: round;
+        stroke-dasharray: 226;
+        stroke-dashoffset: 22;
+        transition: stroke-dashoffset 0.8s cubic-bezier(0.22, 1, 0.36, 1), stroke 0.4s;
+        filter: drop-shadow(0 0 6px rgba(16, 185, 129, 0.6));
+    }
+    .hero-gauge-center {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+    }
+    .hero-gauge-val {
+        font-size: 1.35rem;
+        font-weight: 900;
+        color: #ffffff;
+    }
+    .hero-gauge-unit {
+        font-size: 0.64rem;
+        font-weight: 700;
+        color: #94a3b8;
+        margin-top: 2px;
+        letter-spacing: 0.5px;
+    }
+    .hero-telemetry-info {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+    .hero-grade-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 11px;
+        border-radius: 999px;
+        font-size: 0.76rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #10b981, #059669);
+        color: #fff;
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
+        width: fit-content;
+    }
+    .hero-meta-line {
+        font-size: 0.78rem;
+        color: #e2e8f0;
+        font-weight: 600;
+    }
+    .hero-clock-line {
+        font-size: 0.74rem;
+        color: #93c5fd;
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+    }
+
+    /* Upgraded Bento KPI Cards with Top Neon Bars & Hover Glow */
+    .stat-card-new {
+        border-radius: 20px !important;
+        padding: 22px !important;
+        transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.28s ease, border-color 0.28s ease !important;
+        border: 1px solid rgba(226, 232, 240, 0.9) !important;
+        background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%) !important;
+        box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.06), 0 2px 6px rgba(15, 23, 42, 0.03) !important;
+    }
+    .stat-card-new::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #2563eb, #38bdf8);
+    }
+    .stat-card-new.kpi-emerald::before { background: linear-gradient(90deg, #10b981, #34d399); }
+    .stat-card-new.kpi-amber::before { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+    .stat-card-new.kpi-violet::before { background: linear-gradient(90deg, #7c3aed, #ec4899); }
+
+    .stat-card-new:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 18px 35px -8px rgba(37, 99, 235, 0.16) !important;
+        border-color: #93c5fd !important;
+    }
+    .stat-card-new .stat-value {
+        font-size: 2.15rem !important;
+        font-weight: 900 !important;
+        letter-spacing: -0.03em;
+        font-variant-numeric: tabular-nums;
+    }
+    .stat-icon-box {
+        width: 48px !important;
+        height: 48px !important;
+        border-radius: 14px !important;
+        font-size: 1.45rem !important;
+        box-shadow: 0 6px 16px -3px rgba(15, 23, 42, 0.1);
+    }
+
+    /* Upgraded Chart Cards & Podium Leaderboard */
+    .chart-card {
+        border-radius: 20px !important;
+        transition: transform 0.25s ease, box-shadow 0.25s ease !important;
+        box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.06) !important;
+    }
+    .chart-card:hover {
+        box-shadow: 0 14px 32px -6px rgba(15, 23, 42, 0.1) !important;
+    }
+    .podium-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        margin-bottom: 12px;
+    }
+    .podium-card {
+        border-radius: 14px;
+        padding: 10px 8px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s;
+        border: 1px solid #e2e8f0;
+        position: relative;
+        overflow: hidden;
+    }
+    .podium-card:hover { transform: translateY(-3px); }
+    .podium-1 { background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); border-color: #fcd34d; box-shadow: 0 6px 14px -3px rgba(245, 158, 11, 0.22); }
+    .podium-2 { background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); border-color: #cbd5e1; }
+    .podium-3 { background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%); border-color: #fdba74; }
+    .podium-medal { font-size: 1.35rem; line-height: 1; margin-bottom: 4px; }
+    .podium-name { font-size: 0.73rem; font-weight: 800; color: #1e293b; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 2.1em; line-height: 1.15; }
+    .podium-score { font-size: 0.92rem; font-weight: 900; color: #2563eb; margin-top: 4px; }
+
+    /* ===== CYBER DARK MODE THEME (TOGGLED VIA BUTTON) ===== */
+    body.cyber-dark {
+        background: #070b14 !important;
+        background-image:
+            radial-gradient(at 0% 0%, rgba(37, 99, 235, 0.18) 0px, transparent 50%),
+            radial-gradient(at 100% 0%, rgba(124, 58, 237, 0.16) 0px, transparent 50%),
+            radial-gradient(at 50% 100%, rgba(16, 185, 129, 0.1) 0px, transparent 50%) !important;
+        color: #e2e8f0 !important;
+    }
+    body.cyber-dark .nav,
+    body.cyber-dark .smart-filter-bar,
+    body.cyber-dark .card,
+    body.cyber-dark .chart-card,
+    body.cyber-dark .stat-card-new,
+    body.cyber-dark .insights-panel,
+    body.cyber-dark .insight-box,
+    body.cyber-dark .s5-mini-card,
+    body.cyber-dark .dept-stats-card {
+        background: rgba(15, 23, 42, 0.82) !important;
+        backdrop-filter: blur(16px);
+        border-color: rgba(51, 65, 85, 0.85) !important;
+        color: #f1f5f9 !important;
+        box-shadow: 0 12px 30px -6px rgba(0, 0, 0, 0.5) !important;
+    }
+    body.cyber-dark h1, body.cyber-dark h2, body.cyber-dark h3,
+    body.cyber-dark .stat-card-new .stat-value,
+    body.cyber-dark .ranking-name,
+    body.cyber-dark .insight-box-header {
+        color: #f8fafc !important;
+    }
+    body.cyber-dark .stat-card-new .stat-label,
+    body.cyber-dark .stat-card-new .stat-subtitle,
+    body.cyber-dark p {
+        color: #94a3b8 !important;
+    }
+    body.cyber-dark .filter-select,
+    body.cyber-dark .form-control,
+    body.cyber-dark .period-pill:not(.active),
+    body.cyber-dark .mini-pill-group {
+        background: #0f172a !important;
+        border-color: #334155 !important;
+        color: #e2e8f0 !important;
+    }
+    body.cyber-dark .nav-btn:not(.active) {
+        color: #cbd5e1 !important;
+    }
+    body.cyber-dark .nav-btn:not(.active):hover {
+        background: rgba(255, 255, 255, 0.08) !important;
+        color: #38bdf8 !important;
+    }
+    body.cyber-dark th {
+        background: #1e293b !important;
+        color: #cbd5e1 !important;
+        border-bottom-color: #334155 !important;
+    }
+    body.cyber-dark td {
+        border-bottom-color: #1e293b !important;
+        color: #e2e8f0 !important;
+    }
+    body.cyber-dark tr:hover,
+    body.cyber-dark .criteria-bar-item:hover {
+        background: rgba(30, 41, 59, 0.65) !important;
+    }
+    body.cyber-dark .podium-1 { background: linear-gradient(135deg, rgba(245,158,11,0.22), rgba(180,83,9,0.15)) !important; border-color: rgba(251,191,36,0.45) !important; }
+    body.cyber-dark .podium-2 { background: linear-gradient(135deg, rgba(148,163,184,0.2), rgba(71,85,105,0.15)) !important; border-color: rgba(148,163,184,0.4) !important; }
+    body.cyber-dark .podium-3 { background: linear-gradient(135deg, rgba(249,115,22,0.2), rgba(194,65,12,0.15)) !important; border-color: rgba(251,146,60,0.4) !important; }
+    body.cyber-dark .podium-name { color: #f8fafc !important; }
+    body.cyber-dark .podium-score { color: #38bdf8 !important; }
 </style>
 </head>
 
@@ -2427,6 +2810,45 @@
 
             <!-- Home Tab -->
             <div id="homeTab" class="tab-content active">
+                <!-- Futuristic Executive Command Center Hero -->
+                <div class="command-hero">
+                    <div class="command-hero-left">
+                        <div class="hero-live-pill">
+                            <span class="live-pulse-dot"></span>
+                            <span>LIVE TELEMETRY • TRUNG TÂM ĐIỀU HÀNH 5S THỜI GIAN THỰC</span>
+                        </div>
+                        <h2 class="command-hero-title">HỆ THỐNG PHÂN TÍCH & GIÁM SÁT CHẤT LƯỢNG 5S</h2>
+                        <div class="command-hero-sub">
+                            <span id="heroScopeLabel">🌐 Phạm vi: Toàn viện • Tất cả thời gian</span>
+                            <span>•</span>
+                            <span id="heroQuickSummary">Đang đồng bộ dữ liệu đám mây...</span>
+                        </div>
+                        <div class="hero-action-row">
+                            <button type="button" class="btn-hero-neon" onclick="showTab('score')">⚡ Bắt đầu chấm điểm 5S</button>
+                            <button type="button" class="btn-hero-glass" onclick="showTab('report')">📊 Báo cáo & Xuất Excel</button>
+                            <button type="button" class="btn-hero-glass" id="btnThemeToggle" onclick="toggleDashboardTheme()">🌙 Giao diện Cyber Dark</button>
+                        </div>
+                    </div>
+
+                    <div class="command-hero-right">
+                        <div class="hero-gauge-wrap">
+                            <svg class="hero-gauge-svg" viewBox="0 0 86 86">
+                                <circle class="hero-gauge-bg" cx="43" cy="43" r="36"></circle>
+                                <circle class="hero-gauge-fg" id="heroGaugeCircle" cx="43" cy="43" r="36"></circle>
+                            </svg>
+                            <div class="hero-gauge-center">
+                                <span class="hero-gauge-val" id="heroGaugeVal">--</span>
+                                <span class="hero-gauge-unit">ĐIỂM /100</span>
+                            </div>
+                        </div>
+                        <div class="hero-telemetry-info">
+                            <div class="hero-grade-badge" id="heroGradeBadge">⭐ ĐANG TÍNH...</div>
+                            <div class="hero-meta-line" id="heroMetaStats">30 Khoa/Phòng • 157 Khu vực</div>
+                            <div class="hero-clock-line" id="heroLiveClock">⏱️ Đồng bộ thời gian thực</div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Smart Multi-dimensional Filter Bar -->
                 <div class="smart-filter-bar">
                     <div class="filter-top-row">
@@ -2470,54 +2892,54 @@
                     </div>
                 </div>
 
-                <!-- 4 Smart KPI Cards -->
+                <!-- 4 Smart Bento KPI Cards -->
                 <div class="dashboard-grid">
-                    <div class="stat-card-new">
+                    <div class="stat-card-new kpi-blue">
                         <div>
                             <div class="stat-card-top">
                                 <span class="stat-label">Đơn vị báo cáo</span>
-                                <div class="stat-icon-box" style="background:#eff6ff; color:#2563eb;">🏥</div>
+                                <div class="stat-icon-box" style="background:linear-gradient(135deg,#dbeafe,#eff6ff); color:#2563eb;">🏥</div>
                             </div>
                             <div class="stat-value" id="statDepts">0</div>
                             <div class="stat-subtitle" id="statDeptsDesc">đơn vị tham gia</div>
                         </div>
-                        <div class="stat-progress-bg"><div id="statDeptsProgress" class="stat-progress-fill" style="width:0%; background:#2563eb;"></div></div>
+                        <div class="stat-progress-bg"><div id="statDeptsProgress" class="stat-progress-fill" style="width:0%; background:linear-gradient(90deg,#2563eb,#38bdf8);"></div></div>
                     </div>
 
-                    <div class="stat-card-new">
+                    <div class="stat-card-new kpi-emerald">
                         <div>
                             <div class="stat-card-top">
                                 <span class="stat-label">Độ phủ Khu vực</span>
-                                <div class="stat-icon-box" style="background:#ecfdf5; color:#10b981;">📍</div>
+                                <div class="stat-icon-box" style="background:linear-gradient(135deg,#d1fae5,#ecfdf5); color:#059669;">📍</div>
                             </div>
                             <div class="stat-value" id="statZones">0</div>
                             <div class="stat-subtitle" id="statZonesDesc">khu vực đánh giá</div>
                         </div>
-                        <div class="stat-progress-bg"><div id="statZonesProgress" class="stat-progress-fill" style="width:0%; background:#10b981;"></div></div>
+                        <div class="stat-progress-bg"><div id="statZonesProgress" class="stat-progress-fill" style="width:0%; background:linear-gradient(90deg,#10b981,#34d399);"></div></div>
                     </div>
 
-                    <div class="stat-card-new">
+                    <div class="stat-card-new kpi-amber">
                         <div>
                             <div class="stat-card-top">
                                 <span class="stat-label">Lượt chấm & Đúng hạn</span>
-                                <div class="stat-icon-box" style="background:#fffbeb; color:#d97706;">📝</div>
+                                <div class="stat-icon-box" style="background:linear-gradient(135deg,#fef3c7,#fffbeb); color:#d97706;">📝</div>
                             </div>
                             <div class="stat-value" id="statScores">0</div>
                             <div class="stat-subtitle" id="statScoresDesc">bản ghi điểm</div>
                         </div>
-                        <div class="stat-progress-bg"><div id="statScoresProgress" class="stat-progress-fill" style="width:0%; background:#f59e0b;"></div></div>
+                        <div class="stat-progress-bg"><div id="statScoresProgress" class="stat-progress-fill" style="width:0%; background:linear-gradient(90deg,#f59e0b,#fbbf24);"></div></div>
                     </div>
 
-                    <div class="stat-card-new">
+                    <div class="stat-card-new kpi-violet">
                         <div>
                             <div class="stat-card-top">
                                 <span class="stat-label">Điểm TB 5S</span>
-                                <div class="stat-icon-box" style="background:#f5f3ff; color:#7c3aed;">⭐</div>
+                                <div class="stat-icon-box" style="background:linear-gradient(135deg,#ede9fe,#f5f3ff); color:#7c3aed;">⭐</div>
                             </div>
                             <div class="stat-value" id="statAvg">-</div>
                             <div class="stat-subtitle" id="statAvgDesc">trung bình toàn viện</div>
                         </div>
-                        <div class="stat-progress-bg"><div id="statAvgProgress" class="stat-progress-fill" style="width:0%; background:#8b5cf6;"></div></div>
+                        <div class="stat-progress-bg"><div id="statAvgProgress" class="stat-progress-fill" style="width:0%; background:linear-gradient(90deg,#7c3aed,#ec4899);"></div></div>
                     </div>
                 </div>
 
@@ -2726,11 +3148,12 @@
                 </div>
 
                 <div id="scoringTimerSection" class="scoring-timer-section">
-                    <div id="timerBeforeStart" style="display:none;">
-                        <p style="margin-bottom:12px; color:var(--gray-600); font-size:0.9rem; position:relative; z-index:1;">⏱️ Bấm nút bên dưới để bắt đầu tính lại thời gian chấm điểm 5S</p>
-                        <button class="btn-start-scoring" onclick="startScoringTimer()">▶️ Bắt đầu tính giờ chấm điểm</button>
+                    <div id="timerBeforeStart" style="display:block;">
+                        <p style="margin-bottom:12px; color:var(--gray-600); font-size:0.92rem; font-weight:600; position:relative; z-index:1;">⏱️ Bấm nút bên dưới để bắt đầu tính thời gian và mở phiếu chấm điểm 5S</p>
+                        <button type="button" class="btn-start-scoring" onclick="startScoringTimer(true)">▶️ Bắt đầu chấm điểm</button>
+                        <div id="lastSubmitBanner" style="display:none; margin-top:14px; position:relative; z-index:1;"></div>
                     </div>
-                    <div id="timerRunning" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;">
+                    <div id="timerRunning" style="display:none; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;">
                         <div style="display:flex; align-items:center; gap:10px;">
                             <div class="timer-label" style="margin:0;">⏱️ Thời gian chấm điểm:</div>
                             <div class="timer-display" style="margin:0;">
@@ -2738,11 +3161,14 @@
                                 <span class="timer-clock" id="timerClock">00:00</span>
                             </div>
                         </div>
-                        <button type="button" class="btn btn-sm" style="background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; padding:6px 12px; border-radius:8px; font-size:0.8rem;" onclick="startScoringTimer()">🔄 Đặt lại đồng hồ</button>
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <button type="button" class="btn btn-sm" style="background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; padding:6px 12px; border-radius:8px; font-size:0.8rem;" onclick="startScoringTimer(false)">🔄 Đặt lại 00:00</button>
+                            <button type="button" class="btn btn-sm" style="background:#fef2f2; color:#dc2626; border:1px solid #fecaca; padding:6px 12px; border-radius:8px; font-size:0.8rem;" onclick="resetScoringTimer()">⏹️ Dừng</button>
+                        </div>
                     </div>
                 </div>
 
-                <div id="scoringFormWrapper" class="card" style="display:block;">
+                <div id="scoringFormWrapper" class="card" style="display:none;">
                     <h2 style="margin-bottom:18px;">📝 Phiếu Chấm điểm 5S</h2>
                     <div id="scoreAlert"></div>
                     <div class="grid grid-2">
@@ -3044,7 +3470,38 @@
             uploadPreset: '5S_upload'
         };
 
-        // --- SCORING TIMER ---
+        // --- THEME TOGGLE & HERO CLOCK ---
+        function toggleDashboardTheme(forceMode = null) {
+            const isDark = forceMode !== null ? (forceMode === 'dark') : !document.body.classList.contains('cyber-dark');
+            document.body.classList.toggle('cyber-dark', isDark);
+            try { localStorage.setItem('theme_5s', isDark ? 'dark' : 'light'); } catch (e) {}
+            const btn = document.getElementById('btnThemeToggle');
+            if (btn) {
+                btn.innerHTML = isDark ? '☀️ Giao diện Sáng' : '🌙 Giao diện Cyber Dark';
+            }
+        }
+
+        function initDashboardClockAndTheme() {
+            try {
+                const saved = localStorage.getItem('theme_5s');
+                if (saved === 'dark') toggleDashboardTheme('dark');
+            } catch (e) {}
+            const updateHeroClock = () => {
+                const el = document.getElementById('heroLiveClock');
+                if (!el) return;
+                const now = new Date();
+                el.textContent = '🕒 ' + now.toLocaleTimeString('vi-VN', { hour12: false }) + ' • ' + now.toLocaleDateString('vi-VN');
+            };
+            updateHeroClock();
+            setInterval(updateHeroClock, 1000);
+        }
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initDashboardClockAndTheme);
+        } else {
+            initDashboardClockAndTheme();
+        }
+
+        // --- SCORING TIMER (ONLY STARTS WHEN USER CLICKS START BUTTON) ---
         let _scoringStartTime = null;
         let _scoringTimerInterval = null;
         let _scoringDurationSeconds = 0;
@@ -3062,12 +3519,14 @@
             const secEl = document.getElementById('scoringTimerSection');
             const formWrap = document.getElementById('scoringFormWrapper');
             const clockEl = document.getElementById('timerClock');
+            const lastBanner = document.getElementById('lastSubmitBanner');
 
             if (beforeEl) beforeEl.style.display = 'none';
             if (runEl) runEl.style.display = 'flex';
             if (secEl) secEl.classList.add('active');
             if (formWrap) formWrap.style.display = 'block';
             if (clockEl) clockEl.textContent = '00:00';
+            if (lastBanner) lastBanner.style.display = 'none';
 
             _scoringTimerInterval = setInterval(() => {
                 _scoringDurationSeconds = Math.floor((new Date() - _scoringStartTime) / 1000);
@@ -3082,7 +3541,7 @@
             if (scroll && formWrap) {
                 setTimeout(() => {
                     formWrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 200);
+                }, 150);
             }
         }
 
@@ -3095,15 +3554,25 @@
             return duration;
         }
 
-        function resetScoringTimer() {
+        function resetScoringTimer(keepLastBanner = false) {
             stopScoringTimer();
             _scoringStartTime = null;
             _scoringDurationSeconds = 0;
+            const beforeEl = document.getElementById('timerBeforeStart');
+            const runEl = document.getElementById('timerRunning');
+            const secEl = document.getElementById('scoringTimerSection');
             const formWrap = document.getElementById('scoringFormWrapper');
-            if (formWrap) formWrap.style.display = 'block';
+            const clockEl = document.getElementById('timerClock');
             const durRes = document.getElementById('scoreDurationResult');
-            if (durRes) durRes.style.display = 'none';
-            startScoringTimer(false);
+            const lastBanner = document.getElementById('lastSubmitBanner');
+
+            if (beforeEl) beforeEl.style.display = 'block';
+            if (runEl) runEl.style.display = 'none';
+            if (secEl) secEl.classList.remove('active');
+            if (clockEl) clockEl.textContent = '00:00';
+            if (formWrap) formWrap.style.display = 'none';
+            if (durRes && !keepLastBanner) durRes.style.display = 'none';
+            if (lastBanner && !keepLastBanner) lastBanner.style.display = 'none';
         }
 
         function formatDuration(seconds) {
@@ -3931,9 +4400,9 @@
             }
             if (tab === 'score') {
                 loadDepartments().then(() => {
-                    const formWrap = document.getElementById('scoringFormWrapper');
-                    if (formWrap) formWrap.style.display = 'block';
-                    if (!_scoringTimerInterval) startScoringTimer(false);
+                    if (!_scoringTimerInterval) {
+                        resetScoringTimer(false);
+                    }
                     updateLockBanner();
                 });
             }
@@ -4303,6 +4772,52 @@
                 : 'Chưa có dữ liệu kỳ này';
             const apEl = document.getElementById('statAvgProgress');
             if (apEl) apEl.style.width = overallPct + '%';
+
+            // Update Futuristic Command Center Hero Telemetry
+            const heroValEl = document.getElementById('heroGaugeVal');
+            const heroCircleEl = document.getElementById('heroGaugeCircle');
+            const heroGradeEl = document.getElementById('heroGradeBadge');
+            const heroMetaEl = document.getElementById('heroMetaStats');
+            const heroScopeEl = document.getElementById('heroScopeLabel');
+            const heroSummaryEl = document.getElementById('heroQuickSummary');
+
+            if (heroValEl) heroValEl.textContent = overallAvg !== '-' ? overallPct : '--';
+            if (heroCircleEl) {
+                const circumference = 226.19;
+                const offset = overallAvg !== '-' ? (circumference - (circumference * Math.min(100, Math.max(0, overallPct))) / 100) : circumference;
+                heroCircleEl.style.strokeDashoffset = offset.toFixed(1);
+                heroCircleEl.style.stroke = overallPct >= 85 ? '#34d399' : overallPct >= 70 ? '#38bdf8' : overallPct >= 60 ? '#fbbf24' : '#f87171';
+            }
+            if (heroGradeEl) {
+                if (overallAvg === '-') {
+                    heroGradeEl.textContent = '⏳ Chưa có phiếu kỳ này';
+                    heroGradeEl.style.color = '#cbd5e1';
+                } else if (overallPct >= 90) {
+                    heroGradeEl.textContent = '🏆 Xuất sắc • Chuẩn 5S Kim Cương';
+                    heroGradeEl.style.color = '#34d399';
+                } else if (overallPct >= 80) {
+                    heroGradeEl.textContent = '🌟 Tốt • Vận hành 5S Ổn định';
+                    heroGradeEl.style.color = '#38bdf8';
+                } else if (overallPct >= 65) {
+                    heroGradeEl.textContent = '⚡ Khá • Cần tối ưu thêm';
+                    heroGradeEl.style.color = '#fbbf24';
+                } else {
+                    heroGradeEl.textContent = '⚠️ Cần cải thiện trọng điểm';
+                    heroGradeEl.style.color = '#f87171';
+                }
+            }
+            if (heroMetaEl) {
+                heroMetaEl.textContent = `${reportedDeptsCount}/${totalDepts} Khoa • ${reportedZonesCount}/${totalZones} Khu vực • ${dispScoreCount} Phiếu`;
+            }
+            if (heroScopeEl) {
+                const periodSel = document.getElementById('dashPeriodSelect')?.value || 'this_year';
+                const rangeInfo = getPeriodRange(periodSel);
+                const zFilter = document.getElementById('chartZoneFilter')?.value || '';
+                heroScopeEl.textContent = `${rangeInfo.label}${deptFilter ? ' • ' + deptFilter : ' • Toàn viện'}${zFilter ? ' (' + zFilter + ')' : ''}`;
+            }
+            if (heroSummaryEl && overallAvg !== '-') {
+                heroSummaryEl.innerHTML = `Điểm trung bình hệ thống đạt <strong style="color:#38bdf8;">${overallAvg}/5.00</strong> (<strong style="color:#34d399;">${overallPct}/100đ</strong>) với độ phủ <strong>${deptCovPct}%</strong> Khoa/Phòng và tỷ lệ chấm đúng hạn <strong>${onTimePct}%</strong>.`;
+            }
         }
 
         // ===== SMART INSIGHTS ENGINE =====
@@ -4641,7 +5156,27 @@
                 return;
             }
 
-            let html = '<ul class="ranking-list">';
+            let html = '';
+            if (!window._rankingSortAsc && !searchKey && ranked.length >= 3) {
+                const p1 = ranked[0], p2 = ranked[1], p3 = ranked[2];
+                const renderPod = (d, rankCls, medal) => {
+                    const safe = d.name.replace(/'/g, "\\'");
+                    const pct = Math.round((d.avg / 5) * 100);
+                    return `<div class="podium-card ${rankCls}" onclick="selectDeptFromDashboard('${safe}')" title="Click để lọc ${d.name}">
+                        <div class="podium-medal">${medal}</div>
+                        <div class="podium-name">${d.name}</div>
+                        <div class="podium-score">${d.avg.toFixed(2)}</div>
+                        <div class="podium-sub">${pct}đ/100 • ${d.count} phiếu</div>
+                    </div>`;
+                };
+                html += `<div class="podium-grid">
+                    ${renderPod(p2, 'rank-2', '🥈')}
+                    ${renderPod(p1, 'rank-1', '🥇')}
+                    ${renderPod(p3, 'rank-3', '🥉')}
+                </div>`;
+            }
+
+            html += '<ul class="ranking-list">';
             ranked.forEach((dept, idx) => {
                 const avg = dept.avg;
                 const posClass = !window._rankingSortAsc && idx === 0 ? 'gold' : !window._rankingSortAsc && idx === 1 ? 'silver' : !window._rankingSortAsc && idx === 2 ? 'bronze' : 'normal';
@@ -5874,9 +6409,22 @@
                 const duration = stopScoringTimer();
                 if (duration > 0) {
                     const durationEl = document.getElementById('scoreDurationResult');
-                    durationEl.innerHTML = `<span class="duration-badge">⏱️ Thời gian chấm: <strong>${formatDuration(duration)}</strong></span>`;
-                    durationEl.style.display = 'block';
+                    if (durationEl) {
+                        durationEl.innerHTML = `<span class="duration-badge">⏱️ Thời gian chấm: <strong>${formatDuration(duration)}</strong></span>`;
+                        durationEl.style.display = 'block';
+                    }
                 }
+                const lastBanner = document.getElementById('lastSubmitBanner');
+                if (lastBanner) {
+                    lastBanner.innerHTML = `<div style="background:#ecfdf5; border:1px solid #6ee7b7; color:#065f46; padding:10px 16px; border-radius:12px; font-weight:700; font-size:0.86rem; display:inline-flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:center;">
+                        <span>✅ Đã lưu phiếu chấm <strong>${scoreData.department} - ${scoreData.zone}</strong> (${scoreData.average}/5đ)</span>
+                        ${duration > 0 ? `<span class="duration-badge">⏱️ Thời gian chấm: <strong>${formatDuration(duration)}</strong></span>` : ''}
+                    </div>`;
+                    lastBanner.style.display = 'block';
+                }
+                resetScoringTimer(true);
+                const timerSec = document.getElementById('scoringTimerSection');
+                if (timerSec) timerSec.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
                 await refreshDashboardData(true);
             } catch (err) {
