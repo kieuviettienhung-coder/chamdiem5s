@@ -2661,9 +2661,9 @@
                             <h2 style="margin:0; color:var(--gray-800); font-size:1.12rem; font-weight:700;">🏥 Thống kê chi tiết từng Khoa/Phòng & Khu vực</h2>
                             <p style="margin:2px 0 0; font-size:0.78rem; color:var(--gray-500);">Bấm để mở rộng danh sách khu vực, mô tả định danh và điểm trung bình từng vị trí</p>
                         </div>
-                        <span id="main-dept-stats-arrow" style="transition:transform 0.3s; color:var(--gray-500); font-size:1.1rem;">▼</span>
+                        <span id="main-dept-stats-arrow" style="transition:transform 0.3s; color:var(--gray-500); font-size:1.1rem; transform:rotate(180deg);">▼</span>
                     </div>
-                    <div id="main-dept-stats-content" style="display:none; margin-top:16px;">
+                    <div id="main-dept-stats-content" style="display:block; margin-top:16px;">
                         <div style="display:flex; gap:10px; margin-bottom:14px; flex-wrap:wrap;">
                             <input type="text" id="deptStatsSearchInput" class="form-control" style="max-width:320px; padding:8px 12px; font-size:0.88rem;" placeholder="🔍 Tìm tên Khoa/Phòng hoặc Khu vực..." oninput="loadDeptStats()">
                             <button type="button" class="btn btn-sm" style="background:#f1f5f9; color:var(--gray-700);" onclick="toggleAllDeptDetails(true)">📂 Mở rộng tất cả</button>
@@ -2683,20 +2683,27 @@
                                 <h2 style="margin:0;">📋 Danh sách Phiếu chấm điểm</h2>
                                 <span id="recentScoreCountBadge" class="badge" style="background:#eff6ff; color:#1d4ed8; border:1px solid #bfdbfe; font-size:0.78rem;">Đang tải...</span>
                             </div>
-                            <p style="font-size:0.78rem; color:var(--gray-500); margin-top:3px;">Bấm nút <strong>👁️ Chi tiết</strong> để xem bảng 20 tiêu chí, lý do trừ điểm và ảnh phóng to</p>
+                            <p style="font-size:0.78rem; color:var(--gray-500); margin-top:3px;">Bấm nút <strong>👁️ Chi tiết</strong> hoặc trực tiếp vào dòng để xem bảng 20 tiêu chí, lý do trừ điểm và ảnh phóng to</p>
                         </div>
                         <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
-                            <input type="text" id="recentSearchInput" class="form-control" style="width:210px; padding:7px 12px; font-size:0.84rem;" placeholder="🔍 Tìm khoa, khu vực, người chấm..." oninput="window._recentPage=1; loadRecentScores()">
-                            <select id="recentScopeSelect" class="filter-select" style="min-width:145px; padding:7px 10px; font-size:0.84rem;" onchange="window._recentPage=1; loadRecentScores()" title="Phạm vi hiển thị danh sách phiếu">
+                            <input type="text" id="recentSearchInput" class="form-control" style="width:195px; padding:7px 11px; font-size:0.83rem;" placeholder="🔍 Tìm khoa, khu vực, người chấm..." oninput="loadRecentScores(true)">
+                            <select id="recentScopeSelect" class="filter-select" style="min-width:140px; padding:7px 9px; font-size:0.83rem;" onchange="loadRecentScores(true)" title="Phạm vi hiển thị danh sách phiếu">
+                                <option value="all" selected>🌐 Toàn viện (Độc lập)</option>
                                 <option value="filtered">🎯 Theo bộ lọc Dashboard</option>
-                                <option value="all">🌐 Tất cả phiếu toàn viện</option>
                             </select>
-                            <select id="recentLimitSelect" class="filter-select" style="min-width:115px; padding:7px 10px; font-size:0.84rem;" onchange="window._recentPage=1; loadRecentScores()">
+                            <select id="recentDeptSelect" class="filter-select" style="min-width:155px; max-width:210px; padding:7px 9px; font-size:0.83rem;" onchange="loadRecentScores(true)" title="Lọc theo Khoa/Phòng trong bảng phiếu">
+                                <option value="">🏥 Tất cả Khoa/Phòng</option>
+                            </select>
+                            <select id="recentMonthSelect" class="filter-select" style="min-width:120px; padding:7px 9px; font-size:0.83rem;" onchange="loadRecentScores(true)" title="Lọc theo Tháng chấm trong bảng phiếu">
+                                <option value="">📅 Tất cả tháng</option>
+                            </select>
+                            <select id="recentLimitSelect" class="filter-select" style="min-width:105px; padding:7px 9px; font-size:0.83rem;" onchange="loadRecentScores(true)">
                                 <option value="10">Hiện 10 phiếu</option>
                                 <option value="20" selected>Hiện 20 phiếu</option>
                                 <option value="50">Hiện 50 phiếu</option>
                                 <option value="9999">Hiện tất cả</option>
                             </select>
+                            <button type="button" class="btn btn-sm" style="background:#f8fafc; color:#475569; border:1px solid #cbd5e1; padding:7px 10px; border-radius:8px; font-size:0.81rem;" onclick="resetRecentScoresFilters()" title="Xóa bộ lọc bảng phiếu để hiện toàn bộ">✖ Xóa lọc</button>
                             <button type="button" class="btn btn-sm" style="background:#eff6ff; color:#2563eb; border:1px solid #bfdbfe; padding:7px 11px; border-radius:8px; font-size:0.82rem;" onclick="refreshDashboardData(true)" title="Đồng bộ lại danh sách phiếu chấm từ máy chủ">🔄 Tải lại</button>
                         </div>
                     </div>
@@ -2716,20 +2723,23 @@
                 </div>
 
                 <div id="scoringTimerSection" class="scoring-timer-section">
-                    <div id="timerBeforeStart">
-                        <p style="margin-bottom:16px; color:var(--gray-600); font-size:0.95rem; position:relative; z-index:1;">⏱️ Bấm nút bên dưới để mở phiếu và bắt đầu tính thời gian chấm điểm 5S</p>
-                        <button class="btn-start-scoring" onclick="startScoringTimer()">▶️ Bắt đầu chấm điểm</button>
+                    <div id="timerBeforeStart" style="display:none;">
+                        <p style="margin-bottom:12px; color:var(--gray-600); font-size:0.9rem; position:relative; z-index:1;">⏱️ Bấm nút bên dưới để bắt đầu tính lại thời gian chấm điểm 5S</p>
+                        <button class="btn-start-scoring" onclick="startScoringTimer()">▶️ Bắt đầu tính giờ chấm điểm</button>
                     </div>
-                    <div id="timerRunning" style="display:none;">
-                        <div class="timer-label">⏱️ Thời gian chấm điểm đang chạy</div>
-                        <div class="timer-display">
-                            <div class="timer-dot"></div>
-                            <span class="timer-clock" id="timerClock">00:00</span>
+                    <div id="timerRunning" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;">
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <div class="timer-label" style="margin:0;">⏱️ Thời gian chấm điểm:</div>
+                            <div class="timer-display" style="margin:0;">
+                                <div class="timer-dot"></div>
+                                <span class="timer-clock" id="timerClock">00:00</span>
+                            </div>
                         </div>
+                        <button type="button" class="btn btn-sm" style="background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; padding:6px 12px; border-radius:8px; font-size:0.8rem;" onclick="startScoringTimer()">🔄 Đặt lại đồng hồ</button>
                     </div>
                 </div>
 
-                <div id="scoringFormWrapper" class="card" style="display:none;">
+                <div id="scoringFormWrapper" class="card" style="display:block;">
                     <h2 style="margin-bottom:18px;">📝 Phiếu Chấm điểm 5S</h2>
                     <div id="scoreAlert"></div>
                     <div class="grid grid-2">
@@ -2837,21 +2847,21 @@
                     <div class="grid grid-2">
                         <div class="form-group">
                             <label>Khoa/Phòng</label>
-                            <select id="reportDept" class="form-control">
+                            <select id="reportDept" class="form-control" onchange="loadReport()">
                                 <option value="">-- Tất cả --</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label>Từ tháng</label>
-                            <input type="month" id="reportFrom" class="form-control" min="2026-01" max="2030-12">
+                            <input type="month" id="reportFrom" class="form-control" min="2026-01" max="2030-12" onchange="loadReport()">
                         </div>
                         <div class="form-group">
                             <label>Đến tháng</label>
-                            <input type="month" id="reportTo" class="form-control" min="2026-01" max="2030-12">
+                            <input type="month" id="reportTo" class="form-control" min="2026-01" max="2030-12" onchange="loadReport()">
                         </div>
                         <div class="form-group">
                             <label>Trạng thái</label>
-                            <select id="reportStatus" class="form-control">
+                            <select id="reportStatus" class="form-control" onchange="loadReport()">
                                 <option value="all">-- Tất cả --</option>
                                 <option value="reported">✅ Đã báo cáo</option>
                                 <option value="unreported">❌ Chưa báo cáo</option>
@@ -2860,6 +2870,7 @@
                         <div class="form-group" style="display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap;">
                             <button class="btn btn-primary" onclick="loadReport()">🔍 Xem báo cáo</button>
                             <button class="btn btn-success" onclick="exportExcel()">📥 Xuất Excel</button>
+                            <button type="button" class="btn" style="background:#f1f5f9; color:#334155; border:1px solid #cbd5e1;" onclick="resetReportFilters()">🔄 Hiện tất cả</button>
                         </div>
                     </div>
                     <div id="reportSummaryBanner" style="display:none;"></div>
@@ -3035,31 +3046,41 @@
         let _scoringTimerInterval = null;
         let _scoringDurationSeconds = 0;
 
-        function startScoringTimer() {
+        function startScoringTimer(scroll = false) {
+            if (_scoringTimerInterval) {
+                clearInterval(_scoringTimerInterval);
+                _scoringTimerInterval = null;
+            }
             _scoringStartTime = new Date();
             _scoringDurationSeconds = 0;
 
-            // Show timer, hide start button
-            document.getElementById('timerBeforeStart').style.display = 'none';
-            document.getElementById('timerRunning').style.display = 'block';
-            document.getElementById('scoringTimerSection').classList.add('active');
+            const beforeEl = document.getElementById('timerBeforeStart');
+            const runEl = document.getElementById('timerRunning');
+            const secEl = document.getElementById('scoringTimerSection');
+            const formWrap = document.getElementById('scoringFormWrapper');
+            const clockEl = document.getElementById('timerClock');
 
-            // Show scoring form
-            document.getElementById('scoringFormWrapper').style.display = 'block';
+            if (beforeEl) beforeEl.style.display = 'none';
+            if (runEl) runEl.style.display = 'flex';
+            if (secEl) secEl.classList.add('active');
+            if (formWrap) formWrap.style.display = 'block';
+            if (clockEl) clockEl.textContent = '00:00';
 
-            // Update timer every second
             _scoringTimerInterval = setInterval(() => {
                 _scoringDurationSeconds = Math.floor((new Date() - _scoringStartTime) / 1000);
                 const mins = Math.floor(_scoringDurationSeconds / 60);
                 const secs = _scoringDurationSeconds % 60;
-                document.getElementById('timerClock').textContent =
-                    `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+                const clk = document.getElementById('timerClock');
+                if (clk) {
+                    clk.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+                }
             }, 1000);
 
-            // Scroll to form
-            setTimeout(() => {
-                document.getElementById('scoringFormWrapper').scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }, 300);
+            if (scroll && formWrap) {
+                setTimeout(() => {
+                    formWrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 200);
+            }
         }
 
         function stopScoringTimer() {
@@ -3075,12 +3096,11 @@
             stopScoringTimer();
             _scoringStartTime = null;
             _scoringDurationSeconds = 0;
-            document.getElementById('timerBeforeStart').style.display = 'block';
-            document.getElementById('timerRunning').style.display = 'none';
-            document.getElementById('scoringTimerSection').classList.remove('active');
-            document.getElementById('timerClock').textContent = '00:00';
-            document.getElementById('scoringFormWrapper').style.display = 'none';
-            document.getElementById('scoreDurationResult').style.display = 'none';
+            const formWrap = document.getElementById('scoringFormWrapper');
+            if (formWrap) formWrap.style.display = 'block';
+            const durRes = document.getElementById('scoreDurationResult');
+            if (durRes) durRes.style.display = 'none';
+            startScoringTimer(false);
         }
 
         function formatDuration(seconds) {
@@ -3803,7 +3823,7 @@
 
             const monthStr = `${year}-${String(month).padStart(2, '0')}`;
             document.getElementById('scoreMonth').value = monthStr;
-            document.getElementById('reportFrom').value = monthStr;
+            document.getElementById('reportFrom').value = `${year}-01`;
             document.getElementById('reportTo').value = monthStr;
             const dashFrom = document.getElementById('dashFromMonth');
             const dashTo = document.getElementById('dashToMonth');
@@ -3903,8 +3923,17 @@
             if (tab === 'home') refreshDashboardData(false);
             if (tab === 'zones') loadZonesList();
             if (tab === 'users') loadUsersList();
-            if (tab === 'report') { loadDepartments(); loadReport(); }
-            if (tab === 'score') { resetScoringTimer(); updateLockBanner(); }
+            if (tab === 'report') {
+                loadDepartments().then(() => loadReport());
+            }
+            if (tab === 'score') {
+                loadDepartments().then(() => {
+                    const formWrap = document.getElementById('scoringFormWrapper');
+                    if (formWrap) formWrap.style.display = 'block';
+                    if (!_scoringTimerInterval) startScoringTimer(false);
+                    updateLockBanner();
+                });
+            }
         }
 
         // ===== SMART DASHBOARD FILTER & DATA ENGINE =====
@@ -3938,16 +3967,27 @@
             return { from: '', to: '', label: 'Tất cả thời gian' };
         }
 
+        function normVn(str) {
+            return String(str || '')
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .replace(/đ/g, 'd')
+                .replace(/Đ/g, 'D')
+                .replace(/\s+/g, ' ')
+                .trim()
+                .toLowerCase();
+        }
+
         function matchScoreDept(score, deptFilter) {
             if (!deptFilter) return true;
-            const normFilter = deptFilter.trim().toUpperCase();
-            if (score.departmentId && score.departmentId.trim().toUpperCase() === normFilter) return true;
-            if (score.department && score.department.trim().toUpperCase() === normFilter) return true;
+            const nf = normVn(deptFilter);
+            if (score.departmentId && normVn(score.departmentId) === nf) return true;
+            if (score.department && normVn(score.department) === nf) return true;
             const depts = window._cachedDepts || {};
-            const deptObj = depts[deptFilter] || Object.values(depts).find(d => (d.name || '').trim().toUpperCase() === normFilter);
-            if (deptObj && score.department && score.department.trim().toUpperCase() === (deptObj.name || '').trim().toUpperCase()) return true;
+            const deptObj = depts[deptFilter] || Object.values(depts).find(d => normVn(d.name) === nf);
+            if (deptObj && score.department && normVn(score.department) === normVn(deptObj.name)) return true;
             for (const [id, d] of Object.entries(depts)) {
-                if ((d.name || '').trim().toUpperCase() === normFilter && score.departmentId === id) return true;
+                if (normVn(d.name) === nf && score.departmentId === id) return true;
             }
             return false;
         }
@@ -3955,7 +3995,7 @@
         function getFilteredScores(options = {}) {
             const deptFilter = options.ignoreDept ? '' : (document.getElementById('chartDeptFilter')?.value || '');
             const zoneFilter = options.ignoreZone ? '' : (document.getElementById('chartZoneFilter')?.value || '');
-            const normZone = zoneFilter ? zoneFilter.trim().toUpperCase() : '';
+            const normZone = zoneFilter ? normVn(zoneFilter) : '';
             const range = options.ignorePeriod ? { from: '', to: '' } : getPeriodRange(window._dashPeriod);
             const list = Array.isArray(window._cachedScores) ? window._cachedScores : [];
 
@@ -3964,12 +4004,22 @@
                 if (range.to && (s.month || '') > range.to) return false;
                 if (deptFilter && !matchScoreDept(s, deptFilter)) return false;
                 if (normZone) {
-                    const sZoneId = (s.zoneId || '').trim().toUpperCase();
-                    const sZoneName = (s.zone || '').trim().toUpperCase();
+                    const sZoneId = normVn(s.zoneId);
+                    const sZoneName = normVn(s.zone);
                     if (sZoneId !== normZone && sZoneName !== normZone) return false;
                 }
                 return true;
             });
+        }
+
+        // Returns effective scores for charts/widgets so they NEVER go blank when a strict period/zone has 0 scores
+        function getEffectiveScoresForWidgets() {
+            const strict = getFilteredScores();
+            if (strict.length > 0) return { scores: strict, isFallback: false, note: '' };
+            const byDeptAllTime = getFilteredScores({ ignorePeriod: true, ignoreZone: true });
+            if (byDeptAllTime.length > 0) return { scores: byDeptAllTime, isFallback: true, note: 'Dữ liệu lũy kế của Khoa/Phòng' };
+            const all = Array.isArray(window._cachedScores) ? window._cachedScores : [];
+            return { scores: all, isFallback: true, note: 'Dữ liệu lũy kế toàn viện' };
         }
 
         function initRealtimeScoresListener() {
@@ -3979,10 +4029,12 @@
                 const arr = [];
                 scoresSnap.forEach(s => { arr.push({ id: s.key, ...s.val() }); });
                 arr.sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
-                window._cachedScores = arr;
+                if (arr.length > 0 || !Array.isArray(window._cachedScores) || window._cachedScores.length === 0) {
+                    window._cachedScores = arr;
+                }
                 const homeTab = document.getElementById('homeTab');
                 if (homeTab && homeTab.classList.contains('active')) {
-                    filterDashboard();
+                    filterDashboard(false);
                 } else {
                     loadRecentScores(false);
                 }
@@ -4021,7 +4073,7 @@
                     console.error('Error fetching dashboard data:', err);
                 }
             }
-            filterDashboard();
+            filterDashboard(false);
         }
 
         function setDashboardPeriod(period, btnEl) {
@@ -4030,7 +4082,7 @@
             if (btnEl) btnEl.classList.add('active');
             const customBox = document.getElementById('customMonthRangeBox');
             if (customBox) customBox.style.display = period === 'custom' ? 'flex' : 'none';
-            filterDashboard();
+            filterDashboard(true);
         }
 
         function onDashDeptFilterChange() {
@@ -4041,7 +4093,7 @@
             if (deptFilter) {
                 let deptObj = window._cachedDepts[deptFilter];
                 if (!deptObj) {
-                    const found = Object.values(window._cachedDepts).find(d => d.name === deptFilter);
+                    const found = Object.values(window._cachedDepts).find(d => normVn(d.name) === normVn(deptFilter));
                     if (found) deptObj = found;
                 }
                 if (deptObj && deptObj.zones) {
@@ -4053,7 +4105,7 @@
                     });
                 }
             }
-            filterDashboard();
+            filterDashboard(true);
         }
 
         function resetDashboardFilters() {
@@ -4069,12 +4121,21 @@
             if (zoneSel) zoneSel.innerHTML = '<option value="">-- Tất cả Khu vực --</option>';
             const rSearch = document.getElementById('rankingSearchInput');
             if (rSearch) rSearch.value = '';
+            resetRecentScoresFilters();
+            filterDashboard(true);
+        }
+
+        function resetRecentScoresFilters() {
             const recSearch = document.getElementById('recentSearchInput');
             if (recSearch) recSearch.value = '';
             const recScope = document.getElementById('recentScopeSelect');
-            if (recScope) recScope.value = 'filtered';
+            if (recScope) recScope.value = 'all';
+            const recDept = document.getElementById('recentDeptSelect');
+            if (recDept) recDept.value = '';
+            const recMonth = document.getElementById('recentMonthSelect');
+            if (recMonth) recMonth.value = '';
             window._recentPage = 1;
-            filterDashboard();
+            loadRecentScores(true);
         }
 
         function selectDeptFromDashboard(deptNameOrId) {
@@ -4105,7 +4166,7 @@
             if (prevVal) sel.value = prevVal;
         }
 
-        function filterDashboard() {
+        function filterDashboard(resetRecentPage = false) {
             const deptFilter = document.getElementById('chartDeptFilter')?.value || '';
             const zoneFilter = document.getElementById('chartZoneFilter')?.value || '';
             const range = getPeriodRange(window._dashPeriod);
@@ -4129,7 +4190,7 @@
             };
 
             // Render score list first & isolate all widgets so no error can block recentScores
-            safeRun(() => loadRecentScores(true));
+            safeRun(() => loadRecentScores(resetRecentPage));
             safeRun(() => loadStats(deptFilter));
             safeRun(() => renderSmartInsights());
             safeRun(() => renderMonthlyChart(deptFilter));
@@ -4157,19 +4218,23 @@
             const totalDepts = Object.keys(depts).length;
             let totalZones = 0;
             Object.values(depts).forEach(d => {
-                if (!deptFilter || d.name === deptFilter) {
+                if (!deptFilter || normVn(d.name) === normVn(deptFilter)) {
                     totalZones += Object.keys(d.zones || {}).length;
                 }
             });
 
             const filteredScores = getFilteredScores();
+            const eff = getEffectiveScoresForWidgets();
             const reportedDeptSet = new Set();
             const reportedZoneSet = new Set();
             let onTimeCount = 0;
             let totalAvgSum = 0;
             let avgValidCount = 0;
 
-            filteredScores.forEach(s => {
+            const kpiSourceScores = filteredScores.length > 0 ? filteredScores : eff.scores;
+            const isUsingCumulativeKpi = filteredScores.length === 0 && kpiSourceScores.length > 0;
+
+            kpiSourceScores.forEach(s => {
                 if (s.departmentId || s.department) reportedDeptSet.add(s.departmentId || s.department);
                 if (s.zoneId || s.zone) reportedZoneSet.add(`${s.department || ''}_${s.zoneId || s.zone}`);
                 if (isOnTime(s.createdAt, s.month).onTime) onTimeCount++;
@@ -4184,7 +4249,8 @@
             const zoneCovPct = totalZones > 0 ? Math.min(100, Math.round((reportedZonesCount / totalZones) * 100)) : 0;
 
             const scoreCount = filteredScores.length;
-            const onTimePct = scoreCount > 0 ? Math.round((onTimeCount / scoreCount) * 100) : 0;
+            const dispScoreCount = kpiSourceScores.length;
+            const onTimePct = dispScoreCount > 0 ? Math.round((onTimeCount / dispScoreCount) * 100) : 0;
 
             const overallAvg = avgValidCount > 0 ? (totalAvgSum / avgValidCount).toFixed(2) : '-';
             const overallPct = avgValidCount > 0 ? Math.round(((totalAvgSum / avgValidCount) / 5) * 100) : 0;
@@ -4223,14 +4289,14 @@
             const zpEl = document.getElementById('statZonesProgress');
             if (zpEl) zpEl.style.width = zoneCovPct + '%';
 
-            document.getElementById('statScores').textContent = scoreCount;
-            document.getElementById('statScoresDesc').innerHTML = `<span class="trend-badge ${onTimePct >= 85 ? 'trend-up' : 'trend-down'}">✅ ${onTimePct}% đúng hạn (${onTimeCount}/${scoreCount})</span>`;
+            document.getElementById('statScores').textContent = isUsingCumulativeKpi ? `${scoreCount} (${dispScoreCount} lũy kế)` : scoreCount;
+            document.getElementById('statScoresDesc').innerHTML = `<span class="trend-badge ${onTimePct >= 85 ? 'trend-up' : 'trend-down'}">✅ ${onTimePct}% đúng hạn (${onTimeCount}/${dispScoreCount})</span>`;
             const spEl = document.getElementById('statScoresProgress');
             if (spEl) spEl.style.width = onTimePct + '%';
 
             document.getElementById('statAvg').textContent = overallAvg !== '-' ? `${overallAvg}/5` : '-';
             document.getElementById('statAvgDesc').innerHTML = overallAvg !== '-'
-                ? `<strong>${overallPct}đ/100</strong> ${trendHtml}`
+                ? `<strong>${overallPct}đ/100</strong> ${isUsingCumulativeKpi ? '<span class="trend-badge trend-neutral">Lũy kế</span>' : trendHtml}`
                 : 'Chưa có dữ liệu kỳ này';
             const apEl = document.getElementById('statAvgProgress');
             if (apEl) apEl.style.width = overallPct + '%';
@@ -4260,7 +4326,8 @@
         }
 
         function renderSmartInsights() {
-            const scores = getFilteredScores();
+            const eff = getEffectiveScoresForWidgets();
+            const scores = eff.scores;
             const depts = window._cachedDepts || {};
             const weakEl = document.getElementById('insightWeakCriteria');
             const unrepEl = document.getElementById('insightUnreportedDepts');
@@ -4270,7 +4337,7 @@
 
             // 1. Top 3 weakest criteria
             if (scores.length === 0) {
-                weakEl.innerHTML = '<p style="color:var(--gray-400);">Chưa có dữ liệu chấm điểm trong kỳ lọc này.</p>';
+                weakEl.innerHTML = '<p style="color:var(--gray-400);">Chưa có dữ liệu chấm điểm.</p>';
                 highEl.innerHTML = '<p style="color:var(--gray-400);">Chưa có dữ liệu để tổng hợp.</p>';
             } else {
                 const cStats = {};
@@ -4293,7 +4360,8 @@
                     .sort((a, b) => a.avg - b.avg || b.deductedCnt - a.deductedCnt)
                     .slice(0, 3);
 
-                weakEl.innerHTML = weakest.map(w => {
+                const fallbackHeader = eff.isFallback ? `<div style="font-size:0.72rem; color:#2563eb; background:#eff6ff; padding:3px 8px; border-radius:6px; margin-bottom:6px; font-weight:600;">ℹ️ Đang hiển thị theo ${eff.note}</div>` : '';
+                weakEl.innerHTML = fallbackHeader + weakest.map(w => {
                     const info = getCriteriaTextById(w.id);
                     const sampleReason = w.reasons.length > 0 ? `<div style="font-size:0.74rem; color:#b45309; margin-top:2px;">💬 Lý do: "${w.reasons[0]}"</div>` : '';
                     return `<div style="padding:6px 0; border-bottom:1px dashed #e2e8f0; cursor:pointer;" onclick="showGuide(${w.id})">
@@ -4321,7 +4389,7 @@
                 const worstZ = zList[zList.length - 1];
                 const avgDur = durCnt > 0 ? formatDuration(Math.round(durSum / durCnt)) : 'Chưa ghi nhận';
 
-                highEl.innerHTML = `
+                highEl.innerHTML = fallbackHeader + `
                     <div style="padding:5px 0; border-bottom:1px dashed #e2e8f0;">
                         <div style="font-size:0.74rem; color:var(--gray-500);">🌟 Khu vực điểm cao nhất:</div>
                         <div style="font-weight:700; color:#059669;">${bestZ ? `${bestZ.name} (${bestZ.avg.toFixed(2)}/5)` : '-'}</div>
@@ -4343,10 +4411,10 @@
             const repIds = new Set();
             periodScores.forEach(s => {
                 if (s.departmentId) repIds.add(s.departmentId);
-                if (s.department) repNames.add(s.department.trim().toUpperCase());
+                if (s.department) repNames.add(normVn(s.department));
             });
             const allDeptList = Object.entries(depts);
-            const unreported = allDeptList.filter(([id, d]) => !repIds.has(id) && !repNames.has((d.name || '').trim().toUpperCase()));
+            const unreported = allDeptList.filter(([id, d]) => !repIds.has(id) && !repNames.has(normVn(d.name)));
             const reportedCount = allDeptList.length - unreported.length;
             if (badgeEl) badgeEl.textContent = `Đã chấm ${reportedCount}/${allDeptList.length} khoa`;
 
@@ -4356,7 +4424,7 @@
                 unrepEl.innerHTML = `
                     <div style="margin-bottom:6px; font-size:0.78rem; color:var(--gray-600);">Còn <strong style="color:#dc2626;">${unreported.length} đơn vị</strong> chưa có bản ghi điểm trong kỳ:</div>
                     <div class="chip-list">
-                        ${unreported.map(([, d]) => `<span class="dept-chip dept-chip-warn" onclick="selectDeptFromDashboard('${d.name.replace(/'/g, "\\'")}')" title="Click để lọc khoa này">${d.name}</span>`).join('')}
+                        ${unreported.map(([, d]) => `<span class="dept-chip dept-chip-warn" onclick="selectDeptFromDashboard('${d.name.replace(/'/g, "\\'")}')" title="Click để xem lũy kế của khoa này">${d.name}</span>`).join('')}
                     </div>
                 `;
             }
@@ -4376,9 +4444,12 @@
 
         async function renderMonthlyChart(deptFilter = '') {
             // Keep full timeline for the selected Dept/Zone unless custom range is set
-            const scores = window._dashPeriod === 'custom'
+            let scores = window._dashPeriod === 'custom'
                 ? getFilteredScores()
                 : getFilteredScores({ ignorePeriod: true });
+            if (scores.length === 0) {
+                scores = getEffectiveScoresForWidgets().scores;
+            }
 
             const canvas = document.getElementById('monthlyChart');
             if (monthlyChartInstance) { monthlyChartInstance.destroy(); monthlyChartInstance = null; }
@@ -4518,10 +4589,10 @@
 
         async function loadDeptRanking() {
             const depts = window._cachedDepts || {};
-            // Show all departments ranked in current period so clicking any department drills down
             const periodScores = getFilteredScores({ ignoreDept: true, ignoreZone: true });
+            const allTimeScores = Array.isArray(window._cachedScores) ? window._cachedScores : [];
             const activeDept = document.getElementById('chartDeptFilter')?.value || '';
-            const searchKey = (document.getElementById('rankingSearchInput')?.value || '').trim().toLowerCase();
+            const searchKey = normVn(document.getElementById('rankingSearchInput')?.value || '');
 
             const canonicalNames = {};
             Object.entries(depts).forEach(([id, d]) => { canonicalNames[id] = d.name; });
@@ -4530,17 +4601,34 @@
             periodScores.forEach(s => {
                 const deptId = s.departmentId || '';
                 const displayName = (deptId && canonicalNames[deptId]) ? canonicalNames[deptId] : (s.department || 'Khác');
-                const key = deptId || displayName;
-                if (!deptMap[key]) deptMap[key] = { name: displayName, total: 0, count: 0 };
+                const key = normVn(displayName);
+                if (!deptMap[key]) deptMap[key] = { name: displayName, total: 0, count: 0, isCumulative: false };
                 deptMap[key].total += parseFloat(s.average) || 0;
                 deptMap[key].count++;
             });
+
+            // Ensure all departments with historical scores remain visible even if current period (e.g. early in the month) has only 0-1 dept scored
+            const periodDeptCount = Object.keys(deptMap).length;
+            if (periodDeptCount < Object.keys(depts).length && allTimeScores.length > 0) {
+                const cumMap = {};
+                allTimeScores.forEach(s => {
+                    const deptId = s.departmentId || '';
+                    const displayName = (deptId && canonicalNames[deptId]) ? canonicalNames[deptId] : (s.department || 'Khác');
+                    const key = normVn(displayName);
+                    if (!deptMap[key]) {
+                        if (!cumMap[key]) cumMap[key] = { name: displayName, total: 0, count: 0, isCumulative: true };
+                        cumMap[key].total += parseFloat(s.average) || 0;
+                        cumMap[key].count++;
+                    }
+                });
+                Object.entries(cumMap).forEach(([k, v]) => { deptMap[k] = v; });
+            }
 
             let ranked = Object.values(deptMap).map(d => ({ ...d, avg: d.total / d.count }));
             ranked.sort((a, b) => window._rankingSortAsc ? (a.avg - b.avg) : (b.avg - a.avg));
 
             if (searchKey) {
-                ranked = ranked.filter(d => d.name.toLowerCase().includes(searchKey));
+                ranked = ranked.filter(d => normVn(d.name).includes(searchKey));
             }
 
             const container = document.getElementById('deptRankingContainer');
@@ -4557,13 +4645,16 @@
                 const medal = !window._rankingSortAsc && idx === 0 ? '🥇' : !window._rankingSortAsc && idx === 1 ? '🥈' : !window._rankingSortAsc && idx === 2 ? '🥉' : (idx + 1);
                 const pct = Math.round((avg / 5) * 100);
                 const barColor = pct >= 85 ? '#10b981' : pct >= 70 ? '#3b82f6' : pct >= 60 ? '#f59e0b' : '#ef4444';
-                const isSelected = activeDept && activeDept === dept.name;
+                const isSelected = activeDept && normVn(activeDept) === normVn(dept.name);
                 const safeName = dept.name.replace(/'/g, "\\'");
+                const subTag = dept.isCumulative
+                    ? `<span style="font-size:0.68rem; color:#64748b; background:#f1f5f9; padding:1px 6px; border-radius:999px; font-weight:600;">Lũy kế (${dept.count})</span>`
+                    : `<span style="font-size:0.72rem; color:var(--gray-400); font-weight:500;">(${dept.count} lượt)</span>`;
 
                 html += `<li class="ranking-item ${isSelected ? 'selected-dept' : ''}" onclick="selectDeptFromDashboard('${safeName}')" title="Click để lọc dữ liệu của ${dept.name}">
                     <span class="ranking-pos ${posClass}">${medal}</span>
                     <div class="ranking-info">
-                        <div class="ranking-name">${dept.name} <span style="font-size:0.72rem; color:var(--gray-400); font-weight:500;">(${dept.count} lượt)</span></div>
+                        <div class="ranking-name">${dept.name} ${subTag}</div>
                         <div class="ranking-bar-bg"><div class="ranking-bar" style="width:${pct}%; background:${barColor};"></div></div>
                     </div>
                     <span class="ranking-score">${avg.toFixed(2)}<span style="font-size:0.7rem;color:var(--gray-500);">/5</span></span>
@@ -4577,7 +4668,8 @@
         let radarChartInstance = null;
 
         async function renderRadarChart() {
-            const allScores = getFilteredScores();
+            const eff = getEffectiveScoresForWidgets();
+            const allScores = eff.scores;
             const miniContainer = document.getElementById('s5MiniCardsContainer');
             const canvas = document.getElementById('radarChart');
             if (radarChartInstance) { radarChartInstance.destroy(); radarChartInstance = null; }
@@ -4622,7 +4714,7 @@
                 data: {
                     labels: groupNames,
                     datasets: [{
-                        label: 'Điểm TB',
+                        label: eff.isFallback ? `Điểm TB (${eff.note})` : 'Điểm TB',
                         data: groupAvgs,
                         backgroundColor: 'rgba(37, 99, 235, 0.16)',
                         borderColor: '#2563eb',
@@ -4653,7 +4745,8 @@
         let classificationChartInstance = null;
 
         async function renderClassificationChart() {
-            const allScores = getFilteredScores();
+            const eff = getEffectiveScoresForWidgets();
+            const allScores = eff.scores;
             const pillsEl = document.getElementById('classificationSummaryPills');
             const canvas = document.getElementById('classificationChart');
             if (classificationChartInstance) { classificationChartInstance.destroy(); classificationChartInstance = null; }
@@ -4722,7 +4815,8 @@
         function renderCriteria20Breakdown() {
             const container = document.getElementById('criteria20ChartContainer');
             if (!container) return;
-            const scores = getFilteredScores();
+            const eff = getEffectiveScoresForWidgets();
+            const scores = eff.scores;
             if (scores.length === 0) {
                 container.innerHTML = '<p class="text-center" style="color:var(--gray-500); padding:30px 0;">Chưa có dữ liệu</p>';
                 return;
@@ -4771,7 +4865,12 @@
             const container = document.getElementById('deptCompletionContainer');
             if (!container) return;
             const depts = window._cachedDepts || {};
-            const scores = getFilteredScores({ ignoreZone: true });
+            let scores = getFilteredScores({ ignoreZone: true });
+            let isCumulative = false;
+            if (scores.length <= 1 && (window._cachedScores || []).length > 1) {
+                scores = getFilteredScores({ ignorePeriod: true, ignoreZone: true });
+                isCumulative = true;
+            }
             const deptEntries = Object.entries(depts);
             if (deptEntries.length === 0) {
                 container.innerHTML = '<p class="text-center" style="color:var(--gray-500); padding:30px 0;">Chưa có khoa/phòng</p>';
@@ -4780,7 +4879,7 @@
 
             const rows = deptEntries.map(([deptId, d]) => {
                 const totalZones = Object.keys(d.zones || {}).length;
-                const dScores = scores.filter(s => s.departmentId === deptId || (s.department && s.department.trim().toUpperCase() === d.name.trim().toUpperCase()));
+                const dScores = scores.filter(s => s.departmentId === deptId || (s.department && normVn(s.department) === normVn(d.name)));
                 const scoredZones = new Set(dScores.map(s => s.zoneId || s.zone)).size;
                 const pct = totalZones > 0 ? Math.min(100, Math.round((scoredZones / totalZones) * 100)) : 0;
                 return { deptId, name: d.name, scoredZones, totalZones, totalForms: dScores.length, pct };
@@ -4793,7 +4892,7 @@
                     <div style="flex:1; min-width:0;">
                         <div style="display:flex; justify-content:space-between; gap:8px; margin-bottom:4px;">
                             <span style="font-weight:600; color:var(--gray-800); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">🏥 ${r.name}</span>
-                            <span style="font-weight:700; color:${r.pct >= 100 ? '#059669' : 'var(--gray-700)'}; flex-shrink:0;">${r.scoredZones}/${r.totalZones} KV (${r.pct}%)</span>
+                            <span style="font-weight:700; color:${r.pct >= 100 ? '#059669' : 'var(--gray-700)'}; flex-shrink:0;">${r.scoredZones}/${r.totalZones} KV (${r.pct}%)${isCumulative ? ' <small style="color:var(--gray-400);font-weight:500;">lũy kế</small>' : ''}</span>
                         </div>
                         <div class="ranking-bar-bg" style="margin-top:2px;"><div class="ranking-bar" style="width:${r.pct}%; background:${color};"></div></div>
                     </div>
@@ -4802,9 +4901,14 @@
         }
 
         // ===== DETAILED DEPT STATS & EXPAND/COLLAPSE ALL =====
+        window._openDeptDetailIds = window._openDeptDetailIds || new Set();
+
         function toggleAllDeptDetails(expand) {
             document.querySelectorAll('#deptStatsContainer .dept-detail').forEach(el => {
                 el.style.display = expand ? 'block' : 'none';
+                const id = el.id.replace(/^detail-/, '');
+                if (expand) window._openDeptDetailIds.add(id);
+                else window._openDeptDetailIds.delete(id);
             });
             document.querySelectorAll('#deptStatsContainer [id^="arrow-"]').forEach(ar => {
                 ar.style.transform = expand ? 'rotate(180deg)' : 'rotate(0deg)';
@@ -4813,21 +4917,22 @@
 
         async function loadDeptStats(deptFilter = '') {
             let depts = { ...(window._cachedDepts || {}) };
-            const allScores = getFilteredScores();
-            const searchKey = (document.getElementById('deptStatsSearchInput')?.value || '').trim().toLowerCase();
+            const strictScores = getFilteredScores();
+            const allTimeScores = Array.isArray(window._cachedScores) ? window._cachedScores : [];
+            const searchKey = normVn(document.getElementById('deptStatsSearchInput')?.value || '');
 
             if (deptFilter) {
                 const filteredDepts = {};
                 Object.entries(depts).forEach(([id, dept]) => {
-                    if (dept.name === deptFilter || id === deptFilter) filteredDepts[id] = dept;
+                    if (normVn(dept.name) === normVn(deptFilter) || id === deptFilter) filteredDepts[id] = dept;
                 });
                 depts = filteredDepts;
             }
 
             const entries = Object.entries(depts).filter(([, dept]) => {
                 if (!searchKey) return true;
-                if (dept.name.toLowerCase().includes(searchKey)) return true;
-                return Object.values(dept.zones || {}).some(z => (z.name || '').toLowerCase().includes(searchKey));
+                if (normVn(dept.name).includes(searchKey)) return true;
+                return Object.values(dept.zones || {}).some(z => normVn(z.name).includes(searchKey));
             });
 
             if (entries.length === 0) {
@@ -4840,7 +4945,12 @@
                 const deptName = dept.name;
                 const zones = dept.zones || {};
                 const zoneCount = Object.keys(zones).length;
-                const deptScores = allScores.filter(s => s.departmentId === deptId || s.department === deptName);
+                let deptScores = strictScores.filter(s => s.departmentId === deptId || normVn(s.department) === normVn(deptName));
+                let isCumDept = false;
+                if (deptScores.length === 0 && allTimeScores.length > 0) {
+                    deptScores = allTimeScores.filter(s => s.departmentId === deptId || normVn(s.department) === normVn(deptName));
+                    isCumDept = deptScores.length > 0;
+                }
                 const deptScoreCount = deptScores.length;
                 const deptAvg = deptScoreCount > 0
                     ? (deptScores.reduce((sum, s) => sum + (parseFloat(s.average) || 0), 0) / deptScoreCount).toFixed(2)
@@ -4849,6 +4959,8 @@
                 let totalItems = 0;
                 Object.values(zones).forEach(z => { totalItems += (z.items || []).length; });
 
+                const isOpen = window._openDeptDetailIds.has(deptId) || entries.length === 1 || !!searchKey;
+
                 html += `<div class="dept-stats-card" style="background:white;border:1px solid var(--gray-200);border-radius:12px;margin-bottom:12px;overflow:hidden;">
                     <div class="dept-header" style="background:var(--gray-50);border-bottom:1px solid var(--gray-200);padding:12px 16px;cursor:pointer;" onclick="toggleDeptDetail('${deptId}')">
                         <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
@@ -4856,13 +4968,13 @@
                             <div style="display:flex;flex-wrap:wrap;gap:8px;font-size:0.8rem;color:var(--gray-700);align-items:center;">
                                 <span style="background:#e0e7ff;color:#4f46e5;padding:3px 8px;border-radius:12px;font-weight:600;">📍 ${zoneCount} KV</span>
                                 <span style="background:#fef3c7;color:#d97706;padding:3px 8px;border-radius:12px;font-weight:600;">📦 ${totalItems} ĐD</span>
-                                <span style="background:#d1fae5;color:#059669;padding:3px 8px;border-radius:12px;font-weight:600;">📝 ${deptScoreCount} Lượt</span>
+                                <span style="background:#d1fae5;color:#059669;padding:3px 8px;border-radius:12px;font-weight:600;">📝 ${deptScoreCount} Lượt${isCumDept ? ' (lũy kế)' : ''}</span>
                                 <span style="font-weight:700;color:var(--gray-800);margin-left:4px;">⭐ ${deptAvg !== '-' ? deptAvg : 'N/A'}</span>
                             </div>
-                            <span id="arrow-${deptId}" style="transition:transform 0.3s;color:var(--gray-400);">▼</span>
+                            <span id="arrow-${deptId}" style="transition:transform 0.3s;color:var(--gray-400);transform:${isOpen ? 'rotate(180deg)' : 'rotate(0deg)'};">▼</span>
                         </div>
                     </div>
-                    <div id="detail-${deptId}" class="dept-detail" style="display:none;padding:10px 16px;">`;
+                    <div id="detail-${deptId}" class="dept-detail" style="display:${isOpen ? 'block' : 'none'};padding:10px 16px;">`;
 
                 if (zoneCount === 0) {
                     html += '<p style="color:var(--gray-600);text-align:center;">Chưa có khu vực nào</p>';
@@ -4880,7 +4992,7 @@
                     Object.entries(zones).forEach(([zoneId, zone]) => {
                         const zoneName = zone.name;
                         const items = zone.items || [];
-                        const zoneScores = deptScores.filter(s => s.zoneId === zoneId || s.zone === zoneName);
+                        const zoneScores = deptScores.filter(s => s.zoneId === zoneId || normVn(s.zone) === normVn(zoneName));
                         const zoneScoreCount = zoneScores.length;
                         const zoneAvg = zoneScoreCount > 0
                             ? (zoneScores.reduce((sum, s) => sum + (parseFloat(s.average) || 0), 0) / zoneScoreCount).toFixed(2)
@@ -4909,9 +5021,11 @@
             if (detail.style.display === 'none') {
                 detail.style.display = 'block';
                 arrow.style.transform = 'rotate(180deg)';
+                window._openDeptDetailIds.add(deptId);
             } else {
                 detail.style.display = 'none';
                 arrow.style.transform = 'rotate(0deg)';
+                window._openDeptDetailIds.delete(deptId);
             }
         }
 
@@ -4930,14 +5044,45 @@
             loadRecentScores(false);
         }
 
-        async function loadRecentScores(resetPage = true) {
+        function syncRecentScoreFilterDropdowns(allCached) {
+            const deptSel = document.getElementById('recentDeptSelect');
+            if (deptSel) {
+                const prevDept = deptSel.value;
+                const depts = window._cachedDepts || {};
+                const names = new Set();
+                Object.values(depts).forEach(d => { if (d && d.name) names.add(d.name.trim()); });
+                allCached.forEach(s => { if (s && s.department) names.add(s.department.trim()); });
+                const sortedDepts = Array.from(names).sort((a, b) => a.localeCompare(b, 'vi'));
+                if (deptSel.options.length !== sortedDepts.length + 1) {
+                    deptSel.innerHTML = '<option value="">🏥 Tất cả Khoa/Phòng</option>' +
+                        sortedDepts.map(n => `<option value="${n.replace(/"/g, '&quot;')}">${n}</option>`).join('');
+                    if (prevDept) deptSel.value = prevDept;
+                }
+            }
+            const monthSel = document.getElementById('recentMonthSelect');
+            if (monthSel) {
+                const prevMonth = monthSel.value;
+                const months = new Set();
+                allCached.forEach(s => { if (s && s.month) months.add(s.month.trim()); });
+                const sortedMonths = Array.from(months).sort().reverse();
+                if (monthSel.options.length !== sortedMonths.length + 1) {
+                    monthSel.innerHTML = '<option value="">📅 Tất cả tháng</option>' +
+                        sortedMonths.map(m => `<option value="${m}">📅 Tháng ${m}</option>`).join('');
+                    if (prevMonth) monthSel.value = prevMonth;
+                }
+            }
+        }
+
+        async function loadRecentScores(resetPage = false) {
             if (resetPage) window._recentPage = 1;
             const container = document.getElementById('recentScores');
             if (!container) return;
 
             // Ensure scores are loaded if _cachedScores is empty
             if (!Array.isArray(window._cachedScores) || window._cachedScores.length === 0) {
-                container.innerHTML = '<div class="text-center" style="padding:28px 0;color:var(--primary);font-weight:600;">⏳ Đang tải danh sách phiếu chấm điểm...</div>';
+                if (!container.querySelector('table')) {
+                    container.innerHTML = '<div class="text-center" style="padding:28px 0;color:var(--primary);font-weight:600;">⏳ Đang tải danh sách phiếu chấm điểm...</div>';
+                }
                 try {
                     if (window._dashFetchPromise) {
                         await window._dashFetchPromise;
@@ -4954,37 +5099,57 @@
             }
 
             const allCached = Array.isArray(window._cachedScores) ? window._cachedScores : [];
-            const scope = document.getElementById('recentScopeSelect')?.value || 'filtered';
+            syncRecentScoreFilterDropdowns(allCached);
+
+            const scope = document.getElementById('recentScopeSelect')?.value || 'all';
+            const recDept = document.getElementById('recentDeptSelect')?.value || '';
+            const recMonth = document.getElementById('recentMonthSelect')?.value || '';
+            const qRaw = (document.getElementById('recentSearchInput')?.value || '').trim();
+            const q = normVn(qRaw);
+
             let scores = scope === 'all' ? [...allCached] : getFilteredScores();
-            let usedFallbackAll = false;
-
-            // Smart fallback: if Dashboard filter produces 0 records while system has scores, show notice + latest scores so table never vanishes
-            if (scope === 'filtered' && scores.length === 0 && allCached.length > 0) {
-                usedFallbackAll = true;
-                scores = [...allCached];
+            if (recDept) {
+                scores = scores.filter(s => matchScoreDept(s, recDept));
             }
-
-            const q = (document.getElementById('recentSearchInput')?.value || '').trim().toLowerCase();
+            if (recMonth) {
+                scores = scores.filter(s => (s.month || '') === recMonth);
+            }
             if (q) {
                 scores = scores.filter(s =>
-                    (s.department || '').toLowerCase().includes(q) ||
-                    (s.zone || '').toLowerCase().includes(q) ||
-                    (s.evaluator || '').toLowerCase().includes(q) ||
-                    (s.representative || '').toLowerCase().includes(q) ||
-                    (s.month || '').toLowerCase().includes(q) ||
-                    (s.item || '').toLowerCase().includes(q) ||
-                    (Array.isArray(s.items) ? s.items.join(' ').toLowerCase().includes(q) : false)
+                    normVn(s.department).includes(q) ||
+                    normVn(s.zone).includes(q) ||
+                    normVn(s.evaluator).includes(q) ||
+                    normVn(s.representative).includes(q) ||
+                    normVn(s.month).includes(q) ||
+                    normVn(s.item).includes(q) ||
+                    (Array.isArray(s.items) ? normVn(s.items.join(' ')).includes(q) : false)
                 );
             }
 
             // Sort newest first
             scores.sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || '') || (b.month || '').localeCompare(a.month || ''));
 
+            let usedFallbackAll = false;
+            let supplementalScores = [];
+            const strictMatchedCount = scores.length;
+
+            // Never let the table vanish or collapse to 1 row when hospital has hundreds of records!
+            if (scores.length === 0 && allCached.length > 0) {
+                usedFallbackAll = true;
+                scores = [...allCached].sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || '') || (b.month || '').localeCompare(a.month || ''));
+            } else if (scores.length > 0 && scores.length < 5 && allCached.length > scores.length && !q) {
+                const matchedIds = new Set(scores.map(s => s.id));
+                supplementalScores = allCached
+                    .filter(s => !matchedIds.has(s.id))
+                    .sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || '') || (b.month || '').localeCompare(a.month || ''))
+                    .slice(0, 20 - scores.length);
+            }
+
             const totalMatched = scores.length;
             const countBadge = document.getElementById('recentScoreCountBadge');
             if (countBadge) {
                 countBadge.textContent = usedFallbackAll
-                    ? `0 khớp lọc / ${allCached.length} toàn viện`
+                    ? `0 khớp lọc • Hiện ${allCached.length} phiếu toàn viện`
                     : (totalMatched === allCached.length ? `${totalMatched} phiếu` : `${totalMatched} / ${allCached.length} phiếu`);
             }
 
@@ -4995,38 +5160,29 @@
             const startIdx = (currentPage - 1) * limit;
             const pageScores = scores.slice(startIdx, startIdx + limit);
 
-            if (pageScores.length === 0) {
-                container.innerHTML = `<div class="text-center" style="color:var(--gray-500); padding:28px 16px;">
-                    <div style="font-size:1.5rem;margin-bottom:6px;">📭</div>
-                    <div style="font-weight:600;color:var(--gray-700);">Không tìm thấy bản ghi chấm điểm nào phù hợp${q ? ` với từ khóa "${q}"` : ''}</div>
-                    ${q ? `<button class="btn btn-sm" style="margin-top:10px;background:#eff6ff;color:#2563eb;border:1px solid #bfdbfe;" onclick="document.getElementById('recentSearchInput').value='';loadRecentScores(true);">🔄 Xóa từ khóa tìm kiếm</button>` : ''}
-                </div>`;
-                return;
-            }
-
             let html = '';
             if (usedFallbackAll) {
-                const activeFilterText = document.getElementById('activeFilterBadge')?.textContent || 'Bộ lọc hiện tại';
+                const reasonText = qRaw
+                    ? `từ khóa "${qRaw}"`
+                    : (recDept || recMonth ? `bộ lọc bảng (${recDept || 'Tất cả khoa'} • ${recMonth || 'Tất cả tháng'})` : (document.getElementById('activeFilterBadge')?.textContent || 'Bộ lọc hiện tại'));
                 html += `<div style="background:#fffbeb;border:1px solid #fde68a;color:#92400e;padding:10px 14px;border-radius:10px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;font-size:0.84rem;">
-                    <span>⚠️ <strong>${activeFilterText}</strong> hiện chưa có phiếu chấm điểm. Đang tự động hiển thị danh sách phiếu chấm mới nhất toàn viện (<strong>${allCached.length} phiếu</strong>).</span>
-                    <button class="btn btn-sm" style="background:#fef3c7;color:#b45309;border:1px solid #f59e0b;padding:4px 10px;font-size:0.78rem;font-weight:700;" onclick="resetDashboardFilters()">🔄 Đặt lại bộ lọc Toàn viện</button>
+                    <span>ℹ️ Không có bản ghi khớp chính xác với <strong>${reasonText}</strong>. Hệ thống đang tự động hiển thị danh sách <strong>${allCached.length} phiếu chấm điểm toàn viện</strong> để bạn tra cứu.</span>
+                    <button type="button" class="btn btn-sm" style="background:#fef3c7;color:#b45309;border:1px solid #f59e0b;padding:4px 10px;font-size:0.78rem;font-weight:700;" onclick="resetRecentScoresFilters()">🔄 Hiện mặc định toàn viện</button>
                 </div>`;
             }
 
             const canDelete = currentUser && (currentUser.role === 'admin' || currentUser.role === 'mod');
-            html += '<div style="overflow-x:auto;"><table><thead><tr><th>STT</th><th>Tháng</th><th>Khoa/Phòng</th><th>Khu vực</th><th>Người chấm</th><th>Điểm 5S</th><th>Đúng hạn</th><th>⏱️</th><th>Ảnh</th><th>Ngày tạo</th><th>Thao tác</th></tr></thead><tbody>';
-            pageScores.forEach((s, index) => {
-                const stt = startIdx + index + 1;
+            const renderScoreRow = (s, stt, isSupplemental = false) => {
                 const imgHtml = renderScoreThumbnails(s);
                 const timeStatus = isOnTime(s.createdAt, s.month);
                 const timeStyle = timeStatus.onTime ? 'color:#10b981;font-weight:600;' : 'color:#ef4444;font-weight:600;';
                 const avgVal = parseFloat(s.average) || 0;
                 const score100 = (avgVal / 5 * 100).toFixed(0);
                 const durationHtml = s.durationSeconds ? `<span class="duration-badge">${formatDuration(s.durationSeconds)}</span>` : '<span style="color:var(--gray-400);">-</span>';
-                const deleteBtn = canDelete ? `<button onclick="event.stopPropagation(); deleteScore('${s.id}')" class="btn btn-danger btn-sm" style="padding:5px 8px;font-size:12px;" title="Xóa phiếu">🗑️</button>` : '';
+                const deleteBtn = canDelete ? `<button type="button" onclick="event.stopPropagation(); deleteScore('${s.id}')" class="btn btn-danger btn-sm" style="padding:5px 8px;font-size:12px;" title="Xóa phiếu">🗑️</button>` : '';
                 const subItems = s.item || (Array.isArray(s.items) ? s.items.join(', ') : '');
 
-                html += `<tr style="cursor:pointer;" onclick="showScoreDetailModal('${s.id}')" title="Bấm để xem chi tiết 20 tiêu chí">
+                return `<tr style="cursor:pointer;${isSupplemental ? 'opacity:0.92;background:#f8fafc;' : ''}" onclick="showScoreDetailModal('${s.id}')" title="Bấm để xem chi tiết 20 tiêu chí">
                     <td data-label="STT" style="text-align:center;font-weight:700;">${stt}</td>
                     <td data-label="Tháng"><span class="badge" style="background:#f1f5f9;color:var(--gray-700);">${s.month || '-'}</span></td>
                     <td data-label="Khoa/Phòng" style="font-weight:600;color:var(--gray-900);">${s.department || '-'}</td>
@@ -5039,21 +5195,36 @@
                     <td data-label="Ngày tạo" style="font-size:0.84rem;">${s.createdAt ? new Date(s.createdAt).toLocaleDateString('vi-VN') : '-'}</td>
                     <td data-label="Thao tác" onclick="event.stopPropagation();">
                         <div style="display:flex;gap:6px;align-items:center;">
-                            <button onclick="showScoreDetailModal('${s.id}')" class="btn btn-sm" style="background:#eff6ff;color:#2563eb;border:1px solid #bfdbfe;padding:5px 10px;font-size:0.78rem;">👁️ Chi tiết</button>
+                            <button type="button" onclick="showScoreDetailModal('${s.id}')" class="btn btn-sm" style="background:#eff6ff;color:#2563eb;border:1px solid #bfdbfe;padding:5px 10px;font-size:0.78rem;">👁️ Chi tiết</button>
                             ${deleteBtn}
                         </div>
                     </td>
                 </tr>`;
+            };
+
+            html += '<div style="overflow-x:auto;"><table><thead><tr><th>STT</th><th>Tháng</th><th>Khoa/Phòng</th><th>Khu vực</th><th>Người chấm</th><th>Điểm 5S</th><th>Đúng hạn</th><th>⏱️</th><th>Ảnh</th><th>Ngày tạo</th><th>Thao tác</th></tr></thead><tbody>';
+            pageScores.forEach((s, index) => {
+                html += renderScoreRow(s, startIdx + index + 1, false);
             });
+
+            if (supplementalScores.length > 0 && currentPage === 1) {
+                html += `<tr><td colspan="11" style="background:#eff6ff;color:#1d4ed8;font-size:0.8rem;font-weight:700;padding:8px 14px;text-align:left;border-top:2px solid #bfdbfe;border-bottom:1px solid #bfdbfe;">
+                    📌 Kỳ lọc hiện tại có ${strictMatchedCount} phiếu ở trên. Dưới đây là các phiếu chấm điểm gần nhất toàn viện (${allCached.length} phiếu) để tiện đối chiếu:
+                </td></tr>`;
+                supplementalScores.forEach((s, idx) => {
+                    html += renderScoreRow(s, pageScores.length + idx + 1, true);
+                });
+            }
+
             html += '</tbody></table></div>';
 
             if (totalPages > 1) {
                 html += `<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-top:12px;padding-top:10px;border-top:1px solid var(--gray-200);font-size:0.84rem;color:var(--gray-600);">
                     <div>Hiển thị <strong>${startIdx + 1}–${Math.min(startIdx + limit, totalMatched)}</strong> trong tổng số <strong>${totalMatched}</strong> phiếu chấm điểm</div>
                     <div style="display:flex;gap:6px;align-items:center;">
-                        <button class="btn btn-sm" style="background:#f8fafc;color:var(--gray-700);border:1px solid #cbd5e1;padding:5px 12px;" ${currentPage <= 1 ? 'disabled style="opacity:0.4;cursor:not-allowed;background:#f8fafc;color:var(--gray-500);border:1px solid #e2e8f0;padding:5px 12px;"' : ''} onclick="changeRecentScoresPage(-1)">◀ Trước</button>
+                        <button type="button" class="btn btn-sm" style="background:#f8fafc;color:var(--gray-700);border:1px solid #cbd5e1;padding:5px 12px;" ${currentPage <= 1 ? 'disabled style="opacity:0.4;cursor:not-allowed;background:#f8fafc;color:var(--gray-500);border:1px solid #e2e8f0;padding:5px 12px;"' : ''} onclick="changeRecentScoresPage(-1)">◀ Trước</button>
                         <span style="font-weight:700;color:var(--primary);padding:0 8px;">Trang ${currentPage} / ${totalPages}</span>
-                        <button class="btn btn-sm" style="background:#f8fafc;color:var(--gray-700);border:1px solid #cbd5e1;padding:5px 12px;" ${currentPage >= totalPages ? 'disabled style="opacity:0.4;cursor:not-allowed;background:#f8fafc;color:var(--gray-500);border:1px solid #e2e8f0;padding:5px 12px;"' : ''} onclick="changeRecentScoresPage(1)">Sau ▶</button>
+                        <button type="button" class="btn btn-sm" style="background:#f8fafc;color:var(--gray-700);border:1px solid #cbd5e1;padding:5px 12px;" ${currentPage >= totalPages ? 'disabled style="opacity:0.4;cursor:not-allowed;background:#f8fafc;color:var(--gray-500);border:1px solid #e2e8f0;padding:5px 12px;"' : ''} onclick="changeRecentScoresPage(1)">Sau ▶</button>
                     </div>
                 </div>`;
             }
@@ -5245,6 +5416,7 @@
             ['scoreDept', 'reportDept', 'newDept'].forEach(id => {
                 const sel = document.getElementById(id);
                 if (!sel) return;
+                const prevVal = sel.value;
                 const firstOptionText = id === 'newDept' ? '' : (id === 'reportDept' ? '-- Tất cả --' : '-- Chọn khoa/phòng --');
                 sel.innerHTML = `<option value="">${firstOptionText}</option>`;
                 Object.entries(depts).sort((a, b) => a[1].name.localeCompare(b[1].name)).forEach(([k, v]) => {
@@ -5253,6 +5425,7 @@
                     opt.textContent = v.name;
                     sel.appendChild(opt);
                 });
+                if (prevVal) sel.value = prevVal;
             });
         }
 
@@ -5732,6 +5905,21 @@
             return { onTime, label: onTime ? '✅ Đúng hạn' : '❌ Không đúng hạn' };
         }
 
+        function resetReportFilters() {
+            const now = new Date();
+            const y = Math.min(2030, Math.max(2026, now.getFullYear()));
+            const m = String(now.getMonth() + 1).padStart(2, '0');
+            const dSel = document.getElementById('reportDept');
+            const fInp = document.getElementById('reportFrom');
+            const tInp = document.getElementById('reportTo');
+            const sSel = document.getElementById('reportStatus');
+            if (dSel) dSel.value = '';
+            if (fInp) fInp.value = `${y}-01`;
+            if (tInp) tInp.value = `${y}-${m}`;
+            if (sSel) sSel.value = 'all';
+            loadReport();
+        }
+
         async function loadReport() {
             const deptId = document.getElementById('reportDept').value;
             const deptName = document.getElementById('reportDept').selectedOptions[0]?.text || '';
@@ -5740,12 +5928,14 @@
             const statusFilter = document.getElementById('reportStatus').value;
 
             const snap = await db.ref('scores_5s').once('value');
-            let scores = [];
-            snap.forEach(s => { scores.push({ id: s.key, ...s.val() }); });
-            window._cachedScores = [...scores].sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
+            const rawScores = [];
+            snap.forEach(s => { rawScores.push({ id: s.key, ...s.val() }); });
+            rawScores.sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
+            window._cachedScores = [...rawScores];
 
-            if (from) scores = scores.filter(s => s.month >= from);
-            if (to) scores = scores.filter(s => s.month <= to);
+            let scores = [...rawScores];
+            if (from) scores = scores.filter(s => (s.month || '') >= from);
+            if (to) scores = scores.filter(s => (s.month || '') <= to);
 
             const deptsSnap = await db.ref('departments_5s').once('value');
             const allDepts = deptsSnap.val() || {};
@@ -5755,11 +5945,11 @@
             const reportedDeptNames = new Set();
             scores.forEach(s => {
                 if (s.departmentId) reportedDeptIds.add(s.departmentId);
-                if (s.department) reportedDeptNames.add(s.department.trim().toUpperCase());
+                if (s.department) reportedDeptNames.add(normVn(s.department));
             });
 
             const allDeptEntries = Object.entries(allDepts);
-            const isDeptReported = (id, d) => reportedDeptIds.has(id) || reportedDeptNames.has((d.name || '').trim().toUpperCase());
+            const isDeptReported = (id, d) => reportedDeptIds.has(id) || reportedDeptNames.has(normVn(d.name));
             const reportedDepts = allDeptEntries.filter(([id, d]) => isDeptReported(id, d));
             const unreportedDepts = allDeptEntries.filter(([id, d]) => !isDeptReported(id, d));
 
@@ -5767,12 +5957,12 @@
             bannerEl.style.cssText = 'display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px;margin-top:16px;';
             bannerEl.innerHTML = `
                 <div style="flex:1;min-width:220px;background:linear-gradient(135deg,#10b981,#059669);color:white;padding:16px 20px;border-radius:14px;">
-                    <div style="font-size:0.85rem;opacity:0.9;">✅ Đã báo cáo</div>
+                    <div style="font-size:0.85rem;opacity:0.9;">✅ Đã báo cáo (${from || 'Đầu'} → ${to || 'Nay'})</div>
                     <div style="font-size:1.6rem;font-weight:800;">${reportedDepts.length}/${allDeptEntries.length}</div>
                     <div style="font-size:0.8rem;opacity:0.85;margin-top:4px;">${reportedDepts.map(([, d]) => d.name).join(', ') || 'Chưa có'}</div>
                 </div>
                 <div style="flex:1;min-width:220px;background:linear-gradient(135deg,#ef4444,#dc2626);color:white;padding:16px 20px;border-radius:14px;">
-                    <div style="font-size:0.85rem;opacity:0.9;">❌ Chưa báo cáo</div>
+                    <div style="font-size:0.85rem;opacity:0.9;">❌ Chưa báo cáo (${from || 'Đầu'} → ${to || 'Nay'})</div>
                     <div style="font-size:1.6rem;font-weight:800;">${unreportedDepts.length}/${allDeptEntries.length}</div>
                     <div style="font-size:0.8rem;opacity:0.85;margin-top:4px;">${unreportedDepts.map(([, d]) => d.name).join(', ') || 'Tất cả đã báo cáo'}</div>
                 </div>
@@ -5794,43 +5984,64 @@
                 return;
             }
 
-            if (deptId) {
-                scores = scores.filter(s => {
+            const filterByDeptFn = (list) => {
+                if (!deptId) return list;
+                return list.filter(s => {
                     if (s.departmentId === deptId) return true;
-                    const n1 = deptName.trim().toUpperCase();
-                    const n2 = (s.department || '').trim().toUpperCase();
-                    return n1 === n2 || n2.includes(n1) || n1.includes(n2);
+                    const n1 = normVn(deptName);
+                    const n2 = normVn(s.department);
+                    return n1 === n2 || (n1 && n2 && (n2.includes(n1) || n1.includes(n2)));
                 });
+            };
+
+            scores = filterByDeptFn(scores);
+            let usedReportFallback = false;
+            let fallbackMsg = '';
+
+            if (scores.length === 0 && rawScores.length > 0) {
+                usedReportFallback = true;
+                const deptAllTime = filterByDeptFn(rawScores);
+                if (deptAllTime.length > 0) {
+                    scores = deptAllTime;
+                    fallbackMsg = `Khoa/Phòng <strong>${deptName}</strong> chưa có bản ghi trong kỳ <strong>${from || '...'} → ${to || '...'}</strong>. Đang tự động hiển thị <strong>${scores.length} phiếu lũy kế</strong> của đơn vị này.`;
+                } else {
+                    scores = [...rawScores];
+                    fallbackMsg = `Không có bản ghi khớp chính xác bộ lọc hiện tại. Đang tự động hiển thị <strong>${scores.length} phiếu chấm điểm toàn viện</strong>.`;
+                }
             }
 
             scores.sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
-            if (scores.length === 0) {
-                document.getElementById('reportResult').innerHTML = '<p class="text-center">Không có dữ liệu phù hợp</p>';
-                return;
+
+            let html = '';
+            if (usedReportFallback) {
+                html += `<div style="background:#fffbeb;border:1px solid #fde68a;color:#92400e;padding:10px 14px;border-radius:10px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;font-size:0.84rem;">
+                    <span>ℹ️ ${fallbackMsg}</span>
+                    <button type="button" class="btn btn-sm" style="background:#fef3c7;color:#b45309;border:1px solid #f59e0b;padding:4px 10px;font-size:0.78rem;font-weight:700;" onclick="resetReportFilters()">🔄 Đặt lại bộ lọc cả năm</button>
+                </div>`;
             }
 
             const canDelete = currentUser && (currentUser.role === 'admin' || currentUser.role === 'mod');
-            let html = '<div style="overflow-x:auto;"><table><thead><tr><th>STT</th><th>Tháng</th><th>Khoa/Phòng</th><th>Khu vực</th><th>Mô tả</th><th>Người đánh giá</th><th>Điểm</th><th>Thời gian chấm</th><th>⏱️</th><th>Ảnh</th><th>Ngày tạo</th><th>Thao tác</th></tr></thead><tbody>';
+            html += '<div style="overflow-x:auto;"><table><thead><tr><th>STT</th><th>Tháng</th><th>Khoa/Phòng</th><th>Khu vực</th><th>Mô tả</th><th>Người đánh giá</th><th>Điểm</th><th>Thời gian chấm</th><th>⏱️</th><th>Ảnh</th><th>Ngày tạo</th><th>Thao tác</th></tr></thead><tbody>';
             scores.forEach((s, index) => {
                 const imgHtml = renderScoreThumbnails(s);
-                const deleteBtn = canDelete ? `<button onclick="deleteScore('${s.id}')" class="btn btn-danger btn-sm" style="padding:4px 8px;font-size:12px;">🗑️</button>` : '';
+                const deleteBtn = canDelete ? `<button type="button" onclick="event.stopPropagation(); deleteScore('${s.id}')" class="btn btn-danger btn-sm" style="padding:4px 8px;font-size:12px;">🗑️</button>` : '';
                 const timeStatus = isOnTime(s.createdAt, s.month);
                 const timeStyle = timeStatus.onTime ? 'color:#10b981;font-weight:600;' : 'color:#ef4444;font-weight:600;';
                 const score100 = (parseFloat(s.average) / 5 * 100).toFixed(0);
                 const durationHtml = s.durationSeconds ? `<span class="duration-badge">${formatDuration(s.durationSeconds)}</span>` : '<span style="color:var(--gray-400);">-</span>';
-                html += `<tr>
-                    <td style="text-align:center;font-weight:600;">${index + 1}</td>
-                    <td>${s.month}</td>
-                    <td style="font-weight:600;">${s.department}</td>
-                    <td>${s.zone}</td>
-                    <td>${s.item || (s.items ? s.items.join(', ') : '-')}</td>
-                    <td>${s.evaluator}</td>
-                    <td style="text-align:center;"><strong style="font-size:1.05rem;color:var(--primary);">${score100}</strong><span style="font-size:0.75rem;color:var(--gray-600);">/100</span><br><span style="font-size:0.78rem;color:var(--gray-600);">TB: ${s.average}/5</span></td>
-                    <td style="${timeStyle}">${timeStatus.label}</td>
-                    <td>${durationHtml}</td>
-                    <td>${imgHtml}</td>
-                    <td>${new Date(s.createdAt).toLocaleDateString('vi-VN')}</td>
-                    <td><div style="display:flex;gap:6px;align-items:center;"><button onclick="showScoreDetailModal('${s.id}')" class="btn btn-sm" style="background:#eff6ff;color:#2563eb;border:1px solid #bfdbfe;padding:4px 8px;font-size:12px;">👁️ Chi tiết</button>${deleteBtn}</div></td>
+                html += `<tr style="cursor:pointer;" onclick="showScoreDetailModal('${s.id}')" title="Bấm để xem chi tiết 20 tiêu chí">
+                    <td data-label="STT" style="text-align:center;font-weight:600;">${index + 1}</td>
+                    <td data-label="Tháng">${s.month}</td>
+                    <td data-label="Khoa/Phòng" style="font-weight:600;">${s.department}</td>
+                    <td data-label="Khu vực">${s.zone}</td>
+                    <td data-label="Mô tả">${s.item || (s.items ? s.items.join(', ') : '-')}</td>
+                    <td data-label="Người chấm">${s.evaluator}</td>
+                    <td data-label="Điểm 5S" style="text-align:center;"><strong style="font-size:1.05rem;color:var(--primary);">${score100}</strong><span style="font-size:0.75rem;color:var(--gray-600);">/100</span><br><span style="font-size:0.78rem;color:var(--gray-600);">TB: ${s.average}/5</span></td>
+                    <td data-label="Đúng hạn" style="${timeStyle}">${timeStatus.label}</td>
+                    <td data-label="Thời lượng">${durationHtml}</td>
+                    <td data-label="Hình ảnh" onclick="event.stopPropagation();">${imgHtml}</td>
+                    <td data-label="Ngày tạo">${s.createdAt ? new Date(s.createdAt).toLocaleDateString('vi-VN') : '-'}</td>
+                    <td data-label="Thao tác" onclick="event.stopPropagation();"><div style="display:flex;gap:6px;align-items:center;"><button type="button" onclick="showScoreDetailModal('${s.id}')" class="btn btn-sm" style="background:#eff6ff;color:#2563eb;border:1px solid #bfdbfe;padding:4px 8px;font-size:12px;">👁️ Chi tiết</button>${deleteBtn}</div></td>
                 </tr>`;
             });
             html += '</tbody></table></div>';
@@ -5881,15 +6092,15 @@
             const snap = await db.ref('departments_5s').once('value');
             const depts = snap.val() || {};
             window._cachedDepts = depts;
-            const q = (document.getElementById('zoneManageSearchInput')?.value || '').trim().toLowerCase();
+            const q = normVn(document.getElementById('zoneManageSearchInput')?.value || '');
 
             let html = '';
             Object.entries(depts).forEach(([deptId, dept]) => {
                 const zones = dept.zones || {};
                 const zoneEntries = Object.entries(zones);
                 if (q) {
-                    const matchDept = (dept.name || '').toLowerCase().includes(q);
-                    const matchZone = zoneEntries.some(([, z]) => (z.name || '').toLowerCase().includes(q));
+                    const matchDept = normVn(dept.name || '').includes(q);
+                    const matchZone = zoneEntries.some(([, z]) => normVn(z.name || '').includes(q));
                     if (!matchDept && !matchZone) return;
                 }
                 const zoneCount = zoneEntries.length;
